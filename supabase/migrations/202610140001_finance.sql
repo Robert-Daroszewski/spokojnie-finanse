@@ -8,8 +8,13 @@ alter table public.finance_snapshots enable row level security;
 create policy "Read only own finances" on public.finance_snapshots for select to authenticated using ((select auth.uid())=user_id);
 revoke all on public.finance_snapshots from anon,authenticated;
 grant select on public.finance_snapshots to authenticated;
+grant usage on schema public to authenticated;
 
-create function public.save_finance_snapshot(expected_revision bigint,new_state jsonb)
+create schema finance_private;
+revoke all on schema finance_private from public;
+grant usage on schema finance_private to authenticated;
+
+create function finance_private.save_finance_snapshot(expected_revision bigint,new_state jsonb)
 returns table(revision bigint,updated_at timestamptz)
 language plpgsql security definer set search_path=''
 as $$
@@ -25,6 +30,13 @@ begin
  if not found then raise exception 'Revision conflict' using errcode='40001'; end if;
 end;
 $$;
+revoke all on function finance_private.save_finance_snapshot(bigint,jsonb) from public,anon;
+grant execute on function finance_private.save_finance_snapshot(bigint,jsonb) to authenticated;
+
+create function public.save_finance_snapshot(expected_revision bigint,new_state jsonb)
+returns table(revision bigint,updated_at timestamptz)
+language sql security invoker set search_path=''
+as $$ select * from finance_private.save_finance_snapshot(expected_revision,new_state); $$;
 revoke all on function public.save_finance_snapshot(bigint,jsonb) from public,anon;
 grant execute on function public.save_finance_snapshot(bigint,jsonb) to authenticated;
 
