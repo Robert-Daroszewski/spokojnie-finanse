@@ -1,0 +1,8 @@
+'use client';
+import {useState} from 'react';
+import {createClient} from '../../lib/supabase/browser';
+export default function Login({configured}:{configured:boolean}){
+ const[email,setEmail]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);
+ async function signIn(e:React.FormEvent){e.preventDefault();setBusy(true);try{const {error}=await createClient().auth.signInWithOtp({email:email.trim(),options:{shouldCreateUser:false,emailRedirectTo:window.location.origin+'/auth/callback'}});setMessage(error?'Nie udało się wysłać linku. Sprawdź adres i aktywację konta właściciela.':'Sprawdź swoją pocztę. Otwórz link w tej samej przeglądarce na tym urządzeniu.');}catch{setMessage('Logowanie jest chwilowo niedostępne. Spróbuj ponownie.');}finally{setBusy(false);}}
+ return <main className="app-login"><section className="login-card"><span className="login-brand">spokojnie.</span><h1>Twoje finanse.<br/><em>Twoja przestrzeń.</em></h1><p>Zaloguj się bezpiecznym linkiem z poczty. Twoje zapisy będą dostępne też na telefonie.</p>{configured?<form onSubmit={signIn}><label>Twój adres e-mail<input type="email" value={email} onChange={e=>setEmail(e.target.value)} autoComplete="email" required/></label><button className="button primary" disabled={busy} type="submit">{busy?'Wysyłanie…':'Wyślij link do logowania'}</button></form>:<div className="notice" style={{marginTop:24}}>Aplikacja czeka na konfigurację Supabase. Instrukcja wdrożenia znajduje się w repozytorium.</div>}<p className="login-message" role="status">{message}</p><p className="login-footer">Dostęp ma tylko skonfigurowany właściciel. Z aplikacji możesz korzystać w przeglądarce albo dodać ją do ekranu głównego telefonu.</p></section></main>;
+}

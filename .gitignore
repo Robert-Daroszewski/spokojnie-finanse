@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.vercel/
+.env*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
+qa-*
+*.pem
+*.log
+*.zip
+*.tar.gz
+.runtime/

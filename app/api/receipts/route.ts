@@ -1,0 +1,5 @@
+import {ownerClient} from '../../../lib/supabase/server';
+import {json,allowedWrite} from '../../../lib/http';
+import {inspectReceipt} from '../../../lib/receipt-file.mjs';
+export const dynamic='force-dynamic';
+export async function POST(request:Request){const owner=await ownerClient();if(!owner)return json({error:'Zaloguj się.'},401);if(!allowedWrite(request))return json({error:'Niedozwolone żądanie.'},403);if(Number(request.headers.get('content-length')||0)>3_100_000)return json({error:'Maksymalny plik to 3 MB.'},413);try{const form=await request.formData(),receipt=await inspectReceipt(form.get('file')),id=crypto.randomUUID();const {error}=await owner.supabase.storage.from('receipts').upload(owner.user.id+'/'+id,receipt.bytes,{contentType:receipt.type,upsert:false,cacheControl:'0'});if(error)return json({error:'Nie udało się zapisać paragonu. Sprawdź magazyn plików.'},503);return json({id,fileName:receipt.fileName,type:receipt.type,size:receipt.size,sha256:receipt.sha256,createdAt:new Date().toISOString()});}catch(error){return json({error:error instanceof Error?error.message:'Nieprawidłowy plik.'},400);}}

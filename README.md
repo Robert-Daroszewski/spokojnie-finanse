@@ -45,4 +45,3 @@ Bez kluczy Supabase aplikacja pokazuje ekran oczekujący na konfigurację. Nie k
 Kopia JSON zawiera stan budżetu i metadane paragonów, **nie same pliki**. Ważne załączniki należy pobierać osobno. Synchronizacja nie zastępuje historycznych kopii zapasowych.
 
 Plan Supabase Free może wstrzymać mało aktywny projekt po siedmiu dniach i nie zapewnia SLA ani automatycznych kopii. Vercel Hobby jest przeznaczony do zastosowań osobistych i niekomercyjnych. Aktualne warunki: [Supabase](https://supabase.com/pricing), [wstrzymywanie projektu](https://supabase.com/docs/guides/platform/free-project-pausing), [Vercel Hobby](https://vercel.com/docs/plans/hobby).
-
