@@ -2,6 +2,8 @@
 
 Prywatny organizer wydatków, budżetu, oszczędności i ręcznego portfela XTB. Wersja dla telefonu i komputera, z kategoriami produktów, paragonami, stałymi płatnościami, subtelnymi animacjami i wyciszanymi dźwiękami.
 
+Adres wdrożenia: [spokojnie-finanse.vercel.app](https://spokojnie-finanse.vercel.app). Dane wymagają zalogowania skonfigurowanego właściciela.
+
 ## Architektura
 
 - **GitHub** — źródła i automatyczne sprawdzenia.

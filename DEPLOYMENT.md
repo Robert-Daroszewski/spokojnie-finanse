@@ -2,7 +2,7 @@
 
 ## 1. Supabase
 
-Utwórz projekt Free w regionie europejskim. W edytorze SQL zastosuj dokładnie migrację `supabase/migrations/202610140001_finance.sql`. Nie uruchamiaj jej drugi raz na już skonfigurowanej bazie.
+Utwórz projekt Free w regionie europejskim. W edytorze SQL zastosuj dokładnie migrację `supabase/migrations/20261014210101_finance_initial.sql`. Nie uruchamiaj jej drugi raz na już skonfigurowanej bazie.
 
 Migracja tworzy tabelę finansów z RLS, atomową funkcję zapisu sprawdzającą wersję oraz prywatny bucket `receipts` z regułami dostępu do plików własnego użytkownika. Nie wyłączaj RLS i nie zmieniaj bucketu na publiczny. Aplikacja nie potrzebuje klucza service role.
 
