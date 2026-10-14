@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Ambient from "./ambient";
 
 export const metadata: Metadata = {
   title: "Spokojnie — Twoje finanse",
@@ -16,8 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pl">
-      <head><link rel="stylesheet" href="/style.css" /><link rel="stylesheet" href="/refined.css" /><link rel="stylesheet" href="/motion.css" /><link rel="manifest" href="/manifest.webmanifest" /><meta name="theme-color" content="#1d3932" /><meta name="apple-mobile-web-app-capable" content="yes" /></head>
-      <body>{children}</body>
+      <head><link rel="stylesheet" href="/style.css" /><link rel="stylesheet" href="/refined.css" /><link rel="stylesheet" href="/motion.css" /><link rel="stylesheet" href="/atmosphere.css" /><link rel="stylesheet" href="/polish.css" /><link rel="stylesheet" href="/login.css" /><link rel="manifest" href="/manifest.webmanifest" /><link rel="apple-touch-icon" href="/icon-192.png" /><meta name="theme-color" content="#1d3932" /><meta name="apple-mobile-web-app-capable" content="yes" /></head>
+      <body><Ambient />{children}</body>
     </html>
   );
 }

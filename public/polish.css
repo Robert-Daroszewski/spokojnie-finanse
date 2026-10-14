@@ -1,0 +1,493 @@
+/* A quiet financial journal: warm paper, dark ink, purposeful details.
+   App-only selectors keep the sign-in experience independent. */
+#app .layout,
+#modal {
+  --ink: #243b32;
+  --muted: #616f5a;
+  --green: #234b3c;
+  --paper: #f5f2e9;
+  --line: #dedfd4;
+  --orange: #ac7958;
+  --red: #a85e51;
+  color: var(--ink);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: lining-nums;
+}
+
+#app .main { max-width: 1560px; padding-bottom: 38px; }
+#app .sidebar {
+  background: #203d32;
+  border-right: 1px solid #142e242b;
+  padding-top: 35px;
+  box-shadow: 8px 0 38px #193a2b04;
+}
+#app .brand {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 29px;
+  font-weight: 400;
+  letter-spacing: -1.6px;
+  color: #f5f1df;
+}
+#app .brandmark { color: #cbd8b7; }
+#app .tagline { color: #a4b9a5; letter-spacing: 1.55px; line-height: 1.7; }
+#app .nav-label { color: #9ab09d; font-size: 9px; letter-spacing: 1.7px; }
+#app .sidebar .nav { gap: 4px; }
+#app .sidebar .nav button {
+  position: relative;
+  min-height: 43px;
+  padding: 11px 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  color: #b8c7b9;
+  transition: color .2s, background .2s, border-color .2s;
+}
+#app .sidebar .nav button:hover { color: #fcf9ed; background: #f8f5e70b; }
+#app .sidebar .nav button.active {
+  background: #e6e8d6;
+  color: #244435;
+  border-color: #e9ecd9;
+  box-shadow: 0 2px 5px #102b2315;
+  font-weight: 600;
+}
+#app .sidebar .nav button.active::after {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #8a9d6e;
+  margin-left: auto;
+}
+#app .sidefoot { border-top-color: #b7c8b426; color: #a4b8a6; font-size: 10px; line-height: 1.9; }
+#app .sidefoot strong { color: #e0e6d3; font-size: 11px; font-weight: 500; }
+#app .sidefoot .text-link { color: #d1ddbe; font-size: 11px; }
+#app .sidefoot .status-dot { background: #b5c992; }
+
+#app .topbar { height: 94px; border-color: #d9ddd0; }
+#app .topbar .eyebrow { color: #616f5a; font-size: 9px; letter-spacing: 1.7px; }
+#app .topbar strong { color: #405345; font-size: 12px; font-weight: 500; }
+#app .top-actions { gap: 13px; }
+#app .cloud-badge { color: #616f5a; font-size: 10px; }
+#app .cloud-badge .status-dot { width: 5px; height: 5px; background: #648b68; box-shadow: 0 0 0 3px #648b680d; }
+#app .cloud-badge.offline, #app .cloud-badge.conflict { color: #a05843; }
+#app .cloud-badge.offline .status-dot, #app .cloud-badge.conflict .status-dot { background: #ac7958; }
+#app .avatar { background: #e8e6d6; border-color: #d6dbcc; color: #365541; box-shadow: 0 0 0 4px #f7f5ed; font-weight: 600; }
+#app .sound-button { background: #fcfbf6; border-color: #d7decd; color: #526f50; }
+#app .sound-button:hover { background: #e9efdf; border-color: #b2c1a5; }
+#app .sound-button[aria-pressed=false] { color: #616f5a; }
+#app .heading { margin: 37px 0 28px; gap: 24px; }
+#app .heading h1 { font-size: clamp(33px, 3vw, 43px); letter-spacing: -1.45px; line-height: 1.08; color: #243e32; text-wrap: balance; }
+#app .heading h1:not(:has(br)) { font-size: clamp(31px, 2.7vw, 38px); }
+#app .heading h1 em { color: #616f5a; }
+#app .heading .sub { font-size: 12px; color: #616f5a; line-height: 1.8; }
+#app .eyebrow { font-size: 9px; letter-spacing: 1.6px; font-weight: 600; color: #616f5a; }
+#app .main h2 { color: #314e3d; font-weight: 600; letter-spacing: -.4px; }
+#app .month-select { padding: 10px 14px; min-height: 41px; border-color: #d5dbcd; background: #fbfaf5; font-size: 11px; color: #425d44; box-shadow: 0 2px 4px #29432c03; }
+
+/* The balance is the anchor. Its geometry is drawn, never decorative noise. */
+#app .hero-grid { grid-template-columns: 1.57fr 1fr; gap: 21px; margin-bottom: 21px; }
+#app .hero {
+  min-height: 248px;
+  padding: 29px 31px 25px;
+  border: 1px solid #284c3d;
+  border-radius: 15px;
+  background: #254a3c;
+  color: #f6f3e6;
+  box-shadow: 0 7px 18px #28482f0b, inset 0 1px 0 #f5f1d617;
+}
+#app .hero::after { display: none; }
+#app .hero-top { position: relative; z-index: 2; gap: 13px; }
+#app .hero .eyebrow { color: #bbccb2; font-size: 9px; letter-spacing: 1.5px; }
+#app .balance-tag { color: #c4d0b9; border-color: #bfd0ae26; font-size: 9px; }
+#app .hero-number { font-size: clamp(43px, 4.4vw, 61px); color: #f7f4e9; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: -2px; margin: 25px 0 11px; line-height: 1.02; position: relative; z-index: 2; font-variant-numeric: tabular-nums lining-nums; }
+#app .hero-number .unit { color: #b8cbb4; font-family: 'Segoe UI', sans-serif; font-size: 19px; margin-left: 10px; letter-spacing: -.3px; }
+#app .hero .sub { color: #bfd0b9; font-size: 12px; line-height: 1.75; position: relative; z-index: 2; }
+#app .hero-bottom { border-top-color: #d8e3c623; color: #b8cab1; font-size: 10px; gap: 30px; padding-top: 17px; margin-top: 23px; }
+#app .hero-bottom strong { color: #edf0de; font-size: 17px; font-weight: 500; letter-spacing: -.3px; font-variant-numeric: tabular-nums; }
+#app .hero-line { background: #c5d7bd33; }
+#app .hero-decoration { width: 210px; height: 165px; right: -48px; bottom: 14px; opacity: .9; transform: rotate(-24deg); }
+#app .hero-decoration span { width: 190px; height: 92px; right: 0; top: 38px; border-color: #ccdab52b; }
+#app .hero-decoration span:nth-child(2) { border-color: #ccdab520; }
+#app .hero-decoration span:nth-child(3) { border-color: #ccdab514; }
+#app .next-card { background: #e9eddf; border-color: #d9e0cc; border-radius: 15px; padding: 28px; box-shadow: 0 4px 14px #32452f04; }
+#app .next-card .badge { color: #616f5a; font-size: 9px; letter-spacing: 1.1px; }
+#app .small-orb { background: #f8f9ed; border-color: #cbd7bc; color: #6b825e; }
+#app .next-card h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 27px; font-weight: 400; line-height: 1.16; letter-spacing: -.6px; margin: 17px 0 12px; color: #3c583c; }
+#app .next-card p { font-size: 12px; color: #616f5a; max-width: 310px; line-height: 1.8; }
+#app .next-card .button { background: #fafaf1; border-color: #ccd7be; color: #395d3b; min-height: 39px; }
+
+/* A single surface and spacing language across the whole organizer. */
+#app .stats { gap: 16px; margin-bottom: 24px; }
+#app .stat { background: #fdfcf7; border-color: #dcdfd2; border-radius: 11px; padding: 22px 23px; box-shadow: 0 2px 5px #263f2903; }
+#app .stat-label { color: #616f5a; font-size: 11px; margin-bottom: 13px; }
+#app .stat-value { color: #2d4b38; font-size: 28px; letter-spacing: -.9px; font-weight: 500; font-variant-numeric: tabular-nums; }
+#app .stat-note { color: #616f5a; font-size: 10px; line-height: 1.7; }
+#app .stat-icon { background: #edf1e4; color: #7e986b; }
+#app .stat-icon.warm { background: #f4eade; color: #b38965; }
+#app .stat-icon.cool { background: #edeee3; color: #8c9676; }
+#app .content-grid { gap: 21px; margin-bottom: 21px; }
+#app .panel { background: #fdfcf7; border-color: #dcdfd1; border-radius: 12px; box-shadow: 0 2px 6px #1d3f2803; }
+#app .panel-head { padding: 24px 25px 18px; }
+#app .panel-head h2 { font-size: 17px; color: #304c3a; letter-spacing: -.45px; }
+#app .panel-head .eyebrow { font-size: 8px; color: #616f5a; letter-spacing: 1.5px; margin-bottom: 8px; display: block; }
+#app .panel-head .sub { color: #616f5a; font-size: 11px; line-height: 1.7; }
+#app .panel-body { padding: 25px; }
+#app .text-link { color: #526e46; font-size: 11px; font-weight: 500; text-decoration: none; transition: color .18s, gap .2s; }
+#app .text-link:hover { color: #254b36; gap: 11px; }
+#app .spending-chart { margin: 2px 18px 0; }
+#app .spending-chart svg text { fill: #616f5a; font-family: 'Segoe UI', sans-serif; }
+#app .spending-chart svg line { stroke: #e1e6d8; stroke-dasharray: 2 5; }
+#app .spending-chart svg polyline { stroke: #5e7d57; stroke-width: 2.7; }
+#app .chart-legend { color: #616f5a; font-size: 10px; }
+#app .chart-legend i { background: #6c8c60; width: 5px; height: 5px; }
+#app .chart-caption { padding: 12px 25px 23px; color: #616f5a; }
+#app .chart-caption strong { font-size: 14px; color: #3e5d3d; font-variant-numeric: tabular-nums; }
+#app .chart-caption small { color: #616f5a; }
+#app .tx-row { padding: 16px 25px; gap: 13px; border-top-color: #eaebdf; transition: background .2s; }
+#app .tx-row:hover { background: #f3f5e9; }
+#app .tx-title { color: #3c513d; font-size: 12px; font-weight: 500; }
+#app .tx-meta { color: #616f5a; font-size: 10px; margin-top: 6px; }
+#app .tx-money { color: #3d593d; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+#app .tx-money.income { color: #616f5a; }
+#app .tx-money .sub { font-size: 10px; color: #616f5a; }
+#app .cat-icon { width: 31px; min-width: 31px; height: 31px; border-radius: 8px; }
+#app .budget-overview { padding: 7px 25px 4px; }
+#app .budget-big { font-size: 34px; color: #3b593b; font-variant-numeric: tabular-nums; }
+#app .budget-overview .sub { color: #616f5a; }
+#app .budget-percent { color: #616f5a; font-size: 37px; }
+#app .budget-list { padding-inline: 25px; padding-bottom: 25px; }
+#app .budget-row { margin-top: 21px; }
+#app .budget-label { color: #4c6447; font-size: 12px; }
+#app .budget-numbers { color: #616f5a; font-size: 10px; font-variant-numeric: tabular-nums; }
+#app .budget-numbers strong { color: #4c6644; font-weight: 500; }
+#app .track { height: 5px; background: #e9eddf; }
+#app .track > span { background: #839c6d; }
+#app .allocation-bar { height: 8px; margin: 15px 25px 19px; gap: 3px; }
+#app .allocation-row { padding: 15px 0; border-color: #e9ecde; }
+#app .allocation-row > span { color: #616f5a; font-size: 12px; }
+#app .allocation-row strong { color: #4e6945; font-size: 12px; font-variant-numeric: tabular-nums; }
+#app .plan-details .smallprint { color: #616f5a; font-size: 11px; line-height: 1.9; }
+#app .section-heading { margin-top: 31px; margin-bottom: 19px; }
+#app .section-heading h2 { font-size: 18px; }
+#app .account-grid { gap: 12px; }
+#app .account { padding: 19px 18px; background: #fbfaf4; border-color: #dce0d1; border-radius: 10px; box-shadow: 0 2px 4px #29473003; }
+#app .account:hover { background: #fffef8; border-color: #bccdad; box-shadow: 0 7px 17px #2b4a2b07; transform: translateY(-3px); }
+#app .account-source { color: #616f5a; font-size: 9px; }
+#app .account-name { color: #616f5a; font-size: 11px; margin: 17px 0 10px; line-height: 1.6; }
+#app .account-value { color: #365c37; font-size: 20px; font-variant-numeric: tabular-nums; }
+#app .bank-logo { border: 1px solid #6487580d; background: #e7eddf; }
+#app .bank-logo.mill { background: #f1e8e9; color: #ae7c8d; }
+#app .bank-logo.xtb { background: #f2e8e1; color: #aa7c68; }
+#app .footer { padding-top: 20px; border-color: #d9dfcf; color: #616f5a; font-size: 10px; line-height: 1.7; }
+#app .footer > span:first-child { color: #616f5a; font-size: 13px; }
+
+/* Small details continue through the less-frequent screens. */
+#app .empty { color: #616f5a; line-height: 1.9; }
+#app .elegant-empty { padding: 27px 23px 31px; }
+#app .empty-orb { width: 52px; height: 52px; border-color: #d7e0c7; color: #8ba378; background: #edf2e4; margin-bottom: 19px; }
+#app .elegant-empty h3 { color: #616f5a; font-size: 20px; margin-bottom: 12px; text-wrap: balance; }
+#app .elegant-empty p { color: #616f5a; font-size: 12px; }
+#app .elegant-empty .button { color: #456d3e; background: #f8faf1; border-color: #cfddbf; margin-top: 20px; }
+#app .notice { color: #876544; border-color: #e2d8bf; background: #f5efdf; border-radius: 9px; padding: 15px 18px; }
+#app .notice.green { color: #616f5a; border-color: #d8e2c8; background: #eff3e5; }
+#app .sync-banner { background: #edf2e3; border-color: #d4e0c2; padding: 17px 20px; }
+#app .sync-banner p, #app .sync-banner strong { color: #616f5a; }
+#app .sync-banner.warning { background: #f5efdf; border-color: #e3d8bc; }
+#app .sync-banner.warning p { color: #876544; }
+#app .feature-summary { padding: 25px 28px; background: #fafbf3; border-color: #d9e3cb; border-radius: 12px; }
+#app .feature-summary span { color: #616f5a; font-size: 11px; }
+#app .feature-summary strong { color: #446c38; font-size: 32px; font-variant-numeric: tabular-nums; }
+#app .upcoming-row { padding: 18px 25px; border-color: #e3e9d6; }
+#app .upcoming-row strong { color: #48673c; font-size: 12px; }
+#app .upcoming-row small { color: #616f5a; font-size: 10px; }
+#app .upcoming-row b { color: #616f5a; font-size: 14px; font-variant-numeric: tabular-nums; }
+#app .due-day { border-color: #d9e4c9; border-radius: 7px; background: #f0f5e6; color: #616f5a; height: 43px; }
+#app .due-day small { color: #616f5a; font-size: 9px; }
+#app .receipt-intro { background: #e9efdf; border-color: #d7e2c8; border-radius: 13px; padding: 29px 31px; }
+#app .receipt-intro h2 { color: #4d6f3d; font-size: 29px; font-weight: 400; }
+#app .receipt-intro p { color: #616f5a; line-height: 1.9; }
+#app .receipt-illustration { color: #a7be8b; font-family: Georgia, serif; }
+#app .receipt-row { padding: 22px 25px; border-color: #e1e9d2; }
+#app .receipt-file-icon { border-color: #d0dfbc; background: #eef5e1; color: #8aa764; border-radius: 5px 5px 9px 5px; }
+#app .receipt-info strong { color: #616f5a; font-size: 12px; }
+#app .receipt-info small { color: #616f5a; font-size: 10px; }
+#app .receipt-drop { padding: 46px 25px; }
+#app .receipt-drop > span { color: #a6bd8a; }
+#app .receipt-drop h3 { color: #616f5a; font-size: 27px; }
+#app .receipt-drop p { color: #616f5a; }
+#app .pill { border: 1px solid #dfe7d2; background: #edf2e2; color: #616f5a; border-radius: 5px; padding: 5px 8px; }
+#app .connection-card { padding: 30px; }
+#app .connection-card h2 { color: #616f5a; font-weight: 400; }
+#app .connection-card p { color: #616f5a; line-height: 1.9; }
+#app .connection-state { color: #876544; }
+#app .goal-card .goal-value { color: #4c713a; font-size: 34px; font-variant-numeric: tabular-nums; }
+#app .reserve-card { background: #edf3e2; border-color: #d6e3c1; }
+#app .rule h3, #app .guide-details summary { color: #616f5a; font-size: 13px; }
+#app .rule p, #app .guide-details p { color: #616f5a; line-height: 1.9; }
+#app .smallprint { color: #616f5a; font-size: 11px; line-height: 1.9; }
+#app .plan-line { padding: 15px 0; border-color: #e3ead7; color: #616f5a; }
+#app .plan-line strong { color: #616f5a; font-variant-numeric: tabular-nums; }
+#app .total-line { background: #edf4df; padding-inline: 16px; border-color: #d6e4c2; }
+
+/* The same tactile controls on desktop, touch and inside dialogs. */
+#app .button, #modal .button {
+  background: #fcfcf5;
+  border: 1px solid #d5dfc9;
+  color: #47693d;
+  border-radius: 7px;
+  padding: 10px 15px;
+  min-height: 40px;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: 0 1px 2px #34542a05;
+  transition: background .18s, border-color .18s, color .18s, box-shadow .22s, transform .22s;
+}
+#app .button:hover, #modal .button:hover { background: #f0f5e6; border-color: #becfab; color: #355b2d; }
+#app .button.primary, #modal .button.primary { background: #284d3b; border-color: #284d3b; color: #f8faef; box-shadow: 0 3px 7px #2c4c3314, inset 0 1px 0 #f5f9df17; }
+#app .button.primary:hover, #modal .button.primary:hover { background: #1f402f; border-color: #1f402f; box-shadow: 0 5px 14px #234c3120; transform: translateY(-1px); }
+#app .button.small, #modal .button.small { font-size: 11px; padding: 8px 12px; min-height: 35px; }
+#app .button.ghost, #modal .button.ghost { background: transparent; border-color: transparent; color: #616f5a; box-shadow: none; }
+#app .button.ghost:hover, #modal .button.ghost:hover { background: #eaf0df; color: #45683b; }
+#app .button.danger, #modal .button.danger { color: #a05843; }
+#app .button:active, #modal .button:active { transform: translateY(1px); }
+#app :is(button, a, input, select, summary):focus-visible,
+#modal :is(button, a, input, select, summary):focus-visible { outline: 2px solid #8cab6d; outline-offset: 4px; }
+#app :is(input, select, textarea), #modal :is(input, select, textarea) { background: #fffef7; border-color: #d2dfc2; border-radius: 7px; color: #476a37; font-size: 13px; min-height: 43px; padding: 11px 12px; transition: border-color .2s, box-shadow .2s; }
+#app :is(input, select, textarea):hover, #modal :is(input, select, textarea):hover { border-color: #b7cca0; }
+#app :is(input, select, textarea):focus, #modal :is(input, select, textarea):focus { border-color: #91ae74; outline: 2px solid #8cab6d24; outline-offset: 1px; box-shadow: 0 0 0 4px #9bbd7320; }
+#app input::placeholder, #modal input::placeholder { color: #616f5a; }
+#app input[type=checkbox], #modal input[type=checkbox] { min-height: 18px; padding: 0; accent-color: #5b7d40; }
+#app .field > span, #modal .field > span { font-size: 12px; font-weight: 500; color: #616f5a; }
+#app .field small, #modal .field small { font-size: 11px; color: #616f5a; line-height: 1.8; }
+#app .field, #modal .field { gap: 9px; margin-bottom: 19px; }
+#app .form-actions, #modal .form-actions { border-color: #d9e4c9; padding-top: 21px; gap: 10px; }
+#app .checkline, #modal .checkline { color: #616f5a; font-size: 12px; }
+#app .settings-sections .panel-body { padding: 29px; }
+#app .budget-editor { padding: 20px 25px; border-color: #e2e9d4; }
+#app .budget-editor input { font-size: 14px; font-variant-numeric: tabular-nums; }
+#app .budget-editor .sub { color: #616f5a; font-size: 11px; }
+#app .filterbar { padding: 19px 24px; border-color: #dee7cc; background: #fbfcf4; }
+#app .table-wrap th { background: #f5f8ed; color: #616f5a; font-size: 10px; letter-spacing: .9px; font-weight: 500; padding-top: 14px; padding-bottom: 14px; }
+#app .table-wrap td { color: #616f5a; padding-top: 17px; padding-bottom: 17px; border-color: #e3ecd5; font-size: 12px; }
+#app .table-wrap td small { color: #616f5a; font-size: 10px; }
+#app .table-wrap tbody tr { transition: background .2s; }
+#app .table-wrap tbody tr:hover { background: #f7faef; }
+#app .table-wrap td.num { font-variant-numeric: tabular-nums; font-weight: 500; }
+#modal { border: 1px solid #d3e0be; border-radius: 15px; box-shadow: 0 30px 100px #1c3a2a2b, 0 5px 15px #1c3a2a13; max-height: min(90dvh, 960px); }
+#modal::backdrop { background: #17342773; backdrop-filter: blur(6px); }
+#modal .modal-head { padding: 25px 28px; background: #f3f7e9; border-color: #dbe6c9; }
+#modal .modal-head h2 { font-size: 26px; color: #4c7137; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: -.65px; }
+#modal .modal-head .button { min-width: 38px; }
+#modal .modal-body { padding: 28px; background: #fcfef5; }
+#modal .sub { font-size: 12px; color: #616f5a; line-height: 1.85; }
+#modal .smallprint { color: #616f5a; font-size: 11px; line-height: 1.9; }
+#modal .segmented { gap: 6px; margin-bottom: 25px; }
+#modal .segmented button { min-height: 35px; border: 1px solid #e0e9d0; background: #f3f8e9; color: #616f5a; font-size: 11px; padding: 8px 10px; border-radius: 6px; }
+#modal .segmented button.active { background: #e4efd2; border-color: #c6daaa; color: #616f5a; font-weight: 500; }
+#modal input.amount-input { font-family: Georgia, 'Times New Roman', serif; color: #616f5a; font-size: 40px; padding: 16px; line-height: 1.2; letter-spacing: -1.4px; font-variant-numeric: tabular-nums; }
+#modal .quick-cats { gap: 6px; }
+#modal .quick-cats button { color: #616f5a; background: #f7fbef; border-color: #dce9c8; min-height: 30px; padding: 7px 9px; font-size: 10px; }
+#modal .quick-cats button.selected { background: #e7f1d5; border-color: #bdd49f; color: #616f5a; }
+#modal .items-editor { border-color: #d2e3bb; background: #f2f8e7; border-radius: 9px; padding: 16px; margin-top: 7px; }
+#modal .items-editor summary { color: #616f5a; }
+#modal .items-editor summary span, #modal .items-help { color: #616f5a; }
+#modal .product-edit-row { border-color: #d6e5c1; gap: 10px; padding-bottom: 16px; }
+#modal .product-edit-row label > span { color: #616f5a; font-size: 10px; }
+#modal .product-edit-row input, #modal .product-edit-row select { min-height: 39px; font-size: 12px; }
+#modal .items-footer strong { color: #616f5a; }
+#modal .items-footer .text-link { color: #616f5a; font-size: 10px; }
+#modal .error { color: #a05843; font-size: 12px; }
+#app .over, #modal .over { color: #a05843 !important; }
+
+@media (min-width: 1500px) {
+  #app .main { padding-inline: 57px; }
+  #app .hero { min-height: 264px; }
+}
+@media (max-width: 1200px) {
+  #app .main { padding-inline: 29px; }
+  #app .hero { padding: 26px; }
+  #app .hero-number { font-size: 46px; }
+  #app .next-card { padding: 25px; }
+  #app .next-card h2 { font-size: 25px; }
+  #app .stat { padding: 21px 19px; }
+  #app .stat-value { font-size: 25px; }
+  #app .top-actions { gap: 10px; }
+}
+@media (max-width: 960px) and (min-width: 721px) {
+  #app .sidebar .nav button { min-height: 44px; padding: 12px; }
+  #app .sidebar .nav button.active::after { display: none; }
+  #app .hero-grid { grid-template-columns: 1.35fr 1fr; }
+  #app .hero-number { font-size: 42px; }
+  #app .hero-bottom { gap: 17px; }
+  #app .hero-bottom strong { font-size: 15px; }
+  #app .next-card h2 { font-size: 23px; }
+  #app .top-actions { gap: 8px; }
+  #app .cloud-badge { font-size: 9px; }
+  #app .top-actions .button { font-size: 11px; }
+  #app .stat-value { font-size: 23px; }
+  #app .stat-label { font-size: 10px; }
+  #app .stat-note { font-size: 9px; }
+}
+@media (max-width: 720px) {
+  #app .main { padding: 0 19px 105px; }
+  #app .sidebar { padding: 7px 7px max(7px, env(safe-area-inset-bottom)); height: calc(67px + env(safe-area-inset-bottom)); background: #203e34f5; border-top: 1px solid #718a6d54; box-shadow: 0 -5px 25px #1739260a; }
+  #app .sidebar .nav button { min-height: 51px; min-width: 55px; font-size: 9px; padding: 8px !important; }
+  #app .sidebar .nav button[data-page=recurring] span { font-size: 8px; }
+  #app .sidebar .nav button.active { background: #e3e8d4; border-color: #e3e8d4; }
+  #app .sidebar .nav button.active::after { display: none; }
+  #app .topbar { height: 81px; gap: 8px; }
+  #app .topbar .eyebrow { font-size: 7px; letter-spacing: 1.15px; }
+  #app .topbar strong { font-size: 10px; }
+  #app .top-actions { gap: 4px; }
+  #app .top-actions .button.primary { min-height: 44px; padding: 10px; font-size: 10px; gap: 5px; }
+  #app .top-actions .button.primary .icon { width: 13px; height: 13px; }
+  #app .top-actions .button.ghost { min-height: 44px; font-size: 8px; padding: 6px 4px; max-width: 62px; line-height: 1.55; }
+  #app .sound-button { width: 35px; height: 44px; background: transparent; border-color: transparent; border-radius: 7px; }
+  #app .sound-button .icon { width: 15px; height: 15px; }
+  #app .cloud-badge { top: 84px; font-size: 8px; }
+  #app .heading { margin: 33px 0 25px; gap: 12px; align-items: center; }
+  #app .heading h1 { font-size: 34px; line-height: 1.11; letter-spacing: -1.1px; }
+  #app .heading h1:not(:has(br)) { font-size: 28px; }
+  #app .heading .sub { font-size: 11px; line-height: 1.8; max-width: 270px; }
+  #app .heading > .button { min-height: 44px; padding: 9px 11px; font-size: 10px; max-width: 118px; flex-shrink: 0; }
+  #app .month-select { min-height: 44px; padding: 9px 10px; font-size: 10px; max-width: 128px; }
+  #app .hero-grid, #app .content-grid { grid-template-columns: 1fr; gap: 17px; }
+  #app .hero { padding: 27px 26px 25px; min-height: 247px; border-radius: 13px; }
+  #app .hero .eyebrow { font-size: 8px; letter-spacing: 1.2px; }
+  #app .balance-tag { font-size: 8px; }
+  #app .hero-number { font-size: 53px; margin-top: 27px; letter-spacing: -1.7px; }
+  #app .hero-number .unit { font-size: 17px; margin-left: 8px; }
+  #app .hero .sub { font-size: 11px; max-width: 94%; }
+  #app .hero-bottom { gap: 27px; font-size: 10px; margin-top: 24px; padding-top: 18px; }
+  #app .hero-bottom strong { font-size: 16px; }
+  #app .hero-decoration { right: -67px; bottom: 14px; }
+  #app .next-card { padding: 25px; border-radius: 13px; grid-template-columns: 1fr; gap: 17px; }
+  #app .next-card h2 { font-size: 25px; margin: 15px 0 12px; }
+  #app .next-card p { font-size: 11px; }
+  #app .next-card .badge { font-size: 8px; }
+  #app .next-card .button { max-width: none; justify-self: start; font-size: 11px; min-height: 44px; }
+  #app .stats { gap: 8px; margin-bottom: 23px; }
+  #app .stat { padding: 16px 12px; border-radius: 9px; }
+  #app .stat-label { font-size: 10px; line-height: 1.5; min-height: 30px; margin-bottom: 9px; }
+  #app .stat-value { font-size: 21px; letter-spacing: -.7px; }
+  #app .stat-note { font-size: 9px; line-height: 1.7; margin-top: 10px; }
+  #app .panel-head { padding: 23px 21px 17px; }
+  #app .panel-head h2 { font-size: 17px; }
+  #app .panel-head .eyebrow { font-size: 8px; letter-spacing: 1.25px; }
+  #app .panel-head .text-link { min-height: 44px; font-size: 10px; }
+  #app .chart-caption { padding: 12px 21px 22px; font-size: 10px; }
+  #app .chart-caption strong { font-size: 13px; }
+  #app .chart-caption small { font-size: 9px; }
+  #app .tx-row { padding: 16px 21px; }
+  #app .tx-meta { font-size: 10px; }
+  #app .budget-overview { padding-inline: 21px; }
+  #app .budget-list { padding-inline: 21px; }
+  #app .budget-big { font-size: 32px; }
+  #app .budget-percent { font-size: 34px; }
+  #app .allocation-row > span, #app .allocation-row strong { font-size: 11px; }
+  #app .account-grid { gap: 10px; }
+  #app .account { padding: 19px 16px; }
+  #app .account-name { font-size: 10px; }
+  #app .account-source { font-size: 8px; }
+  #app .account-value { font-size: 20px; }
+  #app .section-heading h2 { font-size: 18px; }
+  #app .section-heading .text-link { font-size: 10px; min-height: 44px; }
+  #app .elegant-empty { padding: 26px 23px 29px; }
+  #app .elegant-empty h3 { font-size: 21px; }
+  #app .elegant-empty p { font-size: 12px; }
+  #app .footer { font-size: 9px; }
+  #app .footer > span:first-child { font-size: 13px; }
+  #app .button, #app .button.small { min-height: 44px; font-size: 11px; }
+  #app .panel-body, #app .settings-sections .panel-body { padding: 23px; }
+  #app .notice { font-size: 11px; padding: 15px 17px; line-height: 1.85; }
+  #app .sync-banner { padding: 17px; }
+  #app .sync-banner .button { min-height: 44px; font-size: 10px; max-width: 110px; }
+  #app .feature-summary { padding: 23px; gap: 19px; }
+  #app .feature-summary strong { font-size: 30px; }
+  #app .upcoming-row { padding: 18px 21px; gap: 12px; }
+  #app .upcoming-row > div { min-width: 140px; }
+  #app .upcoming-row strong { font-size: 12px; }
+  #app .upcoming-row small { font-size: 10px; }
+  #app .upcoming-row b { font-size: 13px; }
+  #app .upcoming-row .button { margin-left: 47px; }
+  #app .receipt-intro { padding: 25px; }
+  #app .receipt-intro h2 { font-size: 27px; }
+  #app .receipt-row { padding: 22px; }
+  #app .receipt-info { min-width: 175px; }
+  #app .receipt-actions { padding-left: 0; gap: 8px; width: 100%; }
+  #app .receipt-actions .button { min-height: 44px; font-size: 10px; }
+  #app .receipt-drop { padding: 39px 24px; }
+  #app .receipt-drop h3 { font-size: 27px; }
+  #app .mobile-tools { gap: 9px; }
+  #app .mobile-tools button { min-height: 53px; border-color: #d0dfba; background: #f7fbef; font-size: 11px; }
+  #app .budget-editor { padding: 20px 21px; }
+  #app :is(input, select, textarea), #modal :is(input, select, textarea) { min-height: 46px; font-size: 16px; }
+  #app .filterbar select { font-size: 12px; }
+  #app .table-wrap td .text-link { min-height: 44px; }
+  #modal { max-height: calc(100dvh - 30px); border-radius: 13px; }
+  #modal .modal-head { padding: 23px; }
+  #modal .modal-head h2 { font-size: 24px; }
+  #modal .modal-body { padding: 23px; }
+  #modal .button, #modal .button.small { min-height: 44px; font-size: 12px; }
+  #modal .modal-head .button { min-width: 44px; }
+  #modal .segmented { gap: 6px; }
+  #modal .segmented button { min-height: 44px; font-size: 11px; padding: 10px; }
+  #modal .quick-cats button { min-height: 36px; font-size: 10px; }
+  #modal .field { margin-bottom: 20px; }
+  #modal .form-actions { padding-top: 22px; gap: 9px; }
+  #modal .items-editor { padding: 14px; }
+  #modal .product-edit-row { gap: 9px; }
+  #modal .product-edit-row input, #modal .product-edit-row select { min-height: 44px; font-size: 16px; }
+  #modal .items-footer .text-link { min-height: 44px; font-size: 11px; }
+}
+@media (max-width: 380px) {
+  #app .main { padding-inline: 14px; }
+  #app .topbar .eyebrow { font-size: 6px; }
+  #app .topbar strong { font-size: 9px; }
+  #app .top-actions .button.primary { font-size: 9px; padding: 9px; }
+  #app .top-actions .button.ghost { max-width: 48px; font-size: 7px; }
+  #app .heading h1 { font-size: 31px; }
+  #app .heading h1:not(:has(br)) { font-size: 26px; }
+  #app .heading > .button { max-width: 108px; font-size: 9px; }
+  #app .hero { padding-inline: 23px; }
+  #app .hero-number { font-size: 47px; }
+  #app .stat { padding-inline: 10px; }
+  #app .stat-value { font-size: 19px; }
+  #app .hero-bottom { gap: 21px; }
+  #app .budget-label { font-size: 11px; }
+  #app .budget-numbers { font-size: 9px; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  #app .hero-decoration { animation: journal-orbit 32s ease-in-out infinite alternate; }
+}
+@keyframes journal-orbit {
+  from { transform: rotate(-24deg) translateY(0); }
+  to { transform: rotate(-10deg) translateY(-7px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #app .layout *, #modal, #modal * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  #app .account:hover, #app .button:hover, #modal .button:hover { transform: none; }
+}
+
+/* Compact navigation keeps every label on one line on a small phone. */
+#app .nav-compact-caption { display: none !important; }
+#app .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#app .stat { min-width: 0; }
+#app .stat-value, #app .hero-number { white-space: normal; overflow-wrap: anywhere; }
+#app :is(input, select, textarea):focus-visible,
+#modal :is(input, select, textarea):focus-visible {
+  outline: 2px solid #5b7d46;
+  outline-offset: 3px;
+}
+@media (max-width: 720px) {
+  #app .sidebar .nav button[data-page=recurring] .nav-caption { display: none !important; }
+  #app .sidebar .nav button[data-page=recurring] .nav-compact-caption { display: block !important; font-size: 9px; }
+  #app .filterbar select { font-size: 16px; }
+}
+@media (max-width: 380px) {
+  #app .stats { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  #app .stat { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 16px 18px; }
+  #app .stat-label { min-height: 0; margin: 0; font-size: 11px; }
+  #app .stat-value { max-width: 160px; font-size: 22px; text-align: right; }
+  #app .stat-note { grid-column: 1 / -1; margin-top: 6px; font-size: 10px; }
+}

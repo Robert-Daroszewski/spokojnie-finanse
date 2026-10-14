@@ -1,0 +1,12 @@
+/* Light moving over a sheet of paper. Deliberately quiet beneath the UI. */
+body{position:relative;isolation:isolate;background:#f5f3ed}
+.ambient-scene{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;contain:strict;background:linear-gradient(130deg,#faf8f2 0%,#f4f3ec 63%,#eeeede 100%)}
+.ambient-daylight{position:absolute;inset:-30%;background:linear-gradient(112deg,transparent 28%,#fffdf653 39%,#fffdf6a6 45%,#fffdf617 53%,transparent 62%);transform:translate3d(-3%,0,0);animation:paper-light 38s ease-in-out infinite alternate}
+.ambient-lines{position:absolute;width:min(760px,65vw);height:105vh;right:-130px;top:-70px;color:#6b8062;opacity:.14;transform:translate3d(0,0,0);animation:contour-drift 48s ease-in-out infinite alternate}
+.ambient-grain{position:absolute;inset:0;opacity:.19;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%237d786a' opacity='.17' filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");background-size:180px 180px}
+::selection{background:#d7dfbc;color:#233d31}
+@keyframes paper-light{from{transform:translate3d(-3%,0,0)}to{transform:translate3d(5%,3%,0)}}
+@keyframes contour-drift{from{transform:translate3d(0,0,0) rotate(-3deg)}to{transform:translate3d(16px,12px,0) rotate(1deg)}}
+@media(max-width:700px){.ambient-lines{width:100vw;right:-44%;opacity:.09;animation:none}.ambient-daylight{animation-duration:54s}.ambient-grain{opacity:.13}}
+@media(prefers-reduced-motion:reduce){.ambient-daylight,.ambient-lines{animation:none;transform:none}}
+@media print{.ambient-scene{display:none}}
