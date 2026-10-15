@@ -8,6 +8,10 @@ Migracja tworzy tabelę finansów z RLS, atomową funkcję zapisu sprawdzającą
 
 W **Authentication → Users** dodaj lub zaproś własny adres e-mail. Logowanie nie tworzy nowych użytkowników automatycznie. Publiczne rejestracje można wyłączyć w ustawieniach Auth. W ustawieniach URL dodaj finalny adres strony jako Site URL oraz `https://TWÓJ-ADRES/auth/callback` jako dozwolone przekierowanie. Dla lokalnego testu dodaj `http://localhost:3000/auth/callback`.
 
+Codzienne logowanie korzysta z e-maila i hasła. Właściciel z aktywną sesją ustawia hasło w **Ustawienia → Ustaw lub zmień hasło** (`/account/password`). Bez sesji używa **Ustaw lub odzyskaj hasło** na ekranie logowania; jednorazowy link otwarty w tej samej przeglądarce prowadzi przez istniejący callback do chronionego formularza hasła. Nie wymaga nowego adresu przekierowania ani zmian w bazie.
+
+Przy tworzeniu lub edycji płatności cyklicznej opcja **Już opłacone w tym miesiącu** zapisuje rozliczone terminy w planie. Nie tworzy transakcji, nie zmienia sald ani istniejących wydatków. Następne miesiące są planowane normalnie.
+
 Sprawdź dostarczanie poczty w swoim projekcie. Domyślna usługa pocztowa Supabase ma ograniczenia; przy potrzebie regularnego użycia skonfiguruj własny SMTP zgodnie z dokumentacją. Link należy otwierać w tej samej przeglądarce, w której rozpoczęto logowanie.
 
 ## 2. Vercel

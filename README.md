@@ -8,7 +8,7 @@ Adres wdrożenia: [spokojnie-finanse.vercel.app](https://spokojnie-finanse.verce
 
 - **GitHub** — źródła i automatyczne sprawdzenia.
 - **Vercel / Next.js** — aplikacja pod stałym adresem HTTPS.
-- **Supabase Auth** — logowanie linkiem e-mail, dostęp ograniczony do skonfigurowanego właściciela.
+- **Supabase Auth** — logowanie e-mailem i hasłem, dostęp ograniczony do skonfigurowanego właściciela. Jednorazowy link służy do ustawienia lub odzyskania hasła.
 - **Supabase PostgreSQL** — stan finansów, kontrola wersji i RLS.
 - **Supabase Storage** — prywatne załączniki paragonów, oddzielone od bazy.
 

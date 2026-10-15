@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {initialState,TODAY,uid,validateState,validateTransaction,monthStats,overview,categories} from './public/core.mjs';
-import {recurringOccurrences,recurringByCategory,validateRule} from './public/planning.mjs';
+import {recurringOccurrences,recurringByCategory,validateRule,setMonthSettled} from './public/planning.mjs';
 import {findArrays,mapReceiptRows,productSummary} from './public/receipts.mjs';
 import {inspectReceipt,receiptKey,validReceiptId} from './lib/receipt-file.mjs';
 const month=TODAY().slice(0,7);
@@ -12,6 +12,38 @@ test('31. dzień skracany w lutym i przywracany w marcu',()=>{const s=initialSta
 test('tygodniowe i roczne terminy są wyliczane według daty startu',()=>{const s=initialState();s.recurring=[rule({start:'2025-01-01',cadence:'weekly'}),rule({start:'2024-02-29',cadence:'yearly'})];assert.equal(recurringOccurrences(s,'2025-01','2025-01-01').length,5);assert.equal(recurringOccurrences(s,'2025-02','2025-02-01').filter(r=>r.cadence==='yearly')[0].date,'2025-02-28');});
 test('opłacona płatność nie jest już rezerwowana ani dublowana',()=>{const s=initialState(),r=rule({start:month+'-01'});s.recurring=[r];assert.equal(recurringByCategory(s,month,TODAY()).fixed,10000);s.transactions=[transaction({amount:10000,category:'fixed',recurringId:r.id,scheduledDate:month+'-01'})];assert.equal(recurringByCategory(s,month,TODAY()).fixed,undefined);assert.equal(recurringOccurrences(s,month,TODAY())[0].paid,s.transactions[0].id);s.transactions.push({...s.transactions[0],id:uid()});assert.throws(()=>validateState(s));});
 test('rachunki mieszczące się w budżecie nie powiększają go drugi raz',()=>{const s=initialState();s.budgets[month]=Object.fromEntries(categories.map(c=>[c.id,c.id==='fixed'?20000:0]));s.recurring=[rule({start:month+'-01',amount:10000})];assert.equal(overview(s).remaining,20000);s.recurring[0].amount=30000;assert.equal(overview(s).remaining,30000);});
+test('opłacone wcześniej nie tworzy wydatku ani rezerwy, następny miesiąc jest normalnie planowany',()=>{
+ const s=initialState(),r=rule({start:month+'-01'});
+ s.recurring=[r];assert.equal(overview(s).remaining,10000);
+ const before=JSON.stringify(s.transactions),accounts=JSON.stringify(s.accounts);
+ s.recurring=[setMonthSettled(r,month,true)];assert.equal(validateState(s),true);
+ assert.equal(overview(s).remaining,0);assert.equal(JSON.stringify(s.transactions),before);assert.equal(JSON.stringify(s.accounts),accounts);
+ const current=recurringOccurrences(s,month,TODAY())[0];assert.equal(current.paidPreviously,true);assert.equal(current.overdue,false);
+ const nextDate=new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5,7)),1)).toISOString().slice(0,7);
+ assert.equal(recurringByCategory(s,nextDate,nextDate+'-01').fixed,10000);
+ s.recurring=[setMonthSettled(s.recurring[0],month,false)];assert.equal(overview(s).remaining,10000);
+});
+test('rozliczenie tygodniowe obejmuje tylko wskazany miesiąc i zachowuje stare rozliczenia',()=>{
+ const r=rule({cadence:'weekly',start:'2025-01-01',settledDates:['2024-12-25']});
+ const settled=setMonthSettled(r,'2025-01',true),s={recurring:[settled],transactions:[]};
+ assert.equal(recurringOccurrences(s,'2025-01','2025-01-31').length,5);
+ assert.ok(recurringOccurrences(s,'2025-01','2025-01-31').every(x=>x.paidPreviously));
+ assert.ok(recurringOccurrences(s,'2025-02','2025-02-01').every(x=>!x.paid));
+ assert.ok(setMonthSettled(settled,'2025-02',false).settledDates.includes('2024-12-25'));
+ assert.deepEqual(setMonthSettled(settled,'2025-01',true).settledDates,settled.settledDates);
+});
+test('rzeczywisty powiązany wydatek pozostaje policzony raz przy wcześniejszym rozliczeniu',()=>{
+ const s=initialState(),r=rule({start:month+'-01'});s.recurring=[setMonthSettled(r,month,true)];
+ s.transactions=[transaction({amount:10000,category:'fixed',recurringId:r.id,scheduledDate:month+'-01'})];
+ assert.equal(validateState(s),true);assert.equal(monthStats(s,month).expenses,10000);
+ const current=recurringOccurrences(s,month,TODAY())[0];assert.equal(current.paid,s.transactions[0].id);assert.equal(current.paidPreviously,false);
+});
+test('błędne rozliczenia i miesiąc bez terminów są odrzucane',()=>{
+ const s=initialState();
+ for(const settledDates of [['2025-02-30'],['2025-01-01','2025-01-01'],'2025-01-01'])assert.throws(()=>validateRule(rule({settledDates}),s,categories));
+ assert.throws(()=>setMonthSettled(rule({start:'2030-01-01'}),'2025-01',true));
+ assert.throws(()=>setMonthSettled(rule(),'2025-13',true));
+});
 test('zakup liczony raz, kategorie wynikają z produktów',()=>{const s=initialState(),items=[item('Mleko',800),item('Szampon',1200,'health')];s.transactions=[transaction({items})];assert.equal(validateState(s),true);const st=monthStats(s,month);assert.equal(st.expenses,2000);assert.equal(st.spending.food,800);assert.equal(st.spending.health,1200);assert.equal(st.spending.once,0);s.transactions[0].items[0].amount=700;assert.throws(()=>validateState(s));});
 test('zwrot produktów odejmuje odpowiednie kategorie i zestawienie',()=>{const s=initialState(),items=[item('Mleko',2000)];s.transactions=[transaction({items}),transaction({type:'refund',amount:500,items:[item('Mleko',500)]})];assert.equal(monthStats(s,month).spending.food,1500);assert.equal(productSummary(s,month)[0].amount,1500);});
 test('JSON mapper wymaga jawnego wyboru pól i poprawnych kwot',()=>{const json={receipt:{items:[{name:'Mleko',quantity:2,total:'7,98'}]}};const found=findArrays(json);assert.equal(found[0].path,'receipt.items');const result=mapReceiptRows(found[0].rows,{name:'name',quantity:'quantity',amount:'total'});assert.equal(result[0].amount,798);assert.equal(result[0].quantity,2);assert.equal(mapReceiptRows([{n:'Mleko',q:2,p:399}],{name:'n',quantity:'q',amount:'p',unitPrice:true,grosze:true})[0].amount,798);assert.throws(()=>mapReceiptRows([{name:'Rabat',price:-2}],{name:'name',amount:'price'}));});
