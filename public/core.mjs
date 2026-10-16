@@ -1,6 +1,7 @@
 import { recurringByCategory, recurringMonthlyAverage, validateRule } from './planning.mjs';
 import {validateAutoHolding} from './investing.mjs';
 import {validateCatalogue} from './catalogue.mjs';
+import {validateFinanceExtras} from './finance-extras.mjs';
 export const TODAY = () => new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Warsaw',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 export const uid = () => globalThis.crypto.randomUUID();
 export const categories = [
@@ -37,7 +38,7 @@ export function initialState(){
   {id:'mill',name:'Millennium · bieżące',kind:'bank',opening:0,start},
   {id:'mill-save',name:'Millennium · oszczędności',kind:'bank',opening:0,start},
   {id:'xtb',name:'XTB · wolna gotówka',kind:'broker',opening:0,start}],
-  transactions:[],holdings:[],recurring:[],receipts:[],products:[],goals:[{id:'irregular',name:'Większe, nieregularne wydatki',target:100000,saved:0,due:''}],
+  transactions:[],holdings:[],recurring:[],receipts:[],products:[],templates:[],reconciliations:[],goals:[{id:'irregular',name:'Większe, nieregularne wydatki',target:100000,saved:0,due:''}],
   budgets:{[month]:Object.fromEntries(categories.map(c=>[c.id,0]))},
   settings:{income:0,essential:0,months:6,reserve:0,irregular:0,debt:0,expensiveDebt:0,verified:false},updatedAt:null,backupAt:null};
 }
@@ -119,6 +120,7 @@ export function validateState(s){
  for(const a of s.accounts)if(!str(a.id)||!str(a.name)||!a.name.trim()||!cash(a.opening)||!dateInput(a.start)||a.start>TODAY()||!['bank','broker'].includes(a.kind))fail();
  const occurrences=new Set();for(const t of s.transactions)if(t.recurringId){const key=t.recurringId+'|'+t.scheduledDate;if(occurrences.has(key))fail();occurrences.add(key);}
  try{validateCatalogue(s,categories.map(c=>c.id));}catch{fail();}
+ try{validateFinanceExtras(s,TODAY(),validateTransaction);}catch{fail();}
  const ids=new Set();for(const t of s.transactions){if(!str(t.id)||ids.has(t.id)||!str(t.description))fail();ids.add(t.id);try{validateTransaction(t,s);}catch{fail();}}
  if(s.recurring!==undefined){if(!Array.isArray(s.recurring)||s.recurring.length>500||new Set(s.recurring.map(r=>r.id)).size!==s.recurring.length)fail();for(const r of s.recurring)try{validateRule(r,s,categories);}catch{fail();}}
  if(s.receipts!==undefined){if(!Array.isArray(s.receipts)||s.receipts.length>5000||new Set(s.receipts.map(r=>r.id)).size!==s.receipts.length)fail();for(const r of s.receipts)if(!str(r.id)||!str(r.fileName)||!['image/jpeg','image/png','image/webp','application/pdf','application/json'].includes(r.type)||!Number.isSafeInteger(r.size)||r.size<1||r.size>3000000||typeof r.sha256!=='string'||!/^([a-f0-9]{64})$/.test(r.sha256))fail();}

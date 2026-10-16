@@ -19,6 +19,11 @@ Repozytorium zawiera neutralne ustawienia startowe. Kwoty użytkownika, jego his
 - Wydatki, wpływy, zwroty i przelewy własne; przelew nie jest nowym dochodem ani kosztem.
 - Kategorie i miesięczne limity. Zakup można rozbić na produkty z ilością, jednostką, końcową kwotą po rabacie i kategorią każdej pozycji. Suma musi zgadzać się z zakupem.
 - Zapamiętywane produkty i usługi ze stałym identyfikatorem, wybór poprzednio kupionej pozycji w wydatku, ponowny zakup z katalogu. Podsumowania miesięczne i całej historii: zakupy, zwroty, koszt netto, ilość, cena średnia i historia każdej pozycji. Katalog jest częścią synchronizowanego snapshotu i kopii JSON.
+- Raport miesiąca: wpływy, wydatki i zwroty, bilans, porównanie równych okresów, trend sześciu miesięcy, kategorie i kalendarz z przejściem do transakcji.
+- Szablony wcześniejszych wydatków z kontem, kategorią i produktami, z datą ustawianą na dziś. Użycie otwiera formularz, bez automatycznego księgowania.
+- Porównywanie salda z bankiem lub wolną gotówką XTB na wybrany dzień, z zachowaniem wyniku. Nie tworzy korekt budżetu i nie zmienia sald.
+- Szkic formularza transakcji na urządzeniu do 7 dni, odzyskiwany po zamknięciu i odświeżeniu, osobno dla przykładu. Cofnięcie ostatniego usunięcia transakcji, celu lub pozycji przez 60 sekund bez zastępowania całego snapshotu.
+- Nawigacja wszystkich sekcji na telefonie, adres sekcji i historia Wstecz; mobilne karty transakcji, wyszukiwanie po produktach, kategoriach, dniu i całej historii, podsumowanie filtrów oraz porcjowanie po 50 wpisów.
 - Paragony JPEG/PNG/WebP, PDF i JSON do 3 MB. JSON ma mapowanie pól i podgląd produktów. PDF i zdjęcia są załącznikami, bez automatycznego OCR. Można powiązać paragon z istniejącym wydatkiem bez ponownego księgowania.
 - Płatności miesięczne, tygodniowe i roczne. Plan chroni środki na nieopłacone rachunki; zapis faktycznego wydatku wymaga oznaczenia płatności jako opłaconej. Można wskazać istniejący wydatek.
 - Cele i poduszka bez podwójnego liczenia majątku. Nadwyżka na inwestowanie jest orientacyjną wartością po zabezpieczeniu budżetu, rachunków, celów i poduszki.
