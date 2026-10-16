@@ -18,6 +18,7 @@ Repozytorium zawiera neutralne ustawienia startowe. Kwoty użytkownika, jego his
 
 - Wydatki, wpływy, zwroty i przelewy własne; przelew nie jest nowym dochodem ani kosztem.
 - Kategorie i miesięczne limity. Zakup można rozbić na produkty z ilością, jednostką, końcową kwotą po rabacie i kategorią każdej pozycji. Suma musi zgadzać się z zakupem.
+- Zapamiętywane produkty i usługi ze stałym identyfikatorem, wybór poprzednio kupionej pozycji w wydatku, ponowny zakup z katalogu. Podsumowania miesięczne i całej historii: zakupy, zwroty, koszt netto, ilość, cena średnia i historia każdej pozycji. Katalog jest częścią synchronizowanego snapshotu i kopii JSON.
 - Paragony JPEG/PNG/WebP, PDF i JSON do 3 MB. JSON ma mapowanie pól i podgląd produktów. PDF i zdjęcia są załącznikami, bez automatycznego OCR. Można powiązać paragon z istniejącym wydatkiem bez ponownego księgowania.
 - Płatności miesięczne, tygodniowe i roczne. Plan chroni środki na nieopłacone rachunki; zapis faktycznego wydatku wymaga oznaczenia płatności jako opłaconej. Można wskazać istniejący wydatek.
 - Cele i poduszka bez podwójnego liczenia majątku. Nadwyżka na inwestowanie jest orientacyjną wartością po zabezpieczeniu budżetu, rachunków, celów i poduszki.

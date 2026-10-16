@@ -1,4 +1,5 @@
 import {createInvestments} from './investments-ui.mjs';
+import {rememberProducts} from './catalogue.mjs';
 import { createFeatures } from './features.mjs';
 import { CloudSync } from './sync.mjs';
 import {TODAY,uid,categories,moneyInput,dateInput,initialState,budgetFor,balances,monthStats,overview,fingerprint,validateTransaction,parseCSV,validateState} from './core.mjs';
@@ -27,7 +28,7 @@ function commit(fn,message='Zapisano'){
  try{
   if(!demo&&cloudPhase==='loading')throw Error('Poczekaj chwilę na sprawdzenie danych w chmurze.');
   if(storageError&&!demo)throw Error('Zapis zablokowany, aby ochronić wcześniejsze dane. Odtwórz kopię JSON w Ustawieniach.');
-  const next=structuredClone(state);fn(next);validateState(next);next.updatedAt=new Date().toISOString();
+  const next=structuredClone(state);fn(next);rememberProducts(next,uid);validateState(next);next.updatedAt=new Date().toISOString();
   if(demo){state=demoState=next;}else{localStorage.setItem(KEY,JSON.stringify(next));state=realState=next;cloud.save(next);}
   render();if(message)toast(demo?message+' · tylko przykład':message);return true;
  }catch(e){toast(e.message||'Nie udało się zapisać. Pobierz kopię zapasową.');return false;}

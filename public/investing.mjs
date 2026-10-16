@@ -15,6 +15,7 @@ export function validateAutoHolding(h,today){
  if(h.quantityAsOf!==undefined&&(!validDate(h.quantityAsOf)||h.quantityAsOf>today||h.quantityAsOf<h.purchaseDate))throw Error('Nieprawidłowa data potwierdzenia jednostek.');
  if(h.quote!==undefined){const q=h.quote;
   if(!q||q.symbol!==h.symbol||typeof q.currency!=='string'||!/^[A-Z]{3}$/.test(q.currency)||typeof q.quoteCurrency!=='string'||q.quoteCurrency.length>5||!validDate(q.fxDate)||q.fxDate>today||!Number.isFinite(Date.parse(q.quotedAt))||!Number.isFinite(Date.parse(q.fetchedAt)))throw Error('Nieprawidłowe dane notowania.');
+  if(q.marketDate!==undefined&&(!validDate(q.marketDate)||q.marketDate>today))throw Error('Nieprawidłowa data sesji.');
   const unit=currencyUnit(q.quoteCurrency);if(q.currency!==unit.currency||q.unitScale!==unit.unitScale)throw Error('Nieprawidłowa jednostka waluty.');
   quoteValue(h.quantity,q);
  }
@@ -24,8 +25,8 @@ export function rateOnOrBefore(rates,date){let low=0,high=rates.length-1,answer=
 export function pendingSplit(h,data,today){return Boolean(data?.splits?.some(s=>s.date>(h.quantityAsOf||h.purchaseDate)&&s.date<=today));}
 export function positionHistory(h,data){
  if(h.mode!=='auto'||!data)return[];
- const history=(data.history||[]).filter(p=>p.date>=h.purchaseDate).map(p=>({date:p.date,value:p.close}));
- const day=data.quote?.quotedAt?.slice(0,10);if(day&&day>=h.purchaseDate){const point={date:day,value:data.quote.price};const index=history.findIndex(p=>p.date===day);if(index>=0)history[index]=point;else history.push(point);}
+ const history=(data.history||[]).filter(p=>p.date>=h.purchaseDate).map(p=>({...p,value:p.close,kind:'daily'}));
+ const day=data.quote?.marketDate||data.quote?.quotedAt?.slice(0,10);if(day&&day>=h.purchaseDate){const point={date:day,value:data.quote.price,kind:'quote',quotedAt:data.quote.quotedAt};const index=history.findIndex(p=>p.date===day);if(index>=0)history[index]=point;else history.push(point);}
  return history.sort((a,b)=>a.date.localeCompare(b.date));
 }
 export function portfolioHistory(holdings,market,today){
@@ -41,7 +42,7 @@ export function portfolioHistory(holdings,market,today){
   }
   // Use the timestamped current quote only for the current end point.
   if(date===today){value=0;complete=true;for(const h of automatic){const data=market[h.symbol];if(!data?.quote||pendingSplit(h,data,today)||(Date.parse(today)-Date.parse(data.quote.quotedAt.slice(0,10)))/86400000>14){complete=false;continue;}value+=quoteValue(h.quantity,data.quote);}}
-  return{date,value:complete?value:null,cost,percent:complete&&cost>0?(value-cost)/cost*100:null};
+  return{date,kind:date===today?'quote':'daily',value:complete?value:null,cost,percent:complete&&cost>0?(value-cost)/cost*100:null};
  });
 }
 export function periodPoints(points,range,today){if(range==='all'||!points.length)return points;const days={month:31,quarter:93,year:366}[range];if(!days)return points;const cutoff=new Date(Date.parse(today+'T12:00:00Z')-days*86400000).toISOString().slice(0,10);return points.filter(p=>p.date>=cutoff);}

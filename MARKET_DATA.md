@@ -31,3 +31,9 @@ Ręczne migawki pozostają w sumach. Nie przypisujemy im domniemanej daty zakupu
 ## Zaplecze i bezpieczeństwo
 
 `/api/market` sprawdza istniejącego właściciela poprzez Supabase Auth. Wyszukiwanie jest ograniczone do akcji i ETF-ów; notowania przyjmują najwyżej 5 symboli na żądanie oraz poprawne daty. Adresy dostawców są stałe — użytkownik nie może podać dowolnego URL. Zapis portfela nadal korzysta z walidacji i sprawdzania rewizji prywatnego snapshotu. Nie wymaga migracji bazy, zmian RLS ani dostępu do brokera.
+
+## Szczegółowe wykresy
+
+Osie mają adaptacyjną precyzję i równe, czytelne odstępy. Daty sesji są wyznaczane w strefie giełdy; bieżący punkt jest oznaczony jako notowanie, a nie zamknięcie. Pełne dane dzienne służą do wskazywania dnia i eksportu, nawet gdy rysunek jest uproszczony z zachowaniem ekstremów i luk. Dostępne OHLC i wolumen pokazujemy po wybraniu punktu historycznego; brakujących pól nie tworzymy. CSV zachowuje ceny źródłowe, wartości/koszty PLN w groszach i rodzaj punktu.
+
+Minimum, maksimum i zmiana dotyczą wybranego zakresu. Dla portfela pokazujemy zmianę bezwzględnego wyniku (wartość − koszt), a nie procent wzrostu wartości, który myliłby dopłaty z zyskiem. Nie jest to TWR ani XIRR. Luki mają przerwaną linię i licznik danych.
