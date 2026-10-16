@@ -1,6 +1,6 @@
 # Spokojnie — osobista przestrzeń finansów
 
-Prywatny organizer wydatków, budżetu, oszczędności i ręcznego portfela XTB. Wersja dla telefonu i komputera, z kategoriami produktów, paragonami, stałymi płatnościami, subtelnymi animacjami i wyciszanymi dźwiękami.
+Prywatny organizer wydatków, budżetu, oszczędności i portfela XTB z automatyczną wyceną akcji i ETF-ów. Wersja dla telefonu i komputera, z kategoriami produktów, paragonami, stałymi płatnościami, subtelnymi animacjami i wyciszanymi dźwiękami.
 
 Adres wdrożenia: [spokojnie-finanse.vercel.app](https://spokojnie-finanse.vercel.app). Dane wymagają zalogowania skonfigurowanego właściciela.
 
@@ -21,12 +21,13 @@ Repozytorium zawiera neutralne ustawienia startowe. Kwoty użytkownika, jego his
 - Paragony JPEG/PNG/WebP, PDF i JSON do 3 MB. JSON ma mapowanie pól i podgląd produktów. PDF i zdjęcia są załącznikami, bez automatycznego OCR. Można powiązać paragon z istniejącym wydatkiem bez ponownego księgowania.
 - Płatności miesięczne, tygodniowe i roczne. Plan chroni środki na nieopłacone rachunki; zapis faktycznego wydatku wymaga oznaczenia płatności jako opłaconej. Można wskazać istniejący wydatek.
 - Cele i poduszka bez podwójnego liczenia majątku. Nadwyżka na inwestowanie jest orientacyjną wartością po zabezpieczeniu budżetu, rachunków, celów i poduszki.
+- Wyszukiwanie akcji i ETF-ów po nazwie lub symbolu, jednostki ułamkowe i partie zakupów. Ceny Yahoo Finance oraz przeliczenia NBP, wykres każdej pozycji od zakupu i wspólny wykres z linią kosztów. Łączny procent wyniku liczony względem całego kosztu. Ręczne migawki pozostają obsługiwane. Szczegóły: [MARKET_DATA.md](MARKET_DATA.md).
 - Import CSV, pełna kopia JSON, synchronizacja i ochrona przed konfliktem zapisów na dwóch urządzeniach. Tryb przykładowy jest oddzielny od właściwych danych.
 - Manifest aplikacji na telefon, układ mobilny, obsługa ograniczenia animacji i przełącznik dźwięków. Nie ma pełnego trybu pracy offline — lokalne oczekujące zapisy nie zastępują kopii.
 
 ## Banki i sklepy
 
-Nie ma aktywnych konektorów bankowych ani sklepowych. Sprawdzona ścieżka BNP Paribas Polska i Millennium to AIS przez Enable Banking, po osobnej aktywacji właściciela. XTB pozostaje aktualizowane ręcznie.
+Nie ma aktywnych konektorów bankowych ani sklepowych. Sprawdzona ścieżka BNP Paribas Polska i Millennium to AIS przez Enable Banking, po osobnej aktywacji właściciela. Zakupy i liczby jednostek XTB wprowadza się ręcznie; ceny wybranych akcji i ETF-ów mogą aktualizować się automatycznie z zewnętrznego źródła.
 
 Biedronka oficjalnie udostępnia e-paragony jako PDF i JSON, ale nie publikuje w regulaminie schematu JSON. Dlatego importer pozwala wybrać właściwe pola i wymaga sprawdzenia sum. Lidl opisuje pobieranie e-paragonów. Nie znaleziono publicznie udokumentowanych oficjalnych API konsumenckich obu sieci.
 
