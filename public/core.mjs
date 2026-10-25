@@ -1,6 +1,7 @@
 import { recurringByCategory, recurringMonthlyAverage, validateRule } from './planning.mjs';
 import {validateAutoHolding} from './investing.mjs';
 import {validateCatalogue} from './catalogue.mjs';
+import {validateClassification} from './classification.mjs';
 import {validateFinanceExtras} from './finance-extras.mjs';
 export const TODAY = () => new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Warsaw',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 export const uid = () => globalThis.crypto.randomUUID();
@@ -78,6 +79,8 @@ export function validateTransaction(t,s){
  if(!a||!dateInput(t.date)||t.date>TODAY()||t.date<a.start)throw Error('Data musi przypadać od daty salda początkowego konta do dzisiaj. Przyszłe wydatki uwzględnij w budżecie.');
  if(!String(t.description||'').trim())throw Error('Dodaj krótki opis.');
  if(['expense','refund'].includes(t.type)&&!categories.some(c=>c.id===t.category))throw Error('Wybierz kategorię.');
+ validateClassification(t,{pati:true});
+ if(!['expense','refund'].includes(t.type)&&(t.subcategory||t.relatedToPati))throw Error('Podkategorie i oznaczenie Pati dotyczą wydatków i zwrotów.');
  if(t.type==='transfer'){
   const dest=s.accounts.find(a=>a.id===t.to);
   if(!dest||dest.id===a.id||t.date<dest.start)throw Error('Wybierz inne konto docelowe i datę od jego salda początkowego.');
@@ -86,6 +89,7 @@ export function validateTransaction(t,s){
  if(t.items!==undefined){
   if(!Array.isArray(t.items)||t.items.length>500||(!['expense','refund'].includes(t.type)&&t.items.length))throw Error('Produkty są dostępne tylko dla wydatku i zwrotu.');
   const ids=new Set();for(const item of t.items){if(!item||typeof item.id!=='string'||ids.has(item.id)||typeof item.name!=='string'||!item.name.trim()||item.name.length>160||!Number.isFinite(item.quantity)||item.quantity<=0||item.quantity>100000||typeof item.unit!=='string'||item.unit.length>20||!Number.isSafeInteger(item.amount)||item.amount<=0||!categories.some(c=>c.id===item.category))throw Error('Sprawdź nazwy, ilości, kategorie i kwoty produktów.');ids.add(item.id);}
+  for(const item of t.items)validateClassification(item);
   for(const item of t.items)if((item.kind!==undefined&&!['product','service'].includes(item.kind))||(item.productId!==undefined&&(typeof item.productId!=='string'||!item.productId||item.productId.length>1000)))throw Error('Nieprawidłowe powiązanie produktu lub usługi.');
   if(t.items.length&&t.items.reduce((v,i)=>v+i.amount,0)!==t.amount)throw Error('Suma końcowych kwot produktów musi zgadzać się z kwotą zakupu.');
  }

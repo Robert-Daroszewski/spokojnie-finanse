@@ -10,13 +10,13 @@
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
     "start": "next start --hostname 127.0.0.1",
-    "test": "node --test test.mjs test-features.mjs test-investing.mjs test-details.mjs test-workspace.mjs",
+    "test": "node --test test.mjs test-features.mjs test-investing.mjs test-details.mjs test-workspace.mjs test-classification.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/ssr": "0.7.0",
     "@supabase/supabase-js": "2.117.3",
-    "next": "16.3.4",
+    "next": "16.4.3",
     "react": "19.2.6",
     "react-dom": "19.2.6"
   },

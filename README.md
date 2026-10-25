@@ -16,6 +16,11 @@ Repozytorium zawiera neutralne ustawienia startowe. Kwoty użytkownika, jego his
 
 ## Funkcje
 
+- Kategorie z drugim poziomem wyboru. Jedzenie: zakupy spożywcze do domu, gotowe posiłki ze sklepu, energetyki, przekąski i słodycze oraz jedzenie na mieście / na wynos. Transport: kolej międzymiastowa, SKM/PKM, tramwaje i autobusy, przejazdy mieszane, taxi i samochód. Pozostałe kategorie mają podziały m.in. na elektronikę, prezenty, dom, suplementy i subskrypcje.
+- Pole „Związane z Pati” przy wydatkach i zwrotach, niezależne od kategorii. Obejmuje całą kwotę wpisu, nie oznacza podziału rachunku ani rozliczenia długu. W historii dostępne są filtry podkategorii i oznaczenia, a w raporcie miesięcznym ich podsumowania po zwrotach.
+- Podkategorie działają też na pozycjach zakupów; rozpisany wydatek jest liczony z pozycji, bez doliczania kwoty całej transakcji drugi raz. Szablony, szkice, płatności cykliczne i kopie JSON zachowują nowe pola; eksport CSV zawiera także klasyfikację pozycji. Limity budżetu nadal dotyczą głównych kategorii.
+- Stare wpisy zachowują dotychczasowe kategorie, kwoty i daty; „Bez podkategorii” oraz „Bez oznaczenia Pati” nie stanowią automatycznej oceny ich treści. Klasyfikację można uzupełnić w edycji transakcji. Aktualizacja nie wykonuje migracji ani masowych zmian istniejących danych.
+
 - Wydatki, wpływy, zwroty i przelewy własne; przelew nie jest nowym dochodem ani kosztem.
 - Kategorie i miesięczne limity. Zakup można rozbić na produkty z ilością, jednostką, końcową kwotą po rabacie i kategorią każdej pozycji. Suma musi zgadzać się z zakupem.
 - Zapamiętywane produkty i usługi ze stałym identyfikatorem, wybór poprzednio kupionej pozycji w wydatku, ponowny zakup z katalogu. Podsumowania miesięczne i całej historii: zakupy, zwroty, koszt netto, ilość, cena średnia i historia każdej pozycji. Katalog jest częścią synchronizowanego snapshotu i kopii JSON.

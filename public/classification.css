@@ -1,0 +1,26 @@
+.subcategory-field { margin-top: 16px; }
+.pati-check { padding: 16px; border: 1px solid #cbd7ce; border-radius: 14px; background: #f0f5ee; align-items: flex-start; }
+.pati-check small { display: block; margin-top: 5px; color: #52675b; line-height: 1.5; }
+.pati-badge { margin-top: 6px; background: #e8eee5; color: #355342; white-space: normal; }
+.product-subcategory { grid-column: 1 / -1; min-width: 0; }
+.product-subcategory select { width: 100%; max-width: 100%; }
+.classification-report { margin: 24px 0; overflow: hidden; }
+.classification-groups { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; padding: 24px; }
+.classification-group { min-width: 0; }
+.classification-group h3 { font-size: 16px; margin: 0 0 12px; }
+.classification-group button { display: flex; justify-content: space-between; gap: 16px; width: 100%; text-align: left; border: 0; border-bottom: 1px solid #e5e9df; padding: 13px 0; color: inherit; background: transparent; cursor: pointer; font: inherit; font-size: 14px; }
+.classification-group button:hover { color: #32634b; }
+.classification-group button span { overflow-wrap: anywhere; min-width: 0; }
+.classification-group button strong { white-space: nowrap; }
+.classification-group button:focus-visible { outline: 2px solid #32634b; outline-offset: 3px; }
+.pati-summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px; background: #edf3e9; border-top: 1px solid #dce6d6; }
+.pati-summary h3 { margin: 0 0 8px; font-size: 18px; }
+.pati-summary strong { font-size: 28px; }
+.pati-summary p,.pati-summary small { color: #52675b; line-height: 1.6; }
+.pati-summary p { margin: 10px 0 4px; }
+@media(max-width:640px){
+ .classification-groups { grid-template-columns: minmax(0,1fr); padding: 18px; gap: 22px; }
+ .pati-summary { flex-direction: column; align-items: stretch; padding: 18px; }
+ .transaction-filters #filter-subcategory,.transaction-filters #filter-pati { width: 100%; min-width: 0; }
+ .pati-summary strong { font-size: clamp(20px,6vw,28px); overflow-wrap: anywhere; }
+}

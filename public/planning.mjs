@@ -1,8 +1,10 @@
+import {validateClassification} from './classification.mjs';
 const dayMs=86400000;
 const validDate=s=>{try{return typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&new Date(s+'T12:00:00Z').toISOString().slice(0,10)===s;}catch{return false;}};
 const monthDate=(year,month,day)=>`${year}-${String(month+1).padStart(2,'0')}-${String(Math.min(day,new Date(Date.UTC(year,month+1,0)).getUTCDate())).padStart(2,'0')}`;
 export function validateRule(r,s,categories){
  if(!r||typeof r.id!=='string'||!r.id||typeof r.name!=='string'||!r.name.trim()||r.name.length>160||!Number.isSafeInteger(r.amount)||r.amount<=0||r.amount>1e12||!validDate(r.start)||!['monthly','yearly','weekly'].includes(r.cadence)||typeof r.active!=='boolean'||!categories.some(c=>c.id===r.category)||!s.accounts.some(a=>a.id===r.account&&a.kind==='bank'))throw Error('Sprawdź nazwę, kwotę, datę, kategorię i konto płatności cyklicznej.');
+ validateClassification(r,{pati:true});
  if(r.settledDates!==undefined&&(!Array.isArray(r.settledDates)||r.settledDates.length>1000||new Set(r.settledDates).size!==r.settledDates.length||r.settledDates.some(d=>!validDate(d))))throw Error('Nieprawidłowe terminy opłacone wcześniej.');
 }
 export function recurringOccurrences(s,month,today){
