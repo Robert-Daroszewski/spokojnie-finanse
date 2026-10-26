@@ -4,6 +4,16 @@ Sekcja **Inwestycje → Dodaj zakup** pozwala wybrać akcję lub ETF po nazwie i
 
 Właściciel wpisuje aktualną liczbę jednostek danej partii, datę zakupu i koszt pozostałych jednostek w PLN, wraz z opłatami. Każdy kolejny zakup to osobna partia. Kwoty i jednostki nie są odczytywane z rachunku brokera; aplikacja nie wymaga hasła ani tokenu XTB i nie wykonuje transakcji.
 
+## Zakup a wolna gotówka
+
+Nowa pozycja domyślnie tworzy jednocześnie zapis `buy` na wybranym koncie maklerskim. Obie zmiany trafiają do tego samego snapshotu i tego samego zapisu ze sprawdzaniem rewizji. Gotówka jest pomniejszana o koszt w PLN, a pozycja ma opcjonalne `purchaseTransactionId`. Zakup nie trafia do wydatków konsumpcyjnych.
+
+Edycja powiązanego kosztu lub daty koryguje tę samą operację, także przy edycji od strony Transakcji. Sama wycena rynkowa nie dotyka gotówki. Usunięcie pozycji nie oznacza sprzedaży i zachowuje zapis kupna; usunięcie operacji kupna odłącza pozycję i przywraca oznaczenie rozliczenia do sprawdzenia. Cofnięcie usuwań odtwarza powiązanie, o ile nadal pasuje do aktualnych danych.
+
+Starsze pozycje nie mają domyślnego pobrania gotówki. Przy ich edycji można dopisać brakujący zakup, powiązać nieprzypisaną operację o pasującej dacie i kwocie albo wybrać „Pozycja historyczna · gotówka już w saldzie” (`cashAlreadyIncluded=true`). Ten ostatni wybór służy tylko pozycjom już uwzględnionym w podanym saldzie. Nie należy odejmować ich kosztu ponownie. Brak wyboru pozostawia widoczne oznaczenie do wyjaśnienia.
+
+Nowy zakup jest blokowany, jeśli zapisane saldo nie wystarcza. Należy uzupełnić prawdziwą wpłatę jako przelew z banku albo zweryfikować saldo początkowe. Podobna niepowiązana operacja wymaga sprawdzenia lub jawnego potwierdzenia osobnego zakupu. Częściowa sprzedaż i pełna historia transakcyjna pozycji pozostają do dalszego rozwoju; edycja jednostek nie zapisuje wpływu ze sprzedaży.
+
 ## Źródła
 
 - Wyszukiwanie, ceny i dzienne szeregi: publiczne interfejsy Yahoo Finance (`query1.finance.yahoo.com/v1/finance/search` i `/v8/finance/chart`). To nieoficjalna integracja bez SLA; interfejs może się zmienić lub ograniczać dostęp. Cena ma rzeczywisty czas notowania. Opóźnienia zależą od giełdy: [informacje Yahoo](https://help.yahoo.com/kb/SLN2310.html).

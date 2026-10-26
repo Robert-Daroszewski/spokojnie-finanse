@@ -1,4 +1,14 @@
 /* A market journal, in the same paper and forest palette as the organizer. */
+.investment-cash-editor{margin-top:22px;padding:20px;background:#f1f4e9;border:1px solid #d7dfcc;border-radius:12px;min-width:0}
+.investment-cash-editor h3{font-size:17px;margin:0 0 18px}
+.investment-cash-preview{display:flex;flex-direction:column;gap:8px;margin:16px 0;font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.investment-cash-preview small{color:#5d6d54;font-size:12px}.investment-cash-preview p{color:#8c4b34;margin:4px 0}
+.investment-cash-status{margin:15px 22px 0;padding:12px 14px;background:#f1f4e9;border-radius:8px;font-size:12px;color:#45603e;line-height:1.6}
+.investment-cash-status.unresolved{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#f9f1e1;color:#795d30}
+.investment-cash-notice{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 24px;border:1px solid #e3d6b6;background:#faf4e8;border-radius:12px;margin:0 0 24px}
+.investment-cash-notice strong{font-size:15px;color:#72562c}.investment-cash-notice p{font-size:13px;line-height:1.7;color:#746344;margin:8px 0 0;max-width:780px}
+.investment-metrics small{display:block;margin-top:7px;font-size:11px;color:#65725c;line-height:1.6}
+@media(max-width:640px){.investment-cash-notice{flex-direction:column;align-items:stretch;padding:18px}.investment-cash-editor{padding:15px}.investment-cash-status{margin-left:14px;margin-right:14px}.investment-cash-editor select{max-width:100%;width:100%;min-width:0}}
 #app .investments-view .heading{align-items:flex-end}
 .investment-heading-actions,.investment-position-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .investment-summary{background:#254a3c;color:#f7f4e9;border:1px solid #284c3d;border-radius:15px;padding:35px 34px;display:flex;justify-content:space-between;align-items:center;gap:35px;position:relative;overflow:hidden}

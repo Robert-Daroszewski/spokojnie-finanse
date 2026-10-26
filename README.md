@@ -33,6 +33,7 @@ Repozytorium zawiera neutralne ustawienia startowe. Kwoty użytkownika, jego his
 - Płatności miesięczne, tygodniowe i roczne. Plan chroni środki na nieopłacone rachunki; zapis faktycznego wydatku wymaga oznaczenia płatności jako opłaconej. Można wskazać istniejący wydatek.
 - Cele i poduszka bez podwójnego liczenia majątku. Nadwyżka na inwestowanie jest orientacyjną wartością po zabezpieczeniu budżetu, rachunków, celów i poduszki.
 - Wyszukiwanie akcji i ETF-ów po nazwie lub symbolu, jednostki ułamkowe i partie zakupów. Ceny Yahoo Finance oraz przeliczenia NBP, wykres każdej pozycji od zakupu i wspólny wykres z linią kosztów. Łączny procent wyniku liczony względem całego kosztu. Ręczne migawki pozostają obsługiwane. Szczegóły: [MARKET_DATA.md](MARKET_DATA.md).
+- Nowy zakup inwestycji domyślnie zapisuje pozycję i operację kupna w jednym snapshotcie, odejmując koszt od gotówki wybranego konta maklerskiego. Podgląd pokazuje saldo przed i po zapisie. Edycja powiązanego kosztu koryguje tę samą operację; odświeżenie notowań nie zmienia gotówki. Starsze pozycje można powiązać z istniejącym zakupem lub potwierdzić jako już uwzględnione w saldzie. Brakujące wpłaty zapisuje się jako przelewy do XTB.
 - Import CSV, pełna kopia JSON, synchronizacja i ochrona przed konfliktem zapisów na dwóch urządzeniach. Tryb przykładowy jest oddzielny od właściwych danych.
 - Manifest aplikacji na telefon, układ mobilny, obsługa ograniczenia animacji i przełącznik dźwięków. Nie ma pełnego trybu pracy offline — lokalne oczekujące zapisy nie zastępują kopii.
 

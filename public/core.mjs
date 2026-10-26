@@ -1,4 +1,5 @@
 import { recurringByCategory, recurringMonthlyAverage, validateRule } from './planning.mjs';
+import {validateInvestmentCash} from './investment-cash.mjs';
 import {validateAutoHolding} from './investing.mjs';
 import {validateCatalogue} from './catalogue.mjs';
 import {validateClassification} from './classification.mjs';
@@ -130,6 +131,7 @@ export function validateState(s){
  if(s.receipts!==undefined){if(!Array.isArray(s.receipts)||s.receipts.length>5000||new Set(s.receipts.map(r=>r.id)).size!==s.receipts.length)fail();for(const r of s.receipts)if(!str(r.id)||!str(r.fileName)||!['image/jpeg','image/png','image/webp','application/pdf','application/json'].includes(r.type)||!Number.isSafeInteger(r.size)||r.size<1||r.size>3000000||typeof r.sha256!=='string'||!/^([a-f0-9]{64})$/.test(r.sha256))fail();}
  if(new Set(s.holdings.map(h=>h.id)).size!==s.holdings.length)fail();
  for(const h of s.holdings){if(!str(h.id)||!str(h.name)||!str(h.ticker)||!positive(h.cost)||!positive(h.value)||!dateInput(h.date)||h.date>TODAY())fail();try{validateAutoHolding(h,TODAY());}catch{fail();}}
+ try{validateInvestmentCash(s);}catch{fail();}
  for(const g of s.goals)if(!str(g.id)||!str(g.name)||!positive(g.target)||g.target===0||!positive(g.saved)||(!dateInput(g.due)&&g.due!==''))fail();
  for(const [k,v]of Object.entries(s.budgets)){if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(k)||!v||typeof v!=='object')fail();for(const [c,n]of Object.entries(v))if(!categories.some(x=>x.id===c)||!positive(n))fail();}
  for(const key of ['income','essential','reserve','irregular','debt','expensiveDebt'])if(!positive(s.settings[key]))fail();
