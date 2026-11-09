@@ -5,7 +5,9 @@ export const subcategories = {
   ['ready','Gotowe posiłki ze sklepu'],
   ['energy','Energetyki'],
   ['snacks','Przekąski i słodycze'],
-  ['dining','Jedzenie na mieście / na wynos']
+  ['dining','Jedzenie na mieście / na wynos'],
+  ['delivery','Jedzenie z dostawą'],
+  ['cafes','Kawiarnie i desery']
  ],
  transport: [
   ['intercity','Kolej międzymiastowa (PKP)'],
@@ -15,10 +17,10 @@ export const subcategories = {
   ['taxi','Taxi i przejazdy na aplikację'],
   ['car','Samochód · paliwo i parking']
  ],
- once: [['home','Dom i codzienne sprawy'],['electronics','Elektronika i akcesoria'],['gifts','Prezenty'],['clothing','Ubrania'],['fines','Mandaty i opłaty dodatkowe']],
+ once: [['home','Dom i codzienne sprawy'],['electronics','Elektronika i akcesoria'],['gifts','Prezenty'],['clothing','Ubrania'],['fines','Mandaty i opłaty dodatkowe'],['barber','Fryzjer i barber'],['hygiene','Kosmetyki i higiena']],
  fixed: [['housing','Mieszkanie i rachunki'],['internet','Internet i telefon'],['subscriptions','Subskrypcje']],
- health: [['medicines','Leki i apteka'],['supplements','Suplementy'],['care','Wizyty i badania']],
- fun: [['outings','Wyjścia i rozrywka'],['alcohol','Alkohol'],['hobbies','Hobby']],
+ health: [['medicines','Leki i apteka'],['supplements','Suplementy'],['care','Wizyty i badania'],['fitness','Siłownia i sport']],
+ fun: [['outings','Wyjścia i rozrywka'],['alcohol','Alkohol'],['hobbies','Hobby'],['cinema','Kino']],
  learning: [['books','Książki'],['courses','Kursy i nauka']],
  debt: [['instalments','Raty'],['repayment','Spłaty zadłużenia']],
  other: []

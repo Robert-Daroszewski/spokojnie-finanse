@@ -5,3 +5,9 @@ export function niceAxis(minimum,maximum,count=5){
  return {min,max,step,decimals,ticks};
 }
 export function chartStatistics(points){const valid=points.filter(p=>p.value!==null&&Number.isFinite(p.value));if(!valid.length)return{min:null,max:null,change:null,gaps:points.length};return{min:Math.min(...valid.map(p=>p.value)),max:Math.max(...valid.map(p=>p.value)),change:valid[0].value?(valid.at(-1).value-valid[0].value)/valid[0].value*100:null,gaps:points.length-valid.length};}
+export function detailAxis(minimum,maximum,count=5){
+ const spread=maximum-minimum,padding=Math.max(spread*.09,spread===0?Math.abs(maximum)*.005:0,1e-10);
+ const min=Math.max(0,minimum-padding),max=maximum+padding,reference=niceAxis(min,max,count);
+ const ticks=reference.ticks.filter(v=>v>=min&&v<=max);
+ return {...reference,min,max,ticks};
+}
