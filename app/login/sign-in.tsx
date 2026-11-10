@@ -32,31 +32,11 @@ export default function Login({configured}:{configured:boolean}){
      <h1 id="entry-title">Twoje finanse.<br/><em>Na spokojnie.</em></h1>
      <p className="entry-intro">Codzienne wydatki i większe plany.<br/>Wreszcie w jednym, spokojnym miejscu.</p>
 
-     <div className="entry-art" aria-hidden="true">
-      <svg className="entry-landscape" viewBox="0 0 580 236" fill="none">
-       <defs><clipPath id="entry-landscape-clip"><path d="M0 0h580v236H0z"/></clipPath></defs>
-       <g clipPath="url(#entry-landscape-clip)">
-        <path className="entry-art-rule" d="M0 205.5h580"/>
-        <path className="entry-art-contour contour-one" d="M60 205a178 178 0 0 1 356 0"/>
-        <path className="entry-art-contour contour-two" d="M86 205a152 152 0 0 1 304 0"/>
-        <path className="entry-art-contour contour-three" d="M112 205a126 126 0 0 1 252 0"/>
-        <path className="entry-art-contour contour-four" d="M138 205a100 100 0 0 1 200 0"/>
-        <path className="entry-art-contour contour-five" d="M164 205a74 74 0 0 1 148 0"/>
-        <path className="entry-art-core" d="M190 205a48 48 0 0 1 96 0z"/>
-        <path className="entry-art-vertical" d="M238 18v213"/>
-        <path className="entry-art-horizon" d="M24 181h430M24 193h430M24 217h430"/>
-        <path className="entry-art-ray" d="m238 205 130-130"/>
-        <circle className="entry-art-orbit" cx="368" cy="75" r="7"/>
-        <circle className="entry-art-satellite" cx="471" cy="130" r="27"/>
-        <path className="entry-art-satellite-mark" d="M471 119v22m-11-11h22"/>
-        <path className="entry-art-caption-rule" d="M447 181h53"/>
-       </g>
-      </svg>
-      <div className="entry-art-caption"><span>Równowaga, na co dzień.</span><span className="entry-art-coordinate">SP / 01</span></div>
-     </div>
+     <div className="entry-art" data-glass="sculpture" aria-hidden="true"><div className="entry-art-halo"/><img className="entry-sculpture" src="/glass-sculpture.svg" width="420" height="320" alt="" draggable="false"/><span className="art-coordinate">S / 01</span></div>
+     <div className="entry-capabilities"><span>Codzienne wydatki</span><span>Plany i cele</span><span>Portfel inwestycji</span></div>
     </section>
 
-    <section className="entry-access" aria-labelledby="entry-access-title">
+    <section data-glass="access" className="entry-access" aria-labelledby="entry-access-title">
      <div className="entry-access-heading"><span className="entry-section-number">TWOJA PRZESTRZEŃ</span><svg className="entry-lock" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg></div>
      <h2 id="entry-access-title">{recovery?'Ustaw swoje hasło.':'Witaj u siebie.'}</h2>
      <p className="entry-access-intro">{recovery?'Jednorazowy link pozwoli Ci ustawić pierwsze hasło albo odzyskać dostęp do konta.':'Wróć do swoich wydatków, planów i oszczędności.'}</p>

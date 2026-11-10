@@ -17,7 +17,7 @@ export default function PasswordForm(){
  }
  return <main className="app-login password-page"><div className="entry-shell">
   <header className="entry-header"><a className="entry-brand" href="/">spokojnie<span>.</span></a><span className="entry-header-note">Twoja prywatna przestrzeń</span><AppearanceControls/></header>
-  <section className="entry-access password-access" aria-labelledby="password-title">
+  <section data-glass="access" className="entry-access password-access" aria-labelledby="password-title">
    <span className="entry-section-number">DOSTĘP DO KONTA</span><h1 id="password-title">Ustaw swoje hasło.</h1>
    <p className="entry-access-intro">Przy kolejnym logowaniu wystarczy e-mail i hasło.<br/>Bez potwierdzania każdego wejścia w poczcie.</p>
    <form className="entry-form" onSubmit={save} aria-busy={busy}>
