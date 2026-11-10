@@ -22,24 +22,18 @@ export default function Login({configured}:{configured:boolean}){
   <div className="entry-shell">
    <header className="entry-header">
     <span className="entry-brand"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 21c8 0 4-13 12-13s4 13 12 13" strokeLinecap="round"/></svg>spokojnie<span>.</span></span>
-    <span className="entry-header-note"><span/> Finanse po Twojemu</span>
     <AppearanceControls/>
    </header>
 
    <div className="entry-body">
     <section className="entry-story" aria-labelledby="entry-title">
-     <span className="entry-eyebrow">Małe kroki. Dobre decyzje.</span>
      <h1 id="entry-title">Twoje finanse.<br/><em>Na spokojnie.</em></h1>
-     <p className="entry-intro">Codzienne wydatki i większe plany.<br/>Wreszcie w jednym, spokojnym miejscu.</p>
-
-     <div className="entry-art" data-glass="sculpture" aria-hidden="true"><div className="entry-art-halo"/><img className="entry-sculpture" src="/glass-sculpture.svg" width="420" height="320" alt="" draggable="false"/><span className="art-coordinate">S / 01</span></div>
-     <div className="entry-capabilities"><span>Codzienne wydatki</span><span>Plany i cele</span><span>Portfel inwestycji</span></div>
+     <p className="entry-intro">Wydatki, budżet i inwestycje w jednym miejscu.</p>
     </section>
 
-    <section data-glass="access" className="entry-access" aria-labelledby="entry-access-title">
-     <div className="entry-access-heading"><span className="entry-section-number">TWOJA PRZESTRZEŃ</span><svg className="entry-lock" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg></div>
-     <h2 id="entry-access-title">{recovery?'Ustaw swoje hasło.':'Witaj u siebie.'}</h2>
-     <p className="entry-access-intro">{recovery?'Jednorazowy link pozwoli Ci ustawić pierwsze hasło albo odzyskać dostęp do konta.':'Wróć do swoich wydatków, planów i oszczędności.'}</p>
+    <section data-lens="access" data-glass="access" className="entry-access" aria-labelledby="entry-access-title">
+     <h2 id="entry-access-title">{recovery?'Ustaw swoje hasło.':'Zaloguj się'}</h2>
+     <p className="entry-access-intro">{recovery?'Jednorazowy link pozwoli Ci ustawić pierwsze hasło albo odzyskać dostęp do konta.':'Użyj adresu e-mail i hasła do swojego konta.'}</p>
      {configured?<form className="entry-form" onSubmit={signIn} aria-busy={busy}>
       <label htmlFor="entry-email">Twój adres e-mail</label>
       <div className="entry-input-wrap"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg><input id="entry-email" type="email" value={email} onChange={e=>setEmail(e.target.value)} autoComplete="email" inputMode="email" spellCheck={false} placeholder="twoj@email.pl" required disabled={busy}/></div>
@@ -52,7 +46,6 @@ export default function Login({configured}:{configured:boolean}){
     </section>
    </div>
 
-   <footer className="entry-footer"><span>Mniej chaosu. Więcej spokoju.</span><span className="entry-phone-note"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 17h2"/></svg>Przy Tobie. Także na telefonie.</span><span className="entry-footer-mark" aria-hidden="true">S / F</span></footer>
   </div>
  </main>;
 }

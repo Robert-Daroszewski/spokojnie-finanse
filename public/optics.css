@@ -1,0 +1,292 @@
+/* WebGL draws the lenses behind the interface. Each surface also has a CSS fallback. */
+html[data-theme] {
+  --optical-fill: linear-gradient(145deg,#f6faff72,#e4edfc38);
+  --optical-access: linear-gradient(145deg,#f9fbffbd,#f1f5fca1);
+  --optical-data: linear-gradient(145deg,#fbfdfff0,#f0f5fbea);
+  --optical-hero: linear-gradient(90deg,#061126 3%,#0a1732cc 50%,#0b18351a 100%);
+}
+
+html[data-theme=dark] {
+  --optical-fill: linear-gradient(145deg,#131e3675,#12182d5c);
+  --optical-access: linear-gradient(145deg,#101b32b8,#111b32ae);
+  --optical-data: linear-gradient(145deg,#192338f2,#111a2cf5);
+}
+
+html[data-theme] .ambient-scene {
+  background: linear-gradient(180deg,#dbe8fa0d 30%,#dbe5f58f 100%),
+    url('/glass-day.webp') 59% center / cover no-repeat var(--canvas);
+}
+
+html[data-theme=dark] .ambient-scene {
+  background: linear-gradient(180deg,#0a112231 25%,#090f20a8 100%),
+    url('/glass-night.webp') 59% center / cover no-repeat var(--canvas);
+}
+
+.optical-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+
+html[data-optics=active] .optical-scene {
+  visibility: visible;
+}
+
+html[data-theme] #app .layout .hero {
+  background: var(--optical-hero), url('/glass-night.webp') 63% 60% / cover no-repeat #0c1530;
+  min-height: 270px;
+  padding-block: 27px;
+  border-color: #e2edff8c;
+  box-shadow: inset 0 1px 0 #f0f8ff87, inset 0 -2px 0 #91aafa30, 0 22px 42px -17px #0b1a56a3;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme] #app .layout .hero .eyebrow {
+  font-size: 10px;
+}
+
+html[data-theme] #app .layout .hero-bottom {
+  max-width: 395px;
+}
+
+html[data-theme] #app .layout .accounts-panel {
+  overflow: hidden;
+}
+
+html[data-theme] #app .layout .accounts-panel .panel-head {
+  padding-block: 21px 13px;
+}
+
+html[data-theme] #app .layout .account-mini {
+  padding-block: 7px;
+}
+
+html[data-theme] #app .layout .overview .stats {
+  gap: 0;
+  overflow: hidden;
+  background: var(--optical-data);
+  border: 1px solid var(--glass-edge);
+  border-radius: 23px;
+  box-shadow: inset 0 1px 0 var(--glass-inner),var(--glass-shadow);
+}
+
+html[data-theme] #app .layout .overview .stat {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding-block: 16px;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme] #app .layout .overview .stat + .stat {
+  border-inline-start: 1px solid var(--border);
+}
+
+html[data-theme] #app .layout .overview .stat-meter {
+  margin-top: 10px;
+}
+
+html[data-theme] #app .layout .month-section-label {
+  color: var(--text);
+}
+
+html[data-theme] #app .layout :is(.overview-activity,.overview-plan) > .panel,
+html[data-theme] #app .layout .investment-portfolio-chart {
+  background: var(--optical-data);
+}
+
+html[data-theme][data-optics=active] #app .layout :is(.accounts-panel,.sidebar,.top-actions,.investment-summary) {
+  background: var(--optical-fill);
+  border-color: var(--glass-edge);
+  box-shadow: inset 0 1px 0 var(--glass-inner), 0 12px 29px #0d215b26;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme][data-optics=active] #app .layout .hero {
+  background: linear-gradient(90deg,#050d248c 3%,#0c183459 54%,#08182d08 100%);
+}
+
+html[data-theme][data-optics=active] [data-lens]::before {
+  opacity: .30;
+}
+
+html[data-optics=active] :is(#view.view-enter,.entry-access) {
+  animation: none;
+}
+
+/* A contrast wash sits behind the welcome copy and leaves the light visible around it. */
+html[data-theme] .app-login {
+  background: radial-gradient(ellipse at 14% 41%,#e6efffb0,transparent 64%);
+}
+
+html[data-theme=dark] .app-login {
+  background: radial-gradient(ellipse at 14% 41%,#071122a1,transparent 65%);
+}
+
+html[data-theme] .entry-shell {
+  max-width: 1090px;
+}
+
+html[data-theme] .entry-header {
+  min-height: 86px;
+  border-bottom: 0;
+}
+
+html[data-theme] .entry-body {
+  flex: 1;
+  gap: clamp(35px,6vw,90px);
+  padding: 42px 0 10vh;
+}
+
+html[data-theme] .entry-story h1 {
+  font-size: clamp(48px,6.1vw,88px);
+  font-weight: 700;
+  letter-spacing: -.065em;
+  line-height: 1.01;
+}
+
+html[data-theme] .entry-story h1 em {
+  font-weight: 450;
+}
+
+html[data-theme] .entry-intro {
+  color: var(--text);
+  font-size: 14px;
+}
+
+html[data-theme] .entry-access {
+  background: var(--optical-access);
+  box-shadow: inset 0 1px 0 var(--glass-inner),0 26px 62px -16px #0d215b64;
+}
+
+html[data-theme][data-optics=active] .entry-access {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme] .entry-access-intro {
+  color: var(--secondary);
+}
+
+@media (min-width: 1101px) {
+  html[data-theme] #app .layout .hero-grid {
+    grid-template-columns: minmax(0,1.50fr) minmax(0,1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  html[data-theme] #app .layout .topbar > div:first-child {
+    max-width: 106px;
+  }
+
+  html[data-theme] #app .layout .topbar-date strong {
+    font-size: 10px;
+  }
+
+  html[data-theme] #app .layout .topbar-context .cloud-label {
+    font-size: 8.5px;
+  }
+
+  html[data-theme] #app .layout .sidebar .nav button {
+    font-size: 9px;
+  }
+
+  html[data-theme][data-optics=active] #app .layout .sidebar {
+    background: linear-gradient(155deg,#f4f9ffd6,#dbe6fcbf);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  html[data-theme=dark][data-optics=active] #app .layout .sidebar {
+    background: linear-gradient(155deg,#17233ad9,#141d30de);
+  }
+
+  html[data-theme] #app .layout .hero {
+    min-height: 238px;
+    padding-block: 22px;
+  }
+
+  html[data-theme] #app .layout .hero-number {
+    margin-top: 20px;
+  }
+
+  html[data-theme] #app .layout .hero-bottom {
+    margin-top: 21px;
+    padding-top: 15px;
+  }
+
+  html[data-theme] #app .layout .overview .stat {
+    padding: 9px 17px;
+  }
+
+  html[data-theme] #app .layout .overview .stat > div:first-child {
+    row-gap: 3px;
+  }
+
+  html[data-theme] #app .layout .overview .month-section-label {
+    margin-bottom: 5px;
+  }
+
+  html[data-theme] #app .layout .overview .stat + .stat {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--border);
+  }
+
+  html[data-theme] #app .layout .overview .stat-meter {
+    margin-top: 4px;
+  }
+
+  html[data-theme] .entry-header {
+    min-height: 72px;
+  }
+
+  html[data-theme] .entry-body {
+    flex: initial;
+    gap: 0;
+    padding: 16px 0 32px;
+  }
+
+  html[data-theme] .entry-story h1 {
+    font-size: clamp(43px,12vw,64px);
+  }
+
+  html[data-theme] .entry-intro {
+    font-size: 12px;
+    margin-top: 15px;
+  }
+
+  html[data-theme] .entry-access {
+    margin-top: 25px;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  html[data-theme] .ambient-scene,
+  html[data-theme] .app-login {
+    background: var(--canvas);
+  }
+
+  .optical-scene {
+    display: none;
+  }
+
+  html[data-theme] #app .layout .hero {
+    background: var(--hero);
+    box-shadow: none;
+  }
+
+  html[data-theme] #app .layout .overview .stats,
+  html[data-theme] #app .layout .investment-portfolio-chart,
+  html[data-theme] #app .layout :is(.overview-activity,.overview-plan) > .panel,
+  html[data-theme] .entry-access {
+    background: var(--surface);
+    border-color: var(--border);
+    box-shadow: none;
+  }
+}
