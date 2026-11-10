@@ -1,0 +1,186 @@
+/* Liquid glass material. Financial content and controls keep their own contrast. */
+:root{
+ --glass-fill:linear-gradient(145deg,#ffffffc7,#ffffff85);
+ --glass-edge:#ffffffd9;
+ --glass-inset:#ffffffa3;
+ --glass-shadow:0 10px 32px #3144600c,0 2px 5px #31446005;
+ --glass-control:#ffffffb8;
+ --glass-control-hover:#ffffffeb;
+ --glass-wash:#ffffff45;
+ --glass-muted:#e7edf35c;
+ --glass-blur:blur(22px) saturate(135%);
+ --hero-sub:#e0ede2;
+}
+html[data-theme=dark]{
+ --glass-fill:linear-gradient(145deg,#363c48b0,#22262f99);
+ --glass-edge:#c4ced92e;
+ --glass-inset:#f4f7ff24;
+ --glass-shadow:0 12px 35px #00000020,0 2px 5px #0000000f;
+ --glass-control:#5c65722b;
+ --glass-control-hover:#8995a13d;
+ --glass-wash:#ffffff07;
+ --glass-muted:#bfc9df0b;
+ --glass-blur:blur(22px) saturate(115%);
+ --hero-sub:#cbd0d9;
+}
+
+/* Light behind the glass gives it depth without covering the data. */
+html[data-theme] .ambient-scene{background:radial-gradient(ellipse at 6% 12%,#dce9f48c,transparent 52%),radial-gradient(ellipse at 92% 50%,#e2daee80,transparent 55%),var(--canvas)}
+html[data-theme] .ambient-orb-cyan{background:radial-gradient(circle,#abd2e957 0,#b6d8e52e 34%,transparent 66%);left:-20vmax;top:-29vmax}
+html[data-theme] .ambient-orb-violet{background:radial-gradient(circle,#c9b4df61 0,#d6c7e52e 36%,transparent 66%);right:-25vmax;top:15vh}
+html[data-theme] .ambient-mesh{opacity:.09;background-image:radial-gradient(#6b7d9929 .65px,transparent .65px)}
+html[data-theme=dark] .ambient-scene{background:radial-gradient(ellipse at 5% 10%,#34496238,transparent 52%),radial-gradient(ellipse at 90% 60%,#51415e29,transparent 56%),var(--canvas)}
+html[data-theme=dark] .ambient-orb-cyan{background:radial-gradient(circle,#57718e40 0,#4a617124 36%,transparent 66%)}
+html[data-theme=dark] .ambient-orb-violet{background:radial-gradient(circle,#897aa338 0,#6c608322 36%,transparent 66%)}
+
+/* A single glass layer per surface: no blur on rows or nested content. */
+html[data-theme] #app .layout :is(.panel,.stat,.account,.check-card,.template-card),
+html[data-theme] #app .layout .report-metrics article,
+html[data-theme] #app .layout .investment-summary,
+html[data-theme] #app .layout .investment-metrics>div,
+html[data-theme] #app .layout .product-metrics>div,
+html[data-theme] .entry-access{
+ background:var(--glass-fill);
+ border:1px solid var(--glass-edge);
+ box-shadow:inset 0 1px 0 var(--glass-inset),inset 1px 0 0 #ffffff12,inset 0 -1px 0 #21324b09,var(--glass-shadow);
+ -webkit-backdrop-filter:var(--glass-blur);
+ backdrop-filter:var(--glass-blur);
+ border-radius:23px;
+}
+html[data-theme] #app .layout .panel-head{border-color:var(--border)}
+html[data-theme] #app .layout :is(.panel-head,.panel-body,.accounts-list){background:transparent}
+html[data-theme] #app .layout :is(.workspace-digest,.filterbar,.tx-filter-summary,.chart-range-stats,.feature-summary,.report-comparison,.receipt-intro,.reconciliation-intro,.reconciliation-reading){background:var(--glass-muted)}
+html[data-theme] #app .layout :is(.tx-row,.account-mini,.upcoming-row,.receipt-row){border-color:var(--border)}
+html[data-theme] #app .layout :is(.tx-row,.table-wrap tr):hover{background:var(--glass-wash)}
+html[data-theme] #app .layout .table-wrap th{background:var(--glass-muted)}
+html[data-theme] #app .layout .table-wrap td{background:transparent}
+html[data-theme] #app .layout .guide-details p{color:var(--secondary)}
+html[data-theme] #app .layout .panel p{color:var(--secondary)}
+html[data-theme] #app .layout .overview-plan>.upcoming-widget{background:var(--glass-fill)}
+html[data-theme] #app .layout .investment-overall-profit,
+html[data-theme] #app .layout .report-metrics .report-result{background:var(--accent-soft);border-color:var(--glass-edge)}
+html[data-theme] #app .layout .hero{
+ background:radial-gradient(ellipse at 92% 0,#bbd5bf17,transparent 63%),linear-gradient(135deg,#275749ed,#174538f0);
+ border:1px solid #b5d7c45e;border-radius:27px;
+ box-shadow:inset 0 1px 0 #ffffff3b,inset 1px 0 0 #ffffff12,0 14px 34px #173c3514;
+ -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+}
+html[data-theme=dark] #app .layout .hero{
+ background:radial-gradient(ellipse at 90% 0,#a4b6d11a,transparent 65%),linear-gradient(135deg,#424b5bb8,#292e3ac7);
+ border-color:#c4ced938;box-shadow:inset 0 1px 0 #f4f7ff3b,inset 1px 0 0 #ffffff0d,0 14px 36px #0000001f;
+}
+html[data-theme] #app .layout .hero-decoration{opacity:.65}
+html[data-theme] #app .layout .hero-bottom{border-color:#d1e0d82b}
+html[data-theme=dark] #app .layout .hero-bottom{border-color:#b4bfce2e}
+html[data-theme] #app .layout .balance-tag{background:#ffffff0e;border-color:#e2ece538;color:var(--hero-text);box-shadow:inset 0 1px 0 #ffffff15}
+
+/* Polished navigation and controls; the active route stays easy to recognise. */
+html[data-theme] #app .layout .sidebar{
+ background:var(--glass-fill);border:1px solid var(--glass-edge);
+ box-shadow:inset 0 1px 0 var(--glass-inset),inset 1px 0 0 #ffffff12,var(--glass-shadow);
+ -webkit-backdrop-filter:blur(28px) saturate(130%);backdrop-filter:blur(28px) saturate(130%);
+}
+html[data-theme] #app .layout .sidebar .nav button{border-radius:13px}
+html[data-theme] #app .layout .sidebar .nav button.active{
+ background:linear-gradient(135deg,#e1ece5e8,#dbe7e0a8);color:#285440;
+ box-shadow:inset 0 1px 0 #ffffffb3,inset 0 0 0 1px #b9cabe50,0 3px 9px #31503b08;
+}
+html[data-theme=dark] #app .layout .sidebar .nav button.active{
+ background:linear-gradient(135deg,#829b8a3d,#526f5d30);color:var(--accent);
+ box-shadow:inset 0 1px 0 #e6f0ea24,inset 0 0 0 1px #b6cdbd1c,0 3px 10px #00000010;
+}
+html[data-theme] #app .layout .sidebar .nav button:hover:not(.active){background:var(--glass-wash)}
+html[data-theme] .appearance-button,html[data-theme] #app .layout .sound-button,
+html[data-theme] #app .layout .button,html[data-theme] #modal .button{
+ background:var(--glass-control);border-color:var(--glass-edge);border-radius:999px;
+ box-shadow:inset 0 1px 0 var(--glass-inset),0 3px 10px #23334b08;
+ transition:background .2s,box-shadow .2s,border-color .2s;
+}
+html[data-theme] .appearance-button,html[data-theme] #app .layout .sound-button{border-radius:50%}
+html[data-theme] .appearance-button:hover,html[data-theme] #app .layout .sound-button:hover,
+html[data-theme] #app .layout .button:hover,html[data-theme] #modal .button:hover{
+ background:var(--glass-control-hover);border-color:var(--glass-edge);
+ box-shadow:inset 0 1px 0 var(--glass-inset),0 5px 13px #23334b0d;
+}
+html[data-theme] #app .layout .button.primary,html[data-theme] #modal .button.primary,
+html[data-theme] .entry-submit{
+ background:linear-gradient(155deg,#ffffff1f,transparent 55%),var(--accent);color:var(--accent-text);border-color:#ffffff2e;
+ box-shadow:inset 0 1px 0 #ffffff52,inset 0 -1px 0 #0000000d,0 4px 14px #1a3b2f12;
+}
+html[data-theme] #app .layout .button.primary:hover,html[data-theme] #modal .button.primary:hover,
+html[data-theme] .entry-submit:hover:not(:disabled){background:linear-gradient(155deg,#ffffff29,transparent 55%),var(--accent-hover);color:var(--accent-text)}
+html[data-theme] #app .layout .button.ghost,html[data-theme] #modal .button.ghost{background:transparent;border-color:transparent;box-shadow:none}
+html[data-theme] #app .layout .button.ghost:hover,html[data-theme] #modal .button.ghost:hover{background:var(--glass-wash)}
+html[data-theme] #app .layout .investment-ranges{background:var(--glass-muted);border-color:var(--glass-edge);border-radius:999px;box-shadow:inset 0 1px 0 #ffffff15}
+html[data-theme] #app .layout .investment-ranges button{border-radius:999px}
+html[data-theme] #app .layout .investment-ranges button[aria-pressed=true]{background:var(--glass-control-hover);box-shadow:inset 0 1px 0 var(--glass-inset),0 2px 6px #0000000d}
+html[data-theme] #app .layout .chart-scale-toggle{background:var(--glass-control);border-color:var(--glass-edge);border-radius:999px}
+html[data-theme] #app .layout :is(input,select,textarea),html[data-theme] #modal :is(input,select,textarea),
+html[data-theme] .entry-input-wrap>input{background:var(--glass-control);border-color:var(--border);border-radius:12px;box-shadow:inset 0 1px 2px #20314b05}
+html[data-theme] #app .layout .month-select{border-radius:999px;box-shadow:inset 0 1px 0 var(--glass-inset);background:var(--glass-control);border-color:var(--glass-edge)}
+html[data-theme] #app .layout :is(.stat-icon,.bank-logo,.cat-icon,.due-day){box-shadow:inset 0 1px 0 #ffffff36}
+
+/* Only the dialog blurs its backdrop; its inner fields never stack blurs. */
+html[data-theme] #modal{
+ background:var(--glass-fill);border:1px solid var(--glass-edge);border-radius:27px;
+ box-shadow:inset 0 1px 0 var(--glass-inset),inset 1px 0 0 #ffffff12,0 28px 100px #10203140;
+ -webkit-backdrop-filter:blur(30px) saturate(125%);backdrop-filter:blur(30px) saturate(125%);
+}
+html[data-theme] #modal::backdrop{background:#16212d5c;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+html[data-theme=dark] #modal::backdrop{background:#070b135e}
+html[data-theme] #modal :is(.modal-head,.modal-body){background:transparent}
+html[data-theme] #modal :is(.pati-check,.items-editor,.investment-cash-editor,.reconciliation-reading){background:var(--glass-muted);border-color:var(--border);border-radius:15px}
+html[data-theme] #modal .segmented button{border-radius:999px;background:var(--glass-muted)}
+html[data-theme] #modal .segmented button.active{background:var(--accent-soft);box-shadow:inset 0 1px 0 #ffffff26}
+html[data-theme] #modal .quick-cats button{border-radius:999px;background:var(--glass-control)}
+html[data-theme] #modal input.amount-input{background:var(--glass-muted);border-radius:17px}
+html[data-theme] #modal .navigation-grid>button{background:var(--glass-control);border-color:var(--glass-edge);border-radius:15px;box-shadow:inset 0 1px 0 #ffffff20}
+html[data-theme] .entry-access{border-radius:29px}
+html[data-theme] .entry-header .appearance-button{background:var(--glass-control);border-color:var(--glass-edge)}
+html[data-theme] .entry-submit{border-radius:999px}
+html[data-theme] .entry-private-note{border-color:var(--border)}
+
+@media(min-width:721px){
+ html[data-theme] #app .layout .topbar{background:var(--glass-fill);border:1px solid var(--glass-edge);border-radius:22px;padding:0 15px;margin-top:14px;height:58px;box-shadow:inset 0 1px 0 var(--glass-inset),var(--glass-shadow);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur)}
+}
+@media(min-width:1101px){
+ html[data-theme] #app .layout .sidebar{inset:10px auto 10px 10px;width:212px;border-radius:25px;padding:25px 12px 16px}
+}
+@media(max-width:720px){
+ :root{--glass-blur:blur(12px) saturate(120%)}
+ html[data-theme=dark]{--glass-blur:blur(12px) saturate(110%)}
+ html[data-theme] #app .layout :is(.panel,.stat,.account,.check-card,.template-card),
+ html[data-theme] #app .layout .report-metrics article,
+ html[data-theme] #app .layout .investment-metrics>div{border-radius:21px}
+ html[data-theme] #app .layout .hero{border-radius:25px}
+ html[data-theme] #app .layout .sidebar{border-radius:25px;-webkit-backdrop-filter:blur(18px) saturate(125%);backdrop-filter:blur(18px) saturate(125%);box-shadow:inset 0 1px 0 var(--glass-inset),0 8px 30px #1523381f}
+ html[data-theme] #app .layout .sidebar .nav button{border-radius:17px}
+ html[data-theme] #app .layout .topbar{background:transparent;box-shadow:none}
+ html[data-theme] #modal{border-radius:24px;-webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%)}
+ html[data-theme] .entry-access{border-radius:25px}
+}
+
+/* Opaque, readable fallback for device preferences and browsers without blur. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ html[data-theme] #app .layout :is(.panel,.stat,.account,.sidebar,.topbar,.investment-summary,.check-card,.template-card),
+ html[data-theme] #app .layout .report-metrics article,
+ html[data-theme] #app .layout .investment-metrics>div,
+ html[data-theme] #app .layout .product-metrics>div,
+ html[data-theme] .entry-access,html[data-theme] #modal{background:var(--surface);border-color:var(--border)}
+ html[data-theme] #app .layout .hero{background:var(--hero)}
+}
+@media(prefers-reduced-transparency:reduce),(forced-colors:active){
+ html[data-theme] .ambient-orb,html[data-theme] .ambient-mesh{display:none}
+ html[data-theme] .ambient-scene{background:var(--canvas)}
+ html[data-theme] #app .layout :is(.panel,.stat,.account,.sidebar,.topbar,.investment-summary,.check-card,.template-card),
+ html[data-theme] #app .layout .report-metrics article,
+ html[data-theme] #app .layout .investment-metrics>div,
+ html[data-theme] #app .layout .product-metrics>div,
+ html[data-theme] .entry-access,html[data-theme] #modal{background:var(--surface);border-color:var(--border);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+ html[data-theme] #app .layout .hero{background:var(--hero);-webkit-backdrop-filter:none;backdrop-filter:none}
+ html[data-theme] #modal::backdrop{-webkit-backdrop-filter:none;backdrop-filter:none}
+ html[data-theme] #app .layout .button,html[data-theme] #modal .button,
+ html[data-theme] .appearance-button,html[data-theme] #app .layout .sound-button{background:var(--surface);border-color:var(--border);box-shadow:none}
+ html[data-theme] #app .layout .button.primary,html[data-theme] #modal .button.primary,html[data-theme] .entry-submit{background:var(--accent)}
+}
+@media(prefers-reduced-motion:reduce){html[data-theme] .appearance-button,html[data-theme] #app .layout .button,html[data-theme] #modal .button{transition:none}}
