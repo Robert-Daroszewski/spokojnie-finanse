@@ -29,7 +29,7 @@ export default function Login({configured}:{configured:boolean}){
    <div className="entry-body">
     <section className="entry-story" aria-labelledby="entry-title">
      <span className="entry-eyebrow">Małe kroki. Dobre decyzje.</span>
-     <h1 id="entry-title">Twoje pieniądze.<br/><em>Twoje tempo.</em></h1>
+     <h1 id="entry-title">Twoje finanse.<br/><em>Na spokojnie.</em></h1>
      <p className="entry-intro">Codzienne wydatki i większe plany.<br/>Wreszcie w jednym, spokojnym miejscu.</p>
 
      <div className="entry-art" aria-hidden="true">
@@ -57,9 +57,9 @@ export default function Login({configured}:{configured:boolean}){
     </section>
 
     <section className="entry-access" aria-labelledby="entry-access-title">
-     <div className="entry-access-heading"><span className="entry-section-number">01 / TWOJA PRZESTRZEŃ</span><svg className="entry-lock" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg></div>
+     <div className="entry-access-heading"><span className="entry-section-number">TWOJA PRZESTRZEŃ</span><svg className="entry-lock" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg></div>
      <h2 id="entry-access-title">{recovery?'Ustaw swoje hasło.':'Witaj u siebie.'}</h2>
-     <p className="entry-access-intro">{recovery?'Jednorazowy link pozwoli Ci ustawić pierwsze hasło albo odzyskać dostęp do konta.':'Zaloguj się e-mailem i hasłem. Bez potwierdzania każdego wejścia w poczcie.'}</p>
+     <p className="entry-access-intro">{recovery?'Jednorazowy link pozwoli Ci ustawić pierwsze hasło albo odzyskać dostęp do konta.':'Wróć do swoich wydatków, planów i oszczędności.'}</p>
      {configured?<form className="entry-form" onSubmit={signIn} aria-busy={busy}>
       <label htmlFor="entry-email">Twój adres e-mail</label>
       <div className="entry-input-wrap"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg><input id="entry-email" type="email" value={email} onChange={e=>setEmail(e.target.value)} autoComplete="email" inputMode="email" spellCheck={false} placeholder="twoj@email.pl" required disabled={busy}/></div>
