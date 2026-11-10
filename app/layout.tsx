@@ -16,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl">
-      <head><link rel="stylesheet" href="/style.css" /><link rel="stylesheet" href="/refined.css" /><link rel="stylesheet" href="/motion.css" /><link rel="stylesheet" href="/atmosphere.css" /><link rel="stylesheet" href="/polish.css" /><link rel="stylesheet" href="/login.css" /><link rel="stylesheet" href="/investments.css" /><link rel="stylesheet" href="/details.css" /><link rel="stylesheet" href="/workspace.css" /><link rel="stylesheet" href="/classification.css" /><link rel="stylesheet" href="/studio.css" /><link rel="manifest" href="/manifest.webmanifest" /><link rel="apple-touch-icon" href="/icon-192.png" /><meta name="theme-color" content="#14213a" /><meta name="apple-mobile-web-app-capable" content="yes" /></head>
+    <html lang="pl" suppressHydrationWarning>
+      <head><script src="/appearance.js" /><link rel="stylesheet" href="/style.css" /><link rel="stylesheet" href="/refined.css" /><link rel="stylesheet" href="/motion.css" /><link rel="stylesheet" href="/atmosphere.css" /><link rel="stylesheet" href="/polish.css" /><link rel="stylesheet" href="/login.css" /><link rel="stylesheet" href="/investments.css" /><link rel="stylesheet" href="/details.css" /><link rel="stylesheet" href="/workspace.css" /><link rel="stylesheet" href="/classification.css" /><link rel="stylesheet" href="/studio.css" /><link rel="stylesheet" href="/aurora.css" /><link rel="manifest" href="/manifest.webmanifest" /><link rel="apple-touch-icon" href="/icon-192.png" /><meta name="theme-color" content="#14213a" /><meta name="apple-mobile-web-app-capable" content="yes" /></head>
       <body><Ambient />{children}</body>
     </html>
   );

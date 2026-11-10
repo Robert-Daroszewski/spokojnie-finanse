@@ -1,0 +1,253 @@
+/* Aurora: low-cost moving light, tactile surfaces and a complete night palette. */
+.appearance-controls{display:inline-flex;align-items:center;gap:5px;flex-shrink:0}
+.appearance-button{width:36px;height:36px;min-height:36px;border:1px solid #d5e0ed;border-radius:12px;background:#ffffffc9;color:#3d5d85;display:inline-grid;place-items:center;padding:8px;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.appearance-button:hover{background:#eaf2fe;border-color:#9db9dd;transform:translateY(-1px)}
+.appearance-button:focus-visible{outline:3px solid #729bcc;outline-offset:3px}
+.appearance-button:disabled{cursor:default;opacity:.6;transform:none}
+.appearance-button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.appearance-sun,.appearance-sparkle{display:none}
+html[data-theme=dark] .appearance-sun{display:block}html[data-theme=dark] .appearance-moon{display:none}
+html[data-motion=off] .appearance-sparkle{display:block}html[data-motion=off] .appearance-pause{display:none}
+.entry-header>.appearance-controls{margin-left:auto}
+.entry-header .appearance-button{color:#d9e8ff;background:#ffffff0b;border-color:#ffffff2b}
+.entry-header .appearance-button:hover{background:#ffffff1a;border-color:#c6df9b70}
+
+.ambient-scene{background:#eff4fb}
+.ambient-orb{position:absolute;pointer-events:none;width:80vmax;height:80vmax;will-change:transform;border-radius:50%;transform:translate3d(0,0,0)}
+.ambient-orb-cyan{left:-25vmax;top:-34vmax;background:radial-gradient(circle,#b3e6ee66 0,#badbf32b 36%,transparent 66%)}
+.ambient-orb-violet{right:-31vmax;top:7vh;background:radial-gradient(circle,#c4bcf24d 0,#c4c3f524 36%,transparent 66%)}
+.ambient-mesh{position:absolute;inset:0;background-image:radial-gradient(#506b9a26 .65px,transparent .65px);background-size:26px 26px;opacity:.35;mask-image:linear-gradient(to bottom,#000,transparent 85%)}
+html[data-motion=on] .ambient-orb-cyan{animation:aurora-cyan 32s ease-in-out infinite alternate}
+html[data-motion=on] .ambient-orb-violet{animation:aurora-violet 41s ease-in-out infinite alternate}
+html[data-motion=on] #app .hero-decoration{animation:aurora-orbit 29s ease-in-out infinite alternate}
+html[data-awake=no] .ambient-scene *,html[data-awake=no] #app .hero-decoration,html[data-awake=no] .entry-art *{animation-play-state:paused!important}
+html[data-motion=off] .entry-art *{animation:none!important}
+@keyframes aurora-cyan{from{transform:translate3d(-3%,0,0) scale(.95)}to{transform:translate3d(17%,11%,0) scale(1.05)}}
+@keyframes aurora-violet{from{transform:translate3d(7%,7%,0) scale(1)}to{transform:translate3d(-12%,-7%,0) scale(1.12)}}
+@keyframes aurora-orbit{from{transform:rotate(-30deg) translateY(0)}to{transform:rotate(-8deg) translateY(-8px)}}
+
+/* Daylight has translucent edges; the data stays on calm, readable surfaces. */
+#app .panel,#app .stat{background:linear-gradient(135deg,#ffffffeb,#fffffff7);box-shadow:inset 0 1px 0 #fff,0 10px 30px #243c7205;border-color:#cfdaea9e;backdrop-filter:blur(12px)}
+#app .hero{background:radial-gradient(ellipse at 100% 0,#f1ffb4,transparent 65%),linear-gradient(130deg,#d9f59b,#c9f5ba);border-color:#bddb85;box-shadow:inset 0 1px 0 #fff7,0 12px 28px #6c934b12}
+#app .next-card{background:radial-gradient(ellipse at 100% 0,#4d678b88,transparent 64%),linear-gradient(140deg,#14263f,#203553);box-shadow:0 12px 28px #14213a14}
+#app .investment-summary{background:radial-gradient(ellipse at 95% 0,#345a7780,transparent 62%),linear-gradient(130deg,#14263f,#263e60);box-shadow:0 12px 28px #14213a10}
+#app .account{box-shadow:inset 0 1px 0 #fff,0 6px 20px #243c7205}
+#app .sidebar{box-shadow:0 18px 50px #11223d1a,inset 0 1px 0 #ffffff0d;background:linear-gradient(165deg,#1b2c46,#101d32)}
+#app .button.primary,#modal .button.primary{box-shadow:0 5px 14px #25477920,inset 0 1px 0 #ffffff1a}
+#app .heading h1 em{color:#5f7895}
+#app .topbar{border-color:#cedbeaaf}
+
+/* The root attribute is set by appearance.js before the first paint. */
+html[data-theme=dark]{color-scheme:dark;background:#0b1423;color:#e5edf8}
+html[data-theme=dark] body{background:#0b1423}
+html[data-theme=dark] ::selection{background:#435b73;color:#e8ffc4}
+html[data-theme=dark] .ambient-scene{background:#0b1423}
+html[data-theme=dark] .ambient-orb-cyan{background:radial-gradient(circle,#247f8c2b 0,#1645521a 36%,transparent 66%)}
+html[data-theme=dark] .ambient-orb-violet{background:radial-gradient(circle,#7266b82b 0,#4037681a 36%,transparent 66%)}
+html[data-theme=dark] .ambient-mesh{background-image:radial-gradient(#9eb6d824 .65px,transparent .65px);opacity:.45}
+html[data-theme=dark] #app .layout,html[data-theme=dark] #modal{--ink:#e5edf8;--muted:#a7b8ce;--green:#9dbfed;--paper:#0b1423;--line:#2c405b;--red:#ff9cad;--orange:#ecc18d;color:#e5edf8}
+html[data-theme=dark] #app .sidebar{background:linear-gradient(165deg,#15243a,#101c30);border-color:#334c6c66;box-shadow:0 15px 50px #03081250}
+html[data-theme=dark] #app .sidebar .nav button{color:#b3c4db}
+html[data-theme=dark] #app .sidebar .nav button.active{background:#d8ef9e;color:#1b2b36;box-shadow:0 3px 16px #99c55115}
+html[data-theme=dark] #app .sidebar .nav button.active::after{background:#1b2b36}
+html[data-theme=dark] #app .topbar{border-color:#30415a88}
+html[data-theme=dark] #app .topbar strong{color:#c2d4ec}
+html[data-theme=dark] #app .heading h1,html[data-theme=dark] #app .heading h1:not(:has(br)){color:#edf4ff}
+html[data-theme=dark] #app .heading h1 em{color:#a4bad6}
+html[data-theme=dark] #app .main h2,html[data-theme=dark] #app .main h3{color:#dce8f8}
+html[data-theme=dark] #app :is(.panel,.stat,.account,.report-metrics article,.check-card,.template-card){background:linear-gradient(135deg,#16253ae8,#121f32f5);border-color:#2c405b;box-shadow:inset 0 1px 0 #ffffff03,0 10px 30px #03081216}
+html[data-theme=dark] #app .panel-head{border-color:#2c405b}
+html[data-theme=dark] #app :is(.sub,.smallprint,.eyebrow,.stat-label,.stat-note,.account-name,.account-source,.footer,.empty,.elegant-empty p,.elegant-empty h3,.chart-caption,.chart-caption small,.tx-meta,.tx-money .sub,.field small,.checkline,.plan-line,.rule p,.guide-details p){color:#a6b8cf}
+html[data-theme=dark] #app .panel-head .eyebrow,html[data-theme=dark] #app .topbar .eyebrow{color:#9db1cc}
+html[data-theme=dark] #app :is(.stat-value,.account-value,.budget-big,.budget-percent,.goal-card .goal-value,.check-value,.template-amount,.product-metrics strong,.feature-summary strong){color:#d6e8ff}
+html[data-theme=dark] #app .stat-value{font-weight:600}
+html[data-theme=dark] #app .stat-icon{background:#343253;color:#c6b5f3}
+html[data-theme=dark] #app .stat-icon.warm{background:#463329;color:#e9b68f}
+html[data-theme=dark] #app .stat-icon.cool{background:#1c3b47;color:#8dd7dd}
+html[data-theme=dark] #app .hero{background:radial-gradient(ellipse at 100% 0,#597b3a4d,transparent 62%),linear-gradient(130deg,#253c33,#1b302e);border-color:#64834d66;box-shadow:inset 0 1px 0 #d6f6a10d,0 12px 30px #03081220}
+html[data-theme=dark] #app .hero .eyebrow{color:#cadfae}
+html[data-theme=dark] #app .hero-number{color:#e4f5c2}
+html[data-theme=dark] #app .hero-number .unit,html[data-theme=dark] #app .hero .sub,html[data-theme=dark] #app .hero-bottom{color:#b3c99f}
+html[data-theme=dark] #app .hero-bottom{border-color:#99b97735}
+html[data-theme=dark] #app .hero-bottom strong{color:#e1edcf}
+html[data-theme=dark] #app .hero-line{background:#99b97735}
+html[data-theme=dark] #app .balance-tag{color:#c6dcae;border-color:#a7cd7a33;background:#b1df7810}
+html[data-theme=dark] #app .hero-decoration span,html[data-theme=dark] #app .hero-decoration span:nth-child(2),html[data-theme=dark] #app .hero-decoration span:nth-child(3){border-color:#c1df8f30}
+html[data-theme=dark] #app .next-card{background:radial-gradient(ellipse at 100% 0,#52688b50,transparent 65%),#192c46;border-color:#3a5276}
+html[data-theme=dark] #app .next-card h2{color:#f0f6ff}
+html[data-theme=dark] #app .next-card p{color:#b8cbe4}
+html[data-theme=dark] #app .next-card .badge{color:#b5c7e1}
+html[data-theme=dark] #app .cloud-badge{background:#15273c;border-color:#324961;color:#b3cbe5}
+html[data-theme=dark] #app .cloud-badge .status-dot{background:#84d3be}
+html[data-theme=dark] #app .cloud-badge.offline,html[data-theme=dark] #app .cloud-badge.conflict{background:#3b3022;border-color:#5f4d31;color:#f0cd98}
+html[data-theme=dark] .appearance-button,html[data-theme=dark] #app .sound-button{background:#192d46;border-color:#38516f;color:#b6d0ed}
+html[data-theme=dark] .appearance-button:hover{background:#253e5e;border-color:#7798be}
+html[data-theme=dark] #app .avatar{background:#343250;border-color:#4f4b75;color:#d5ccfb}
+html[data-theme=dark] #app .button,html[data-theme=dark] #modal .button{background:#1c3048;border-color:#39516e;color:#c2d8f1;box-shadow:none}
+html[data-theme=dark] #app .button:hover,html[data-theme=dark] #modal .button:hover{background:#29415d;border-color:#6687ac;color:#e4efff}
+html[data-theme=dark] #app .button.primary,html[data-theme=dark] #modal .button.primary{background:#bcd5a1;border-color:#bcd5a1;color:#172b31;box-shadow:0 4px 15px #93b87510}
+html[data-theme=dark] #app .button.primary:hover,html[data-theme=dark] #modal .button.primary:hover{background:#d2e7bb;border-color:#d2e7bb;color:#10252c}
+html[data-theme=dark] #app .button.ghost,html[data-theme=dark] #modal .button.ghost{background:transparent;border-color:transparent;color:#a8c0dd}
+html[data-theme=dark] #app .button.ghost:hover,html[data-theme=dark] #modal .button.ghost:hover{background:#203852;color:#dceaff}
+html[data-theme=dark] #app .button.danger,html[data-theme=dark] #modal .button.danger{color:#ffadbb}
+html[data-theme=dark] #app .text-link{color:#a9ceff}
+html[data-theme=dark] #app :is(input,select,textarea),html[data-theme=dark] #modal :is(input,select,textarea){background:#101f32;border-color:#3b5575;color:#d6e5f8}
+html[data-theme=dark] #app :is(input,select,textarea):focus,html[data-theme=dark] #modal :is(input,select,textarea):focus{border-color:#90bce8;outline-color:#8bc0ef66;box-shadow:0 0 0 4px #7cb5ef16}
+html[data-theme=dark] #app input::placeholder,html[data-theme=dark] #modal input::placeholder{color:#9bb1cc}
+html[data-theme=dark] #app .month-select{background:#152940;border-color:#3a5576;color:#bfd7f5}
+html[data-theme=dark] #app .field>span,html[data-theme=dark] #modal .field>span{color:#adc4df}
+html[data-theme=dark] #app .pill{background:#243b55;border-color:#3d5673;color:#bdd1e8}
+html[data-theme=dark] #app .transaction-category .pati-badge{background:#34314f;border-color:#554d79;color:#d4c9f8}
+html[data-theme=dark] #app .filterbar,html[data-theme=dark] #app .table-wrap th{background:#122339;border-color:#2d435f;color:#a8bfdc}
+html[data-theme=dark] #app .table-wrap td,html[data-theme=dark] #app .table-wrap td small{border-color:#293d57;color:#b1c6e1}
+html[data-theme=dark] #app .table-wrap tr:hover{background:#1c3049}
+html[data-theme=dark] #app .tx-row{border-color:#293d57}
+html[data-theme=dark] #app .tx-row:hover{background:#1a2e45}
+html[data-theme=dark] #app .tx-title{color:#d5e5fa}
+html[data-theme=dark] #app .tx-money{color:#bed6f2}
+html[data-theme=dark] #app .tx-money.income{color:#8bdbc8}
+html[data-theme=dark] #app .tx-filter-summary,html[data-theme=dark] #app .workspace-digest{background:#1b2d48;border-color:#334a6c}
+html[data-theme=dark] #app .tx-filter-summary span,html[data-theme=dark] #app .tx-all-history,html[data-theme=dark] #app .transaction-day{color:#adc4e0}
+html[data-theme=dark] #app .tx-filter-summary strong,html[data-theme=dark] #app .workspace-digest h2{color:#d2e5ff}
+html[data-theme=dark] #app .workspace-digest p,html[data-theme=dark] #app .workspace-digest p strong{color:#acc2e0}
+html[data-theme=dark] #app .digest-actions button{background:#233a5a;border-color:#405d82;color:#c3daf5}
+html[data-theme=dark] #app .cat-icon{background:#2a3249;color:#c3d4ee!important}
+html[data-theme=dark] #app .chart-legend{color:#a6bdd9}
+html[data-theme=dark] #app .budget-label,html[data-theme=dark] #app .budget-numbers,html[data-theme=dark] #app .allocation-row>span{color:#aec2dc}
+html[data-theme=dark] #app :is(.budget-numbers,.allocation-row,.plan-line) strong{color:#c5def9}
+html[data-theme=dark] #app .track{background:#26384e}
+html[data-theme=dark] #app .track>span{background:#6b9bcb}
+html[data-theme=dark] #app :is(.budget-editor,.allocation-row,.balance-edit,.rule,.guide-details,.footer){border-color:#2d435f}
+html[data-theme=dark] #app .total-line,html[data-theme=dark] #app .reserve-card{background:#1c324f;border-color:#3a5375}
+html[data-theme=dark] #app .rule h3,html[data-theme=dark] #app .guide-details summary{color:#c2d9f4}
+html[data-theme=dark] #app .chart-center{background:#142439;color:#d4e6fa}
+html[data-theme=dark] #app .spending-chart svg text{fill:#a8bedb}
+html[data-theme=dark] #app .spending-chart svg line{stroke:#2d4561}
+html[data-theme=dark] #app .spending-chart svg polyline{stroke:#8bd3cc}
+html[data-theme=dark] #app .chart-caption strong{color:#bedbf7}
+html[data-theme=dark] #app .report-result{background:#213b58;border-color:#3b5877}
+html[data-theme=dark] #app .report-result strong{color:#d7ecac}
+html[data-theme=dark] #app .report-metrics :is(span,small){color:#a4bddb}
+html[data-theme=dark] #app .report-metrics strong{color:#d5e6fa}
+html[data-theme=dark] #app .report-metrics .report-result{background:#253d48;border-color:#466154}
+html[data-theme=dark] #app .report-metrics .report-result strong{color:#d7ecac}
+html[data-theme=dark] #app .report-comparison{background:#1c304c;border-color:#365074}
+html[data-theme=dark] #app .report-comparison h2{color:#c4ddfc}
+html[data-theme=dark] #app .report-comparison p,html[data-theme=dark] #app .report-period>span{color:#aec4e0}
+html[data-theme=dark] #app .comparison-mark{color:#8aabd2}
+html[data-theme=dark] #app .month-bar-pair{border-color:#3d5675;background:repeating-linear-gradient(to top,transparent 0,transparent 54px,#2c425d 55px,transparent 56px)}
+html[data-theme=dark] #app .month-bar-pair i{background:#83a7d8}
+html[data-theme=dark] #app .month-bar-pair i.expense{background:#dcae89}
+html[data-theme=dark] #app .monthly-bars>button,html[data-theme=dark] #app .report-legend,html[data-theme=dark] #app .report-footnote{color:#adc3df}
+html[data-theme=dark] #app .monthly-bars>button>span:last-child{color:#e4bd98}
+html[data-theme=dark] #app .report-categories>button{color:#aec5e1}
+html[data-theme=dark] #app .report-categories b{color:#d2e5fb}
+html[data-theme=dark] #app .report-categories>button>div{background:#283c55}
+html[data-theme=dark] #app .report-calendar>button{background:#13253b;border-color:#2f4866;color:#a4bedc}
+html[data-theme=dark] #app .report-calendar>button.has-transactions{background:#203b5c;border-color:#486c99}
+html[data-theme=dark] #app .report-calendar>button.calendar-today{border-color:#99bfdb;box-shadow:inset 0 0 0 1px #99bfdb}
+html[data-theme=dark] #app .report-calendar strong{color:#c7e0fb}
+html[data-theme=dark] #app .classification-group button{color:#b7cce5;border-color:#2e455f}
+html[data-theme=dark] #app .classification-group strong{color:#d5e7fc}
+html[data-theme=dark] #app .pati-summary{background:#2b2d47;border-color:#45456b}
+html[data-theme=dark] #app .pati-summary :is(h3,strong){color:#d0c9f1}
+html[data-theme=dark] #app .pati-summary :is(p,small){color:#b9b2d8}
+html[data-theme=dark] #app :is(.reconciliation-intro,.reconciliation-reading,.feature-summary,.receipt-intro,.notice.green,.sync-banner,.draft-banner){background:#1c324e;border-color:#3b5778;color:#b5cde9}
+html[data-theme=dark] #app :is(.reconciliation-intro,.reconciliation-reading,.receipt-intro,.sync-banner) :is(p,span,small,strong),html[data-theme=dark] #app .draft-banner span{color:#b6cde9}
+html[data-theme=dark] #app .check-last,html[data-theme=dark] #app .upcoming-row,html[data-theme=dark] #app .receipt-row{border-color:#2e445f}
+html[data-theme=dark] #app .check-last :is(span,small),html[data-theme=dark] #app .receipt-info small,html[data-theme=dark] #app .upcoming-row small{color:#a6bfdc}
+html[data-theme=dark] #app .upcoming-row strong,html[data-theme=dark] #app .upcoming-row b,html[data-theme=dark] #app .receipt-info strong{color:#c6def7}
+html[data-theme=dark] #app .due-day,html[data-theme=dark] #app .receipt-file-icon{background:#233c5c;border-color:#416288;color:#c0d8f6}
+html[data-theme=dark] #app .product-metrics :is(span,strong),html[data-theme=dark] #app .product-title{color:#bad4f1}
+html[data-theme=dark] #app .navigation-grid>button,html[data-theme=dark] #app .mobile-tools button{background:#203653;border-color:#3e597b;color:#c1d9f5}
+html[data-theme=dark] #app .navigation-grid>button[aria-current]{background:#304c69;border-color:#6b8caa}
+html[data-theme=dark] #app .navigation-grid small{color:#aabfda}
+html[data-theme=dark] #app .investment-summary{background:radial-gradient(ellipse at 95% 0,#355a6d66,transparent 65%),linear-gradient(135deg,#193046,#253c50);border-color:#3b566b}
+html[data-theme=dark] #app .investment-summary .eyebrow,html[data-theme=dark] #app .investment-summary p{color:#bfd3e5}
+html[data-theme=dark] #app .investment-overall-profit>strong{color:#d8efaf}
+html[data-theme=dark] #app .investment-overall-profit>strong.loss{color:#ffafbe}
+html[data-theme=dark] #app .investment-metrics,html[data-theme=dark] #app .investment-lot-stats,html[data-theme=dark] #app .investment-position-foot{border-color:#304760}
+html[data-theme=dark] #app .investment-metrics strong,html[data-theme=dark] #app .investment-lot-stats strong{color:#d0e6fb}
+html[data-theme=dark] #app :is(.investment-metrics span,.investment-metrics small,.investment-status,.investment-section-title>span,.investment-position-head p,.investment-lot-stats span,.investment-position-foot,.investment-manual-note,.investment-chart-empty){color:#a8bfd9}
+html[data-theme=dark] #app .is-positive,html[data-theme=dark] #app .check-last.matched strong{color:#8ed9c4!important}
+html[data-theme=dark] #app .is-negative,html[data-theme=dark] #app .over,html[data-theme=dark] #app .error,html[data-theme=dark] #modal .error{color:#ffacbb!important}
+html[data-theme=dark] #app .investment-ranges{background:#152940;border-color:#345170}
+html[data-theme=dark] #app .investment-ranges button{color:#afc6e0}
+html[data-theme=dark] #app .investment-ranges button[aria-pressed=true]{background:#bdd4a2;color:#1b2b35}
+html[data-theme=dark] #app .chart-reading>strong,html[data-theme=dark] #app .chart-point-detail b,html[data-theme=dark] #app .chart-range-stats b{color:#d0e5fb}
+html[data-theme=dark] #app :is(.chart-date,.chart-date small,.chart-unit-label,.chart-scale-note,.chart-touch-note,.chart-point-detail span,.chart-range-stats span,.chart-data summary,.investment-chart-caption p,.investment-chart-caption>span){color:#a2bbd7}
+html[data-theme=dark] #app .chart-axis{fill:#a8bfd8}
+html[data-theme=dark] #app .chart-grid{stroke:#35506b}
+html[data-theme=dark] #app .chart-grid-vertical{stroke:#263c56}
+html[data-theme=dark] #app .chart-range-stats{background:#192c45;border-color:#304c6c}
+html[data-theme=dark] #app .chart-scale-toggle{background:#213a57;border-color:#456588;color:#c2dcf7}
+html[data-theme=dark] #app .investment-chart [stroke="#376650"]{stroke:#8ad5cf}
+html[data-theme=dark] #app .investment-chart [fill="#376650"]{fill:#8ad5cf}
+html[data-theme=dark] #app .investment-chart [stop-color="#376650"]{stop-color:#8ad5cf}
+html[data-theme=dark] #app .investment-chart [stroke="#a36350"]{stroke:#f09db3}
+html[data-theme=dark] #app .investment-chart [fill="#a36350"]{fill:#f09db3}
+html[data-theme=dark] #app .investment-chart [stop-color="#a36350"]{stop-color:#f09db3}
+html[data-theme=dark] #app .chart-cost{stroke:#e0bd84}
+html[data-theme=dark] #app .investment-cash-status{background:#233b55;color:#bed7f1}
+html[data-theme=dark] #app .investment-cash-status.booked{background:#1e3e40;color:#9dd9ca}
+html[data-theme=dark] #app :is(.investment-cash-notice,.investment-cash-status.unresolved,.notice:not(.green),.sync-banner.warning,.undo-banner){background:#3a3024;border-color:#685438;color:#e4c498}
+html[data-theme=dark] #app .investment-cash-notice :is(strong,p){color:#e4c498}
+html[data-theme=dark] #app .bank-logo{background:#25443e;color:#a1ddc3}
+html[data-theme=dark] #app .bank-logo.mill{background:#442b46;color:#e4afe0}
+html[data-theme=dark] #app .bank-logo.xtb{background:#293d5b;color:#b0c9f5}
+html[data-theme=dark] #app .investment-method summary{color:#c1d9f4}
+html[data-theme=dark] #app .investment-method p{color:#a6bdd9}
+html[data-theme=dark] #app .investment-method a{color:#acd0fb}
+html[data-theme=dark] #app .install-tip{background:#1c324e;border-color:#3b5778;color:#b5cde9}
+html[data-theme=dark] #app .footer>span:first-child{color:#bad1ef}
+html[data-theme=dark] #modal{background:#142438;border-color:#3a5475;box-shadow:0 30px 100px #0007}
+html[data-theme=dark] #modal::backdrop{background:#050c18a8;backdrop-filter:blur(9px)}
+html[data-theme=dark] #modal .modal-head{background:#1c304b;border-color:#354f70}
+html[data-theme=dark] #modal .modal-head h2,html[data-theme=dark] #modal h3{color:#d3e6fc}
+html[data-theme=dark] #modal .modal-body{background:#142438}
+html[data-theme=dark] #modal :is(.sub,.smallprint,.field small,.checkline,.draft-form-note){color:#adc2dd}
+html[data-theme=dark] #modal .segmented button{background:#1c324d;border-color:#344e6f;color:#aec7e5}
+html[data-theme=dark] #modal .segmented button.active{background:#355376;border-color:#6c8fb8;color:#e2f0ff}
+html[data-theme=dark] #modal input.amount-input{background:#0f1e32;color:#d1e8ff;border-color:#3b5e87}
+html[data-theme=dark] #modal .quick-cats button{background:#1e354f;color:#b5cee9;border-color:#3a5574}
+html[data-theme=dark] #modal .quick-cats button.selected{background:#385772;color:#e0f3d0;border-color:#759e90}
+html[data-theme=dark] #modal :is(.items-editor,.investment-cash-editor,.pati-check,.reconciliation-reading){background:#1c324d;border-color:#3b5678;color:#b2cce9}
+html[data-theme=dark] #modal .investment-cash-preview,html[data-theme=dark] #modal .investment-cash-editor h3{color:#c6dff7}
+html[data-theme=dark] #modal .investment-cash-preview small,html[data-theme=dark] #modal .pati-check small{color:#afc7e3}
+html[data-theme=dark] #modal .form-actions,html[data-theme=dark] #modal .navigation-footer,html[data-theme=dark] #modal .product-edit-row{border-color:#345170}
+html[data-theme=dark] #modal .catalog-results button{background:#243e59;border-color:#3b5878;color:#c2d9f3}
+html[data-theme=dark] #modal .catalog-results small{color:#a7bedb}
+html[data-theme=dark] #toast{background:#253d51;border-color:#48617d;color:#ecf5ff}
+
+/* The entrance follows the same preference; form fields never stay bright at night. */
+html[data-theme=dark] .app-login{background:radial-gradient(ellipse at 0 0,#20374e77,transparent 65%),#0b1423}
+html[data-theme=dark] .entry-access{background:#14263c;border-color:#3d5572;box-shadow:0 20px 70px #0004}
+html[data-theme=dark] .entry-access h2,html[data-theme=dark] .password-access h1{color:#dbeaff}
+html[data-theme=dark] :is(.entry-access-intro,.entry-form>label,.entry-private-note p,.entry-private-note p>span){color:#adc4e1}
+html[data-theme=dark] .entry-section-number{color:#a2bddb}
+html[data-theme=dark] .entry-input-wrap>input{background:#0f1e31;border-color:#405f84;color:#d7e8fc}
+html[data-theme=dark] .entry-input-wrap>input::placeholder{color:#9fb6d2}
+html[data-theme=dark] .entry-input-wrap>input:focus{background:#11243b;border-color:#8eb7df}
+html[data-theme=dark] .entry-submit{background:#bdd4a2;border-color:#bdd4a2;color:#172b31}
+html[data-theme=dark] .entry-submit>svg{stroke:#172b31}
+html[data-theme=dark] .entry-submit:hover:not(:disabled){background:#d3e6ba}
+html[data-theme=dark] .entry-recovery{color:#a2ccfb}
+html[data-theme=dark] .entry-private-note{border-color:#34506d}
+html[data-theme=dark] .entry-message.is-visible{background:#1e3a52;border-color:#426486;color:#c5def6}
+html[data-theme=dark] .entry-config-note{background:#3d3023;border-color:#6b5539;color:#e5c599}
+
+@media(max-width:1200px){#app .top-actions{gap:5px}.appearance-controls{gap:4px}.appearance-button{width:34px;height:34px;min-height:34px}}
+@media(max-width:720px){
+ #app .top-actions>[data-action=demo]{display:none}
+ #app .topbar{gap:6px}#app .top-actions{gap:4px}
+ .appearance-controls{gap:3px}.appearance-button{width:33px;height:38px;min-height:38px;padding:7px;border-radius:11px}
+ .appearance-button svg{width:17px;height:17px}
+ .entry-header-note{display:none}.entry-header>.appearance-controls{margin-left:auto}
+ .entry-header .appearance-button{width:40px;height:42px;min-height:42px}
+ #app .panel,#app .stat{backdrop-filter:none;background:#fffffffa}
+ html[data-theme=dark] #app .panel,html[data-theme=dark] #app .stat{background:#142338}
+ .ambient-mesh{opacity:.22}.ambient-orb{width:100vmax;height:100vmax}
+ html[data-theme=dark] #app .sidebar{background:#112137f5;border-color:#48638166}
+}
+@media(max-width:380px){#app .topbar>div:first-child{max-width:91px}#app .topbar strong{font-size:9px}#app .sound-button{width:27px;height:30px}.appearance-button{width:31px}#app .top-actions .button.primary{padding:9px 8px;font-size:9px}}
+@media(prefers-reduced-motion:reduce){.ambient-scene *,.entry-art *,.hero-decoration{animation:none!important;transition:none!important}.appearance-button{transition:none}.appearance-button:hover{transform:none}}

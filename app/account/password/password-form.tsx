@@ -1,6 +1,7 @@
 'use client';
 import {useState} from 'react';
 import {createClient} from '../../../lib/supabase/browser';
+import AppearanceControls from '../../appearance-controls';
 export default function PasswordForm(){
  const[password,setPassword]=useState(''),[confirm,setConfirm]=useState(''),[busy,setBusy]=useState(false),[message,setMessage]=useState('');
  async function save(e:React.FormEvent){
@@ -15,7 +16,7 @@ export default function PasswordForm(){
   }catch{setMessage('Nie udało się połączyć. Spróbuj ponownie.');setBusy(false);}
  }
  return <main className="app-login password-page"><div className="entry-shell">
-  <header className="entry-header"><a className="entry-brand" href="/">spokojnie<span>.</span></a><span className="entry-header-note">Twoja prywatna przestrzeń</span></header>
+  <header className="entry-header"><a className="entry-brand" href="/">spokojnie<span>.</span></a><span className="entry-header-note">Twoja prywatna przestrzeń</span><AppearanceControls/></header>
   <section className="entry-access password-access" aria-labelledby="password-title">
    <span className="entry-section-number">DOSTĘP DO KONTA</span><h1 id="password-title">Ustaw swoje hasło.</h1>
    <p className="entry-access-intro">Przy kolejnym logowaniu wystarczy e-mail i hasło.<br/>Bez potwierdzania każdego wejścia w poczcie.</p>

@@ -1,6 +1,7 @@
 'use client';
 import {useState} from 'react';
 import {createClient} from '../../lib/supabase/browser';
+import AppearanceControls from '../appearance-controls';
 export default function Login({configured}:{configured:boolean}){
  const[email,setEmail]=useState(''),[password,setPassword]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false),[recovery,setRecovery]=useState(false);
  async function signIn(e:React.FormEvent){
@@ -22,6 +23,7 @@ export default function Login({configured}:{configured:boolean}){
    <header className="entry-header">
     <span className="entry-brand"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 21c8 0 4-13 12-13s4 13 12 13" strokeLinecap="round"/></svg>spokojnie<span>.</span></span>
     <span className="entry-header-note"><span/> Finanse po Twojemu</span>
+    <AppearanceControls/>
    </header>
 
    <div className="entry-body">

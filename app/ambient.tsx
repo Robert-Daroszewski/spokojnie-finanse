@@ -1,7 +1,10 @@
-/** Quiet, decorative paper-and-light composition. No client runtime needed. */
+/** CSS aurora layers: decorative, pointer-transparent and motion-aware. */
 export default function Ambient() {
   return (
     <div className="ambient-scene" aria-hidden="true">
+      <div className="ambient-orb ambient-orb-cyan" />
+      <div className="ambient-orb ambient-orb-violet" />
+      <div className="ambient-mesh" />
       <div className="ambient-daylight" />
       <svg className="ambient-lines" viewBox="0 0 800 1000" fill="none" focusable="false">
         <g stroke="currentColor" strokeWidth="0.7">
