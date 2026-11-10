@@ -9,7 +9,7 @@
  function apply(){
   var theme=choice||(dark.matches?'dark':'light'),moving=motion&&!reduced.matches;
   root.dataset.theme=theme;root.dataset.motion=moving?'on':'off';root.dataset.awake=document.hidden?'no':'yes';
-  var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=theme==='dark'?'#121c1a':'#f5f6f2';
+  var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=theme==='dark'?'#16181d':'#f5f6f2';
   document.querySelectorAll('[data-appearance="theme"]').forEach(function(button){var label=theme==='dark'?'Włącz motyw jasny':'Włącz motyw nocny';button.setAttribute('aria-label',label);button.setAttribute('aria-pressed',String(theme==='dark'));button.title=label;});
   document.querySelectorAll('[data-appearance="motion"]').forEach(function(button){var label=reduced.matches?'Animacje wyłączone przez ustawienia urządzenia':moving?'Wstrzymaj animacje tła':'Włącz animacje tła';button.setAttribute('aria-label',label);button.setAttribute('aria-pressed',String(moving));button.title=label;button.disabled=reduced.matches;});
  }
