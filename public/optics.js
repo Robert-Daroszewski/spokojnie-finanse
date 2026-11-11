@@ -12,12 +12,13 @@
     balance: [38, 48, 1],
     accounts: [24, 27, 0],
     navigation: [22, 25, 0],
+    dock: [23, 52, 2],
     toolbar: [18, 25, 0],
     access: [29, 31, 0],
     portfolio: [29, 35, 0],
     panel: [24, 27, 0],
-    selection: [19, 33, 0],
-    control: [22, 32, 0],
+    selection: [22, 43, 3],
+    control: [25, 58, 2],
   };
   const rects = new Float32Array(maxLenses * 4);
   const materials = new Float32Array(maxLenses * 4);
@@ -32,12 +33,16 @@
   let lost = false;
   let unavailable = false;
   let images;
+  let dockCanvas;
+  let dockContext;
+  let dockBounds;
+  let dockShapes = [];
 
   const fragment = `
     precision highp float;
     uniform sampler2D uDay, uNight;
     uniform vec2 uPixels, uViewport, uPointer;
-    uniform float uTime, uDark;
+    uniform float uTime, uDark, uDockPass;
     uniform vec4 uRects[${maxLenses}], uMaterials[${maxLenses}];
 
     vec2 cover(vec2 p) {
@@ -56,8 +61,8 @@
       return mix(texture2D(uDay, uv).rgb, vec3(.84,.89,.96), .14 + lower * .18);
     }
 
-    vec3 throughLens(vec2 p, vec4 rect, float hero) {
-      if (hero < .5) return scene(p);
+    vec3 throughLens(vec2 p, vec4 rect, float material) {
+      if (material < .5 || material > 1.5) return scene(p);
       vec2 local = (p - rect.xy) / rect.zw;
       vec2 uv = vec2(.14,.20) + local * vec2(.85,.74);
       uv += vec2(sin(uTime*.36)*.012, cos(uTime*.24)*.009);
@@ -73,6 +78,9 @@
         vec4 rect = uRects[i];
         if (rect.z < 1.0 || any(lessThan(p,rect.xy-2.0)) || any(greaterThan(p,rect.xy+rect.zw+2.0))) continue;
         vec4 material = uMaterials[i];
+        if (material.w > 1.5 && uDockPass < .5) continue;
+        float dock = step(1.5, material.w);
+        float selected = step(2.5, material.w);
         vec2 rel = p - rect.xy - rect.zw*.5;
         vec2 q = abs(rel) - rect.zw*.5 + material.x;
         float distanceToEdge = length(max(q,0.0)) + min(max(q.x,q.y),0.0) - material.x;
@@ -82,22 +90,24 @@
         float depth = max(-distanceToEdge, 0.0);
         float bevel = 1.0 - smoothstep(0.0, material.y, depth);
         float bend = material.z * pow(bevel,1.8);
-        vec2 samplePoint = p - normal * bend + rel*.016;
+        vec2 samplePoint = p - normal * bend + rel * (.016 - dock * .055 - selected * .065);
         vec3 green = throughLens(samplePoint, rect, material.w);
-        float split = bevel * bevel * (1.4 + material.w*1.5);
+        float split = bevel * bevel * (1.4 + min(material.w, 1.0)*1.5 + dock*.55 + selected*.35);
         vec3 chroma = vec3(throughLens(samplePoint-normal*split,rect,material.w).r,
                            green.g, throughLens(samplePoint+normal*split,rect,material.w).b);
         vec3 lens = mix(green, chroma, bevel);
-        if (material.w < .5) {
+        if (material.w < .5 || dock > .5) {
           vec3 tint = uDark > .5 ? vec3(.058,.079,.135) : vec3(.89,.93,.99);
-          lens = mix(lens,tint,.43 - bevel*.2);
+          float density = mix(.43 - bevel*.2, .16 - bevel*.08 + selected*.04, dock);
+          lens = mix(lens,tint,density);
         }
         float facing = max(0.0, dot(normal,normalize(vec2(-.5,-.84))));
-        float rim = exp(-abs(depth-1.65)*.77) * (.09 + facing*.28);
-        float innerRim = exp(-abs(depth-6.0)*.32) * bevel * .045;
+        float rim = exp(-abs(depth-1.65)*.77) * (.09 + facing*.28) * (1.0+dock*.4);
+        float innerRim = exp(-abs(depth-6.0)*.32) * bevel * (.045+dock*.025);
+        float caustic = exp(-abs(depth-material.y*.67)*.45) * dock * (.02 + facing*.045);
         float cursor = exp(-length(p-uPointer)*.014) * bevel * .34;
         float moving = (.5+.5*sin(p.x*.014+p.y*.02-uTime*.58)) * .045 * bevel;
-        lens += vec3(.68,.82,1.0)*(rim+innerRim+cursor+moving);
+        lens += vec3(.68,.82,1.0)*(rim+innerRim+cursor+moving+caustic);
         lens -= vec3(.035,.029,.018) * bevel * max(0.0,normal.y);
         color = mix(color, lens, 1.0-smoothstep(-.8,1.0,distanceToEdge));
       }
@@ -155,6 +165,7 @@
       gl, software,
       pixels: uniform('uPixels'), viewport: uniform('uViewport'), pointer: uniform('uPointer'),
       time: uniform('uTime'), dark: uniform('uDark'), rects: uniform('uRects[0]'), materials: uniform('uMaterials[0]'),
+      dockPass: uniform('uDockPass'),
     };
   }
 
@@ -172,6 +183,84 @@
   }
 
   const resize = new ResizeObserver(invalidate);
+  function measureDock() {
+    const next = document.querySelector('.dock-optics');
+    if (next !== dockCanvas) {
+      dockCanvas = next;
+      const context = next?.getContext('2d', {alpha: true});
+      dockContext = typeof context?.roundRect === 'function' ? context : undefined;
+    }
+    dockBounds = undefined;
+    dockShapes = [];
+    if (!dockContext) return;
+    const bounds = dockCanvas.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    dockBounds = bounds;
+    dockShapes = [...dockCanvas.parentElement.querySelectorAll('.dock-tabs,.dock-search')].map(element => {
+      const box = element.getBoundingClientRect();
+      return {x: box.left-bounds.left, y: box.top-bounds.top, width: box.width, height: box.height};
+    });
+    const density = canvas.width / canvas.clientWidth;
+    const width = Math.max(1, Math.ceil(bounds.width*density));
+    const height = Math.max(1, Math.ceil(bounds.height*density));
+    if (dockCanvas.width !== width) dockCanvas.width = width;
+    if (dockCanvas.height !== height) dockCanvas.height = height;
+  }
+
+  function copyDock() {
+    const densityX = canvas.width / canvas.clientWidth;
+    const densityY = canvas.height / canvas.clientHeight;
+    const {left, top, width, height} = dockBounds;
+    dockContext.clearRect(0, 0, dockCanvas.width, dockCanvas.height);
+    dockContext.save();
+    dockContext.scale(dockCanvas.width/width, dockCanvas.height/height);
+    dockContext.beginPath();
+    for (const shape of dockShapes) {
+      dockContext.roundRect(shape.x, shape.y, shape.width, shape.height, shape.height/2);
+    }
+    dockContext.clip();
+    // Copy while the WebGL drawing buffer is valid, before the compositor presents it.
+    dockContext.drawImage(canvas, left*densityX, top*densityY, width*densityX, height*densityY, 0, 0, width, height);
+    // The middle transmits page content. The thicker perimeter keeps the refracted image.
+    dockContext.globalCompositeOperation = 'destination-out';
+    dockContext.fillStyle = 'rgba(0,0,0,.26)';
+    dockContext.shadowColor = 'rgba(0,0,0,.16)';
+    dockContext.shadowBlur = 8*densityX;
+    for (const shape of dockShapes) {
+      const inset = Math.min(12, shape.height/5);
+      dockContext.beginPath();
+      dockContext.roundRect(shape.x+inset, shape.y+inset, shape.width-2*inset, shape.height-2*inset, (shape.height-2*inset)/2);
+      dockContext.fill();
+    }
+    dockContext.restore();
+    dockCanvas.parentElement.dataset.glassRenderer = 'gpu';
+  }
+
+  function drawDock() {
+    if (!dockContext || !dockBounds) return;
+    const {gl} = pipeline;
+    const densityX = canvas.width/canvas.clientWidth;
+    const densityY = canvas.height/canvas.clientHeight;
+    const {left, top, width, height} = dockBounds;
+    // Render the floating lenses in a small region, then leave the page background clean.
+    gl.enable(gl.SCISSOR_TEST);
+    gl.scissor(Math.floor(left*densityX), Math.floor(canvas.height-(top+height)*densityY), Math.ceil(width*densityX), Math.ceil(height*densityY));
+    gl.uniform1f(pipeline.dockPass, 1);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    try {
+      copyDock();
+    } catch (error) {
+      dockContext.restore();
+      dockContext = undefined;
+      delete dockCanvas.parentElement.dataset.glassRenderer;
+      console.warn('Optical dock fallback', error);
+    } finally {
+      gl.uniform1f(pipeline.dockPass, 0);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      gl.disable(gl.SCISSOR_TEST);
+    }
+  }
+
   function measure() {
     // Match the account card material, without placing a second lens inside a card.
     for (const surface of document.querySelectorAll(surfaceSelector)) {
@@ -185,7 +274,7 @@
     }
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
-    const density = Math.min(devicePixelRatio || 1, touch.matches ? 1.4 : 1.85,
+    const density = Math.min(devicePixelRatio || 1, touch.matches ? 2 : 1.85,
       Math.sqrt((pipeline.software ? 900000 : 4200000) / (width * height)));
     const pixelWidth = Math.max(1, Math.round(width * density));
     const pixelHeight = Math.max(1, Math.round(height * density));
@@ -214,6 +303,7 @@
     }
     gl.uniform4fv(pipeline.rects, rects);
     gl.uniform4fv(pipeline.materials, materials);
+    measureDock();
     dirty = false;
   }
 
@@ -236,8 +326,10 @@
     const { gl } = pipeline;
     gl.uniform1f(pipeline.time, time);
     gl.uniform1f(pipeline.dark, root.dataset.theme === 'dark' ? 1 : 0);
-    gl.uniform2fv(pipeline.pointer, animated && !touch.matches ? pointer : [-2000, -2000]);
+    gl.uniform2fv(pipeline.pointer, animated ? pointer : [-2000, -2000]);
+    gl.uniform1f(pipeline.dockPass, 0);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
+    drawDock();
     if (root.dataset.optics !== 'active') root.dataset.optics = 'active';
     if (animated) schedule();
   }
@@ -290,12 +382,19 @@
       frame = 0;
     } else invalidate();
   });
-  document.addEventListener('pointermove', event => {
-    if (event.pointerType === 'mouse') {
+  function trackPointer(event) {
+    if (event.pointerType === 'mouse' || event.target.closest?.('.mobile-dock')) {
       pointer[0] = event.clientX;
       pointer[1] = event.clientY;
     }
-  }, { passive: true });
+  }
+  document.addEventListener('pointermove', trackPointer, {passive: true});
+  document.addEventListener('pointerdown', trackPointer, {passive: true});
+  function releasePointer(event) {
+    if (event.pointerType !== 'mouse') pointer.fill(-2000);
+  }
+  document.addEventListener('pointerup', releasePointer, {passive: true});
+  document.addEventListener('pointercancel', releasePointer, {passive: true});
   for (const preference of [opaque, forced, touch]) preference.addEventListener('change', sync);
   new MutationObserver(invalidate).observe(root, { attributes: true, attributeFilter: ['data-theme', 'data-motion'] });
   new MutationObserver(records => {

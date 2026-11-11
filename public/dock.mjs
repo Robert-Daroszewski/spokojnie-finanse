@@ -5,7 +5,9 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
   element.className = 'mobile-dock';
   element.setAttribute('aria-label', 'Nawigacja telefonu');
   element.innerHTML = `
-    <div class="dock-tabs" data-lens="navigation">
+    <div class="dock-backdrop" aria-hidden="true"><span></span><span></span></div>
+    <canvas class="dock-optics" aria-hidden="true"></canvas>
+    <div class="dock-tabs" data-lens="dock">
       <span class="dock-indicator" data-lens="selection" aria-hidden="true"></span>
       <button type="button" class="dock-tab" data-page="home" aria-label="Przegląd"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 10 8.5-7 8.5 7v10.5h-6v-6.3h-5v6.3h-6z"/></svg><span>Przegląd</span></button>
       <button type="button" class="dock-tab" data-page="transactions" aria-label="Transakcje">${icon('transactions')}<span>Transakcje</span></button>
@@ -32,8 +34,6 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
   const moving = () => root.dataset.motion === 'on' && !document.hidden;
   function paint() {
     indicator.style.transform = `translate3d(${x}px,${-lift}px,0) scale(${scale},${1 / Math.sqrt(scale)})`;
-    indicator.style.setProperty('--dock-shine', `${Math.max(-25, Math.min(25, velocity / 35))}%`);
-    tabs.style.setProperty('--dock-light', `${Math.max(8, Math.min(92, (x + slot / 2) / Math.max(1, 4 * slot) * 100))}%`);
     window.SpokojnieOptics?.invalidate();
   }
 
