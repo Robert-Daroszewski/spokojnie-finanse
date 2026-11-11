@@ -8,20 +8,20 @@
   }
 
   html[data-theme] #app .mobile-dock {
-    --dock-ink: #627083;
-    --dock-active: #dc365e;
-    --dock-fill: linear-gradient(155deg,#ffffffa8,#e5edf87a);
-    --dock-selected: linear-gradient(155deg,#8492a332,#a0acba28);
+    --dock-ink: #5e697a;
+    --dock-active: #df365e;
+    --dock-fill: linear-gradient(155deg,#ffffffa3,#e7edf77d);
+    --dock-selected: linear-gradient(155deg,#84909e38,#a0a9b52e);
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 10px;
     position: fixed;
     z-index: 200;
     left: 50%;
-    bottom: max(13px,env(safe-area-inset-bottom));
-    width: calc(100% - 26px);
-    max-width: 440px;
-    height: 66px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    width: calc(100% - 24px);
+    max-width: 432px;
+    height: 64px;
     transform: translateX(-50%);
     pointer-events: none;
     font-family: Manrope,'Segoe UI',sans-serif;
@@ -30,8 +30,8 @@
   html[data-theme=dark] #app .mobile-dock {
     --dock-ink: #b6c3d7;
     --dock-active: #ff87a4;
-    --dock-fill: linear-gradient(155deg,#1b2940a8,#17233994);
-    --dock-selected: linear-gradient(155deg,#dcecff30,#adc7ed1e);
+    --dock-fill: linear-gradient(155deg,#2431499e,#18243c9c);
+    --dock-selected: linear-gradient(155deg,#dcecff2e,#adc7ed20);
   }
 
   html[data-theme] #app :is(.dock-tabs,.dock-search) {
@@ -39,9 +39,9 @@
     isolation: isolate;
     pointer-events: auto;
     background: var(--dock-fill);
-    border: 1px solid #ffffffb3;
+    border: 1px solid #ffffff82;
     border-radius: 999px;
-    box-shadow: inset 0 1px 1px #ffffffde,inset 0 -1px 1px #9faec449,0 7px 22px #11244426;
+    box-shadow: inset 0 1px 1px #ffffffa6,inset 0 -1px 1px #a9bbd52e,0 8px 24px -4px #193a6133;
     -webkit-backdrop-filter: blur(15px) saturate(145%);
     backdrop-filter: blur(15px) saturate(145%);
   }
@@ -52,8 +52,23 @@
   }
 
   html[data-theme][data-optics=active] #app :is(.dock-tabs,.dock-search) {
-    -webkit-backdrop-filter: blur(6px) saturate(130%);
-    backdrop-filter: blur(6px) saturate(130%);
+    -webkit-backdrop-filter: blur(9px) saturate(135%);
+    backdrop-filter: blur(9px) saturate(135%);
+  }
+
+  html[data-theme] #app :is(.dock-tabs,.dock-search)::before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    inset: -1px;
+    padding: 1px;
+    border-radius: inherit;
+    background: radial-gradient(ellipse at var(--dock-light,35%) 0%,#ffffffea,transparent 65%),linear-gradient(145deg,#ffffff6b,transparent 36% 68%,#d4e4ff8c);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
   }
 
   html[data-theme] #app .dock-tabs {
@@ -61,7 +76,7 @@
     grid-template-columns: repeat(4,minmax(0,1fr));
     flex: 1;
     min-width: 0;
-    height: 66px;
+    height: 62px;
     padding: 5px;
     touch-action: pan-y;
     -webkit-user-select: none;
@@ -70,16 +85,27 @@
 
   html[data-theme] #app .dock-indicator {
     position: absolute;
-    left: 5px;
-    top: 5px;
-    height: 54px;
-    border: 1px solid #ffffff8c;
+    left: 6px;
+    top: 6px;
+    height: 50px;
+    border: 1px solid #ffffff61;
     border-radius: 999px;
     background: var(--dock-selected);
-    box-shadow: inset 0 1px 1px #ffffffab,inset 0 -1px 1px #7a8b9f20,0 2px 8px #2641640d;
+    box-shadow: inset 0 1px 1px #ffffff75,inset 0 -1px 1px #7a8b9f16,0 2px 8px #2641640d;
+    overflow: hidden;
     transform-origin: center;
     pointer-events: none;
     will-change: transform;
+  }
+
+  html[data-theme] #app .dock-indicator::after {
+    content: '';
+    position: absolute;
+    inset: -30%;
+    border-radius: inherit;
+    background: linear-gradient(115deg,transparent 25%,#ffffff35 44%,#ffffff0d 52%,transparent 70%);
+    transform: translateX(var(--dock-shine,0%));
+    pointer-events: none;
   }
 
   html[data-theme=dark] #app .dock-indicator {
@@ -94,17 +120,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 2px;
     width: 100%;
     min-width: 0;
-    min-height: 54px;
+    min-height: 50px;
     padding: 4px 0;
     border: 0;
     border-radius: 999px;
     background: transparent;
     box-shadow: none;
     color: var(--dock-ink);
-    font: 600 9px/1.25 Manrope,'Segoe UI',sans-serif;
+    font: 600 9.5px/1.25 Manrope,'Segoe UI',sans-serif;
     white-space: nowrap;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -112,8 +138,8 @@
   }
 
   html[data-theme] #app .dock-tab .icon {
-    width: 23px;
-    height: 23px;
+    width: 22px;
+    height: 22px;
   }
 
   html[data-theme] #app .dock-tab[aria-current=page] {
@@ -143,23 +169,27 @@
   html[data-theme] #app .dock-search {
     display: grid;
     place-items: center;
-    flex: 0 0 66px;
-    height: 66px;
+    flex: 0 0 64px;
+    height: 64px;
     padding: 0;
     color: var(--dock-ink);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    transition: transform .22s cubic-bezier(.2,.8,.2,1),color .18s;
+    transition: color .18s;
   }
 
   html[data-theme] #app .dock-search .icon {
-    width: 27px;
-    height: 27px;
+    width: 25px;
+    height: 25px;
+    transition: transform .22s cubic-bezier(.2,.8,.2,1);
   }
 
   html[data-theme] #app .dock-search:active {
-    transform: scale(.91);
     color: var(--dock-active);
+  }
+
+  html[data-theme] #app .dock-search:active .icon {
+    transform: scale(.9);
   }
 
   html[data-theme] #app :is(.dock-tab,.dock-search):focus-visible {
@@ -192,6 +222,11 @@
     border-color: var(--border);
     box-shadow: none;
   }
+
+  html[data-theme] #app :is(.dock-tabs,.dock-search)::before,
+  html[data-theme] #app .dock-indicator::after {
+    display: none;
+  }
 }
 
 @media (forced-colors: active) {
@@ -203,11 +238,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html[data-theme] #app :is(.dock-tab,.dock-search) {
+  html[data-theme] #app :is(.dock-tab,.dock-search,.dock-search .icon) {
     transition: none;
   }
 }
 
-html[data-motion=off] #app :is(.dock-tab,.dock-search) {
+html[data-motion=off] #app :is(.dock-tab,.dock-search,.dock-search .icon) {
   transition: none;
 }

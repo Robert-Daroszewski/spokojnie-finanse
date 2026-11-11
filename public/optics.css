@@ -3,10 +3,23 @@ html[data-theme] {
   --optical-fill: linear-gradient(145deg,#f6faff72,#e4edfc38);
   --optical-access: linear-gradient(145deg,#f9fbffbd,#f1f5fca1);
   --optical-data: linear-gradient(145deg,#fbfdfff0,#f0f5fbea);
-  --optical-hero: linear-gradient(90deg,#061126 3%,#0a1732cc 50%,#0b18351a 100%);
+  --hero: #edf4ff;
+  --hero-text: #20324e;
+  --hero-sub: #50627b;
+  --optical-hero: linear-gradient(90deg,#f6faffdc 3%,#edf4ff9e 52%,#e0eaff1c 100%);
+  --optical-hero-active: linear-gradient(90deg,#f7fbff7a 3%,#eaf2ff45 54%,#f3f8ff0d 100%);
+  --optical-hero-image: url('/glass-day.webp');
+  --optical-hero-shadow: inset 0 1px 0 #ffffffbf,inset 0 -1px 0 #b4c6e344,0 20px 42px -20px #365b8d66;
 }
 
 html[data-theme=dark] {
+  --hero: #222e42;
+  --hero-text: #f5f8ff;
+  --hero-sub: #d0dced;
+  --optical-hero: linear-gradient(90deg,#061126 3%,#0a1732cc 50%,#0b18351a 100%);
+  --optical-hero-active: linear-gradient(90deg,#050d248c 3%,#0c183459 54%,#08182d08 100%);
+  --optical-hero-image: url('/glass-night.webp');
+  --optical-hero-shadow: inset 0 1px 0 #f0f8ff87,inset 0 -2px 0 #91aafa30,0 22px 42px -17px #0b1a56a3;
   --optical-fill: linear-gradient(145deg,#131e3675,#12182d5c);
   --optical-access: linear-gradient(145deg,#101b32b8,#111b32ae);
   --optical-data: linear-gradient(145deg,#192338f2,#111a2cf5);
@@ -35,11 +48,11 @@ html[data-optics=active] .optical-scene {
 }
 
 html[data-theme] #app .layout .hero {
-  background: var(--optical-hero), url('/glass-night.webp') 63% 60% / cover no-repeat #0c1530;
+  background: var(--optical-hero), var(--optical-hero-image) 63% 60% / cover no-repeat var(--hero);
   min-height: 270px;
   padding-block: 27px;
-  border-color: #e2edff8c;
-  box-shadow: inset 0 1px 0 #f0f8ff87, inset 0 -2px 0 #91aafa30, 0 22px 42px -17px #0b1a56a3;
+  border-color: var(--glass-edge);
+  box-shadow: var(--optical-hero-shadow);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
@@ -50,6 +63,11 @@ html[data-theme] #app .layout .hero .eyebrow {
 
 html[data-theme] #app .layout .hero-bottom {
   max-width: 395px;
+  border-color: var(--border);
+}
+
+html[data-theme] #app .layout .hero-line {
+  background: var(--border);
 }
 
 html[data-theme] #app .layout .accounts-panel {
@@ -124,7 +142,7 @@ html[data-theme][data-optics=active] #app .layout :is(.accounts-panel,.sidebar,.
 }
 
 html[data-theme][data-optics=active] #app .layout .hero {
-  background: linear-gradient(90deg,#050d248c 3%,#0c183459 54%,#08182d08 100%);
+  background: var(--optical-hero-active);
 }
 
 html[data-theme][data-optics=active] [data-lens]::before {

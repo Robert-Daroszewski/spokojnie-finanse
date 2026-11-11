@@ -7,7 +7,7 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
   element.innerHTML = `
     <div class="dock-tabs" data-lens="navigation">
       <span class="dock-indicator" data-lens="selection" aria-hidden="true"></span>
-      <button type="button" class="dock-tab" data-page="home" aria-label="Przegląd">${icon('home')}<span>Przegląd</span></button>
+      <button type="button" class="dock-tab" data-page="home" aria-label="Przegląd"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 10 8.5-7 8.5 7v10.5h-6v-6.3h-5v6.3h-6z"/></svg><span>Przegląd</span></button>
       <button type="button" class="dock-tab" data-page="transactions" aria-label="Transakcje">${icon('transactions')}<span>Transakcje</span></button>
       <button type="button" class="dock-tab" data-page="invest" aria-label="Inwestycje">${icon('invest')}<span>Portfel</span></button>
       <button type="button" class="dock-tab" data-action="menu" aria-label="Wszystkie sekcje" aria-haspopup="dialog" aria-controls="modal"><svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Więcej</span></button>
@@ -22,6 +22,7 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
   let x = 0;
   let velocity = 0;
   let scale = 1;
+  let lift = 0;
   let frame = 0;
   let lastTime = 0;
   let initialized = false;
@@ -30,7 +31,9 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
 
   const moving = () => root.dataset.motion === 'on' && !document.hidden;
   function paint() {
-    indicator.style.transform = `translate3d(${x}px,0,0) scale(${scale},${1 / Math.sqrt(scale)})`;
+    indicator.style.transform = `translate3d(${x}px,${-lift}px,0) scale(${scale},${1 / Math.sqrt(scale)})`;
+    indicator.style.setProperty('--dock-shine', `${Math.max(-25, Math.min(25, velocity / 35))}%`);
+    tabs.style.setProperty('--dock-light', `${Math.max(8, Math.min(92, (x + slot / 2) / Math.max(1, 4 * slot) * 100))}%`);
     window.SpokojnieOptics?.invalidate();
   }
 
@@ -40,18 +43,21 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
     const dt = Math.min((now - lastTime) / 1000 || 1 / 60, .032);
     lastTime = now;
     const target = gesture ? gesture.target : preview * slot;
-    velocity += ((target - x) * 480 - velocity * 28) * dt;
+    const stiffness = gesture ? 750 : 460;
+    const damping = gesture ? 40 : 30;
+    velocity += ((target - x) * stiffness - velocity * damping) * dt;
     x += velocity * dt;
-    const stretch = 1 + Math.min(Math.abs(velocity) / 5500, .18) + (gesture ? .035 : 0);
+    const stretch = 1 + Math.min(Math.abs(velocity) / 6000, .14) + (gesture ? .025 : 0);
     scale += (stretch - scale) * Math.min(1, dt * 18);
+    lift += ((gesture ? 1.4 : 0) - lift) * Math.min(1, dt * 20);
     paint();
-    if (Math.abs(target - x) > .08 || Math.abs(velocity) > .4 || Math.abs(scale - 1) > .002) {
-      // A held finger keeps the shape stretched until release.
-      if (!gesture || Math.abs(target - x) > .08 || Math.abs(velocity) > .4) frame = requestAnimationFrame(tick);
+    if (Math.abs(target - x) > .08 || Math.abs(velocity) > .4 || Math.abs(scale - stretch) > .002 || Math.abs(lift - (gesture ? 1.4 : 0)) > .02) {
+      frame = requestAnimationFrame(tick);
     } else {
       x = target;
       velocity = 0;
-      scale = 1;
+      scale = gesture ? 1.025 : 1;
+      lift = gesture ? 1.4 : 0;
       paint();
     }
   }
@@ -61,6 +67,7 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
     frame = 0;
     velocity = 0;
     scale = 1;
+    lift = 0;
     x = gesture ? gesture.target : preview * slot;
     paint();
   }
@@ -92,15 +99,16 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
   }
 
   function activate(index) {
+    showPreview(index);
     if (moving()) {
       const glyph = buttons[index].querySelector('.icon');
       glyph.getAnimations().forEach(animation => animation.cancel());
       glyph.animate([
         {transform: 'translateY(0) scale(1)'},
-        {transform: 'translateY(-3px) scale(1.12)', offset: .32},
-        {transform: 'translateY(1px) scale(.97)', offset: .7},
+        {transform: 'translateY(-2px) scale(1.09)', offset: .3},
+        {transform: 'translateY(.5px) scale(.99)', offset: .7},
         {transform: 'translateY(0) scale(1)'},
-      ], {duration: 420, easing: 'cubic-bezier(.2,.7,.3,1)'});
+      ], {duration: 360, easing: 'cubic-bezier(.2,.7,.3,1)'});
     }
     if (index === 3) {
       buttons[3].setAttribute('aria-expanded', 'true');
@@ -132,16 +140,21 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
     if (dy > 12 && dy > dx) { resetGesture(); return; }
     if (dx < 5) return;
     const box = tabs.getBoundingClientRect();
-    gesture.target = Math.max(0, Math.min(3 * slot, event.clientX - box.left - 5 - slot / 2));
-    showPreview(Math.max(0, Math.min(3, Math.floor((event.clientX - box.left - 5) / slot))));
+    const inset = parseFloat(getComputedStyle(tabs).paddingLeft) + tabs.clientLeft;
+    const target = event.clientX - box.left - inset - slot / 2;
+    const bounded = Math.max(0, Math.min(3 * slot, target));
+    const excess = target - bounded;
+    gesture.target = bounded + excess * .13 / (1 + Math.abs(excess) / 40);
+    showPreview(Math.max(0, Math.min(3, Math.floor((event.clientX - box.left - inset) / slot))));
   });
 
   tabs.addEventListener('pointerup', event => {
     if (!gesture || event.pointerId !== gesture.id) return;
     const index = preview;
     suppressClickUntil = performance.now() + 500;
+    gesture = null;
+    delete tabs.dataset.tracking;
     if (tabs.hasPointerCapture(event.pointerId)) tabs.releasePointerCapture(event.pointerId);
-    resetGesture();
     activate(index);
   });
   tabs.addEventListener('pointercancel', resetGesture);
@@ -164,7 +177,10 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
     }
   }).observe(root, {attributes: true, attributeFilter: ['data-motion']});
   document.addEventListener('visibilitychange', () => { if (document.hidden) resetGesture(); });
-  document.querySelector('#modal').addEventListener('close', () => buttons[3].setAttribute('aria-expanded', 'false'));
+  document.querySelector('#modal').addEventListener('close', () => {
+    buttons[3].setAttribute('aria-expanded', 'false');
+    showPreview(selected);
+  });
   element.addEventListener('focusin', () => { if (!gesture) showPreview(selected); });
 
   return {

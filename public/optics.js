@@ -61,9 +61,9 @@
       vec2 local = (p - rect.xy) / rect.zw;
       vec2 uv = vec2(.14,.20) + local * vec2(.85,.74);
       uv += vec2(sin(uTime*.36)*.012, cos(uTime*.24)*.009);
-      vec3 glass = texture2D(uNight, uv).rgb;
       float shade = .32 + smoothstep(.19,.92,local.x)*.46;
-      return mix(vec3(.032,.060,.135), glass, shade);
+      if (uDark > .5) return mix(vec3(.032,.060,.135), texture2D(uNight, uv).rgb, shade);
+      return mix(vec3(.90,.94,.99), texture2D(uDay, uv).rgb, shade);
     }
 
     void main() {
