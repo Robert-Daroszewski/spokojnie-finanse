@@ -1,17 +1,14 @@
-.mobile-dock {
-  display: none;
-}
+.mobile-dock { display: none; }
 
 @media (max-width: 720px) {
-  html[data-theme] #app .layout .sidebar {
-    display: none;
-  }
+  html[data-theme] #app .layout .sidebar { display: none; }
 
   html[data-theme] #app .mobile-dock {
     --dock-ink: #34475f;
-    --dock-active: #c42353;
-    --dock-fallback: linear-gradient(145deg,#ffffffb8,#e0eafa9e);
-    --dock-selected: #a1b3cc3d;
+    --dock-active: #bd204b;
+    --dock-tint: #ffffff1a;
+    --dock-selected: #8496ad24;
+    --dock-edge: #ffffffa1;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -28,63 +25,29 @@
   }
 
   html[data-theme=dark] #app .mobile-dock {
-    --dock-ink: #c1d0e6;
+    --dock-ink: #d2def0;
     --dock-active: #ff8bab;
-    --dock-fallback: linear-gradient(145deg,#263550dd,#182238db);
-    --dock-selected: #d8e8ff29;
+    --dock-tint: #0c142826;
+    --dock-selected: #e0ecff1c;
+    --dock-edge: #e0eeff47;
   }
 
-  html[data-theme] #app .dock-optics {
+  .dock-filters {
     position: absolute;
-    z-index: 1;
-    left: -8px;
-    top: -8px;
-    width: calc(100% + 16px);
-    height: calc(100% + 16px);
-    visibility: hidden;
+    width: 0;
+    height: 0;
     pointer-events: none;
-  }
-
-  html[data-theme] #app .dock-backdrop {
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    gap: inherit;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  html[data-theme] #app .dock-backdrop > span {
-    flex: 1;
-    min-width: 0;
-    height: 64px;
-    border-radius: 999px;
-    background: #eef5ff24;
-    -webkit-backdrop-filter: blur(8px) saturate(125%);
-    backdrop-filter: blur(8px) saturate(125%);
-  }
-
-  html[data-theme] #app .dock-backdrop > span:last-child {
-    flex: 0 0 66px;
-    height: 66px;
-  }
-
-  html[data-theme=dark] #app .dock-backdrop > span {
-    background: #0c172c2e;
   }
 
   html[data-theme] #app :is(.dock-tabs,.dock-search) {
     position: relative;
-    z-index: 2;
     pointer-events: auto;
-    border: 1px solid var(--glass-edge);
+    border: 1px solid var(--dock-edge);
     border-radius: 999px;
-    background: var(--dock-fallback);
-    box-shadow: inset 0 1px 0 var(--glass-inner),0 9px 25px -7px #102a5947;
-    -webkit-backdrop-filter: blur(16px) saturate(135%);
-    backdrop-filter: blur(16px) saturate(135%);
+    background: var(--dock-tint);
+    box-shadow: inset 0 1px 0 #ffffff70,inset 0 -1px 0 #91a4c026,0 7px 22px -8px #132d5b38;
+    -webkit-backdrop-filter: var(--dock-filter,blur(2px)) saturate(125%);
+    backdrop-filter: var(--dock-filter,blur(2px)) saturate(125%);
   }
 
   html[data-theme] #app .dock-tabs {
@@ -104,9 +67,12 @@
     left: 6px;
     top: 6px;
     height: 52px;
+    border: 1px solid var(--dock-edge);
     border-radius: 999px;
     background: var(--dock-selected);
-    box-shadow: inset 0 1px 0 var(--glass-inner);
+    box-shadow: inset 0 1px 0 #ffffff80,inset 0 -1px 0 #ffffff29,0 2px 5px #132d5b0a;
+    -webkit-backdrop-filter: var(--dock-filter,blur(.4px)) saturate(115%);
+    backdrop-filter: var(--dock-filter,blur(.4px)) saturate(115%);
     transform-origin: center;
     pointer-events: none;
     will-change: transform;
@@ -129,43 +95,23 @@
     background: transparent;
     box-shadow: none;
     color: var(--dock-ink);
-    font: 600 9.5px/1.25 Manrope,'Segoe UI',sans-serif;
-    text-shadow: 0 1px 5px #ffffff5e;
+    font: 650 9.5px/1.25 Manrope,'Segoe UI',sans-serif;
+    text-shadow: 0 1px 3px #ffffff6b;
     white-space: nowrap;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: color .16s;
   }
 
-  html[data-theme=dark] #app .dock-tab {
-    text-shadow: 0 1px 5px #0610208c;
-  }
-
-  html[data-theme] #app .dock-tab .icon {
-    width: 23px;
-    height: 23px;
-  }
+  html[data-theme=dark] #app .dock-tab { text-shadow: 0 1px 3px #0610208c; }
+  html[data-theme] #app .dock-tab .icon { width: 23px; height: 23px; }
 
   html[data-theme] #app .dock-tab[aria-current=page],
-  html[data-theme] #app .dock-tabs[data-tracking] .dock-tab[data-preview] {
-    color: var(--dock-active);
-  }
-
-  html[data-theme] #app .dock-tabs[data-tracking] .dock-tab[aria-current=page]:not([data-preview]) {
-    color: var(--dock-ink);
-  }
-
-  html[data-theme] #app .dock-tab:is([aria-current=page],[data-preview]) .icon {
-    stroke-width: 2.1;
-  }
-
-  html[data-theme] #app .dock-tab[data-page=home]:is([aria-current=page],[data-preview]) .icon {
-    fill: currentColor;
-  }
-
-  html[data-theme] #app .dock-tabs[data-tracking] .dock-tab[data-page=home]:not([data-preview]) .icon {
-    fill: none;
-  }
+  html[data-theme] #app .dock-tabs[data-tracking] .dock-tab[data-preview] { color: var(--dock-active); }
+  html[data-theme] #app .dock-tabs[data-tracking] .dock-tab[aria-current=page]:not([data-preview]) { color: var(--dock-ink); }
+  html[data-theme] #app .dock-tab:is([aria-current=page],[data-preview]) .icon { stroke-width: 2.1; }
+  html[data-theme] #app .dock-tab[data-page=home]:is([aria-current=page],[data-preview]) .icon { fill: currentColor; }
+  html[data-theme] #app .dock-tabs[data-tracking] .dock-tab[data-page=home]:not([data-preview]) .icon { fill: none; }
 
   html[data-theme] #app .dock-search {
     display: grid;
@@ -185,53 +131,22 @@
     transition: transform .22s cubic-bezier(.2,.8,.2,1);
   }
 
-  html[data-theme] #app .dock-search:active {
-    color: var(--dock-active);
-  }
-
-  html[data-theme] #app .dock-search:active .icon {
-    transform: scale(.9);
-  }
+  html[data-theme] #app .dock-search:active { color: var(--dock-active); }
+  html[data-theme] #app .dock-search:active .icon { transform: scale(.9); }
 
   html[data-theme] #app :is(.dock-tab,.dock-search):focus-visible {
     outline: 2px solid var(--dock-active);
     outline-offset: -4px;
   }
 
-  html[data-theme][data-optics=active] #app .mobile-dock[data-glass-renderer=gpu] :is(.dock-optics,.dock-backdrop) {
-    visibility: visible;
-  }
-
-  html[data-theme][data-optics=active] #app .mobile-dock[data-glass-renderer=gpu] :is(.dock-tabs,.dock-search) {
-    border-color: transparent;
-    background: transparent;
-    box-shadow: 0 9px 25px -7px #102a5947;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  html[data-theme][data-optics=active] #app .mobile-dock[data-glass-renderer=gpu] .dock-indicator {
-    background: transparent;
-    box-shadow: none;
-  }
-
   html[data-theme] body:has(#modal[open]) #app .mobile-dock,
-  html[data-theme] #app:has(#tx-search:focus) .mobile-dock {
-    display: none;
-  }
+  html[data-theme] #app:has(#tx-search:focus) .mobile-dock { display: none; }
 
-  html[data-theme] #app .layout .main {
-    padding-bottom: calc(112px + env(safe-area-inset-bottom));
-  }
+  html[data-theme] #app .layout .main { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
 }
 
 @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
-  html[data-theme] #app :is(.dock-optics,.dock-backdrop) {
-    display: none;
-  }
-
-  html[data-theme] #app :is(.dock-tabs,.dock-search),
-  html[data-theme][data-optics=active] #app .mobile-dock[data-glass-renderer=gpu] :is(.dock-tabs,.dock-search) {
+  html[data-theme] #app :is(.dock-tabs,.dock-search) {
     background: var(--surface);
     border-color: var(--border);
     -webkit-backdrop-filter: none;
@@ -239,9 +154,10 @@
     box-shadow: none;
   }
 
-  html[data-theme] #app .dock-indicator,
-  html[data-theme][data-optics=active] #app .mobile-dock[data-glass-renderer=gpu] .dock-indicator {
+  html[data-theme] #app .dock-indicator {
     background: var(--accent-soft);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     box-shadow: none;
   }
 }
@@ -255,11 +171,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html[data-theme] #app :is(.dock-tab,.dock-search,.dock-search .icon) {
-    transition: none;
-  }
+  html[data-theme] #app :is(.dock-tab,.dock-search,.dock-search .icon) { transition: none; }
 }
 
-html[data-motion=off] #app :is(.dock-tab,.dock-search,.dock-search .icon) {
-  transition: none;
-}
+html[data-motion=off] #app :is(.dock-tab,.dock-search,.dock-search .icon) { transition: none; }

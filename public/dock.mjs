@@ -1,3 +1,5 @@
+import {attachBackdropRefraction} from './dock-refraction.mjs';
+
 export function createDock({icon, onNavigate, onMenu, onSearch}) {
   const root = document.documentElement;
   const primary = ['home', 'transactions', 'invest'];
@@ -5,19 +7,18 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
   element.className = 'mobile-dock';
   element.setAttribute('aria-label', 'Nawigacja telefonu');
   element.innerHTML = `
-    <div class="dock-backdrop" aria-hidden="true"><span></span><span></span></div>
-    <canvas class="dock-optics" aria-hidden="true"></canvas>
-    <div class="dock-tabs" data-lens="dock">
-      <span class="dock-indicator" data-lens="selection" aria-hidden="true"></span>
+    <div class="dock-tabs">
+      <span class="dock-indicator" aria-hidden="true"></span>
       <button type="button" class="dock-tab" data-page="home" aria-label="Przegląd"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 10 8.5-7 8.5 7v10.5h-6v-6.3h-5v6.3h-6z"/></svg><span>Przegląd</span></button>
       <button type="button" class="dock-tab" data-page="transactions" aria-label="Transakcje">${icon('transactions')}<span>Transakcje</span></button>
       <button type="button" class="dock-tab" data-page="invest" aria-label="Inwestycje">${icon('invest')}<span>Portfel</span></button>
       <button type="button" class="dock-tab" data-action="menu" aria-label="Wszystkie sekcje" aria-haspopup="dialog" aria-controls="modal"><svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Więcej</span></button>
     </div>
-    <button type="button" class="dock-search" data-lens="control" aria-label="Szukaj transakcji"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.7"/><path d="m15.5 15.5 5 5"/></svg></button>`;
+    <button type="button" class="dock-search" aria-label="Szukaj transakcji"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.7"/><path d="m15.5 15.5 5 5"/></svg></button>`;
   const tabs = element.querySelector('.dock-tabs');
   const indicator = element.querySelector('.dock-indicator');
   const buttons = [...element.querySelectorAll('.dock-tab')];
+  attachBackdropRefraction(element, [tabs, indicator, element.querySelector('.dock-search')]);
   let selected = 0;
   let preview = 0;
   let slot = 0;
@@ -34,7 +35,6 @@ export function createDock({icon, onNavigate, onMenu, onSearch}) {
   const moving = () => root.dataset.motion === 'on' && !document.hidden;
   function paint() {
     indicator.style.transform = `translate3d(${x}px,${-lift}px,0) scale(${scale},${1 / Math.sqrt(scale)})`;
-    window.SpokojnieOptics?.invalidate();
   }
 
   function tick(now) {
