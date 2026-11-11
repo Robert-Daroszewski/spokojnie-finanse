@@ -1,0 +1,213 @@
+.mobile-dock {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  html[data-theme] #app .layout .sidebar {
+    display: none;
+  }
+
+  html[data-theme] #app .mobile-dock {
+    --dock-ink: #627083;
+    --dock-active: #dc365e;
+    --dock-fill: linear-gradient(155deg,#ffffffa8,#e5edf87a);
+    --dock-selected: linear-gradient(155deg,#8492a332,#a0acba28);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    position: fixed;
+    z-index: 200;
+    left: 50%;
+    bottom: max(13px,env(safe-area-inset-bottom));
+    width: calc(100% - 26px);
+    max-width: 440px;
+    height: 66px;
+    transform: translateX(-50%);
+    pointer-events: none;
+    font-family: Manrope,'Segoe UI',sans-serif;
+  }
+
+  html[data-theme=dark] #app .mobile-dock {
+    --dock-ink: #b6c3d7;
+    --dock-active: #ff87a4;
+    --dock-fill: linear-gradient(155deg,#1b2940a8,#17233994);
+    --dock-selected: linear-gradient(155deg,#dcecff30,#adc7ed1e);
+  }
+
+  html[data-theme] #app :is(.dock-tabs,.dock-search) {
+    position: relative;
+    isolation: isolate;
+    pointer-events: auto;
+    background: var(--dock-fill);
+    border: 1px solid #ffffffb3;
+    border-radius: 999px;
+    box-shadow: inset 0 1px 1px #ffffffde,inset 0 -1px 1px #9faec449,0 7px 22px #11244426;
+    -webkit-backdrop-filter: blur(15px) saturate(145%);
+    backdrop-filter: blur(15px) saturate(145%);
+  }
+
+  html[data-theme=dark] #app :is(.dock-tabs,.dock-search) {
+    border-color: #d8e8ff57;
+    box-shadow: inset 0 1px 1px #e2f0ff63,inset 0 -1px 1px #93b7e329,0 7px 25px #00000047;
+  }
+
+  html[data-theme][data-optics=active] #app :is(.dock-tabs,.dock-search) {
+    -webkit-backdrop-filter: blur(6px) saturate(130%);
+    backdrop-filter: blur(6px) saturate(130%);
+  }
+
+  html[data-theme] #app .dock-tabs {
+    display: grid;
+    grid-template-columns: repeat(4,minmax(0,1fr));
+    flex: 1;
+    min-width: 0;
+    height: 66px;
+    padding: 5px;
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  html[data-theme] #app .dock-indicator {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    height: 54px;
+    border: 1px solid #ffffff8c;
+    border-radius: 999px;
+    background: var(--dock-selected);
+    box-shadow: inset 0 1px 1px #ffffffab,inset 0 -1px 1px #7a8b9f20,0 2px 8px #2641640d;
+    transform-origin: center;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  html[data-theme=dark] #app .dock-indicator {
+    border-color: #e0edff57;
+    box-shadow: inset 0 1px 1px #e5efff5c,0 2px 8px #0000001c;
+  }
+
+  html[data-theme] #app .dock-tab {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    width: 100%;
+    min-width: 0;
+    min-height: 54px;
+    padding: 4px 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    color: var(--dock-ink);
+    font: 600 9px/1.25 Manrope,'Segoe UI',sans-serif;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: color .18s;
+  }
+
+  html[data-theme] #app .dock-tab .icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  html[data-theme] #app .dock-tab[aria-current=page] {
+    color: var(--dock-active);
+  }
+
+  html[data-theme] #app .dock-tabs[data-tracking] .dock-tab[aria-current=page] {
+    color: var(--dock-ink);
+  }
+
+  html[data-theme] #app .dock-tabs[data-tracking] .dock-tab[data-preview] {
+    color: var(--dock-active);
+  }
+
+  html[data-theme] #app .dock-tab:is([aria-current=page],[data-preview]) .icon {
+    stroke-width: 2.1;
+  }
+
+  html[data-theme] #app .dock-tab[data-page=home]:is([aria-current=page],[data-preview]) .icon {
+    fill: currentColor;
+  }
+
+  html[data-theme] #app .dock-tabs[data-tracking] .dock-tab[data-page=home]:not([data-preview]) .icon {
+    fill: none;
+  }
+
+  html[data-theme] #app .dock-search {
+    display: grid;
+    place-items: center;
+    flex: 0 0 66px;
+    height: 66px;
+    padding: 0;
+    color: var(--dock-ink);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .22s cubic-bezier(.2,.8,.2,1),color .18s;
+  }
+
+  html[data-theme] #app .dock-search .icon {
+    width: 27px;
+    height: 27px;
+  }
+
+  html[data-theme] #app .dock-search:active {
+    transform: scale(.91);
+    color: var(--dock-active);
+  }
+
+  html[data-theme] #app :is(.dock-tab,.dock-search):focus-visible {
+    outline: 2px solid var(--dock-active);
+    outline-offset: -3px;
+  }
+
+  html[data-theme] body:has(#modal[open]) #app .mobile-dock,
+  html[data-theme] #app:has(#tx-search:focus) .mobile-dock {
+    display: none;
+  }
+
+  html[data-theme] #app .layout .main {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  html[data-theme] #app :is(.dock-tabs,.dock-search),
+  html[data-theme][data-optics=active] #app :is(.dock-tabs,.dock-search) {
+    background: var(--surface);
+    border-color: var(--border);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  html[data-theme] #app .dock-indicator {
+    background: var(--accent-soft);
+    border-color: var(--border);
+    box-shadow: none;
+  }
+}
+
+@media (forced-colors: active) {
+  html[data-theme] #app .dock-tab[aria-current=page] {
+    color: Highlight;
+    outline: 2px solid Highlight;
+    outline-offset: -3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] #app :is(.dock-tab,.dock-search) {
+    transition: none;
+  }
+}
+
+html[data-motion=off] #app :is(.dock-tab,.dock-search) {
+  transition: none;
+}

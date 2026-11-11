@@ -95,9 +95,24 @@ html[data-theme] #app .layout .month-section-label {
   color: var(--text);
 }
 
-html[data-theme] #app .layout :is(.overview-activity,.overview-plan) > .panel,
-html[data-theme] #app .layout .investment-portfolio-chart {
-  background: var(--optical-data);
+html[data-theme] #app .layout :is(.panel,.account,.check-card,.template-card,.feature-summary),
+html[data-theme] #app .layout .report-metrics article,
+html[data-theme] #app .layout .investment-metrics > div,
+html[data-theme] #app .layout .product-metrics > div {
+  background: var(--optical-fill);
+  border-color: var(--glass-edge);
+  box-shadow: inset 0 1px 0 var(--glass-inner),0 12px 29px #0d215b26;
+}
+
+html[data-theme][data-optics=active] #app .layout [data-lens=panel] {
+  background: var(--optical-fill);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme] #modal {
+  background: var(--optical-access);
+  box-shadow: inset 0 1px 0 var(--glass-inner),0 28px 80px #0a173758;
 }
 
 html[data-theme][data-optics=active] #app .layout :is(.accounts-panel,.sidebar,.top-actions,.investment-summary) {
@@ -267,6 +282,11 @@ html[data-theme] .entry-access-intro {
 }
 
 @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  html[data-theme] {
+    --optical-fill: var(--surface);
+    --optical-access: var(--surface);
+  }
+
   html[data-theme] .ambient-scene,
   html[data-theme] .app-login {
     background: var(--canvas);

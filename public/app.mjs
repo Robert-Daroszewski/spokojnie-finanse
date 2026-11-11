@@ -1,4 +1,5 @@
 import {sidebar,sectionTitle} from './layout-ui.mjs';
+import {createDock} from './dock.mjs';
 import {appearanceControls} from './appearance-ui.mjs';
 import {syncLinkedPurchase,detachPurchase,restorePurchaseLinks} from './investment-cash.mjs';
 import {subcategoryName} from './classification.mjs';
@@ -57,8 +58,23 @@ function accountOptions(selected){return state.accounts.map(a=>`<option value="$
 function heading(title,subtitle,extra=''){return `<div class="heading"><div><h1>${esc(sectionTitle(page))}</h1><p class="sub">${subtitle}</p></div>${extra}</div>`;}
 function monthInput(){return `<input class="month-select" type="month" aria-label="Wybierz miesiąc" value="${month}" data-month>`;}
 function reserveNote(o){return !state.settings.verified?'Najpierw sprawdź salda i potwierdź ustawienia.':state.settings.expensiveDebt?'Najpierw zaplanuj spłatę drogiego długu.':o.reserveCovered<o.target?'Najpierw budżet i poduszka bezpieczeństwa.':'Nadwyżka według Twoich ustawień. Decyzja o inwestycji należy do Ciebie.';}
+const mobileDock=createDock({
+ icon,
+ onNavigate:id=>{features.sound();navigate(id);},
+ onMenu:()=>workspace.action('menu'),
+ onSearch:()=>{
+  openTransactions({all:true});
+  const input=document.querySelector('#tx-search');
+  input.focus({preventScroll:true});
+  input.scrollIntoView({block:'center',behavior:'instant'});
+ }
+});
 function render(){
- app.innerHTML=`<div class="layout">${sidebar({page,icon,esc,demo})}<main class="main"><header class="topbar"><div class="topbar-context"><div class="topbar-date"><strong>${new Intl.DateTimeFormat('pl-PL',{weekday:'long',day:'numeric',month:'long'}).format(new Date(TODAY()+'T12:00:00'))}</strong></div>${cloudBadge()}</div><div class="top-actions" data-lens="toolbar" data-glass="toolbar">${appearanceControls()}${features.soundButton()}${btn(icon('plus')+' <span class="add-label">Dodaj wpis</span>','add','primary add-transaction','aria-label="Dodaj transakcję" title="Dodaj transakcję (N)"')}</div></header>${demo?'<div class="demo-banner"><span>PRZYKŁAD · fikcyjne transakcje. Twoje dane są zachowane osobno.</span><button class="text-link" data-action="demo">Wróć do moich danych ×</button></div>':''}${storageError?`<div class="notice" style="margin-top:20px">${esc(storageError)}</div>`:''}${cloudBanner()}${draftBanner()}${undoBanner()}<div id="view">${({home:homeView,transactions:transactionsView,budget:budgetView,goals:goalsView,invest:investView,settings:settingsView,receipts:features.receiptsView,recurring:features.recurringView,products:features.productsView,connections:connectionsView,guide:guideView,reports:workspace.reportsView,templates:workspace.templatesView,checks:workspace.checksView}[page]||homeView)()}</div><footer class="footer"><span>Spokojnie. Twój plan, Twoje tempo.</span><span>${demo?'Tryb przykładowy':state.updatedAt?'Ostatni zapis: '+new Date(state.updatedAt).toLocaleString('pl-PL'):'Wprowadź pierwszą transakcję'} · Kwoty budżetu w PLN · ceny instrumentów w walucie notowania</span></footer></main></div>`;
+ const content=document.createElement('template');
+ content.innerHTML=`<div class="layout">${sidebar({page,icon,esc,demo})}<main class="main"><header class="topbar"><div class="topbar-context"><div class="topbar-date"><strong>${new Intl.DateTimeFormat('pl-PL',{weekday:'long',day:'numeric',month:'long'}).format(new Date(TODAY()+'T12:00:00'))}</strong></div>${cloudBadge()}</div><div class="top-actions" data-lens="toolbar" data-glass="toolbar">${appearanceControls()}${features.soundButton()}${btn(icon('plus')+' <span class="add-label">Dodaj wpis</span>','add','primary add-transaction','aria-label="Dodaj transakcję" title="Dodaj transakcję (N)"')}</div></header>${demo?'<div class="demo-banner"><span>PRZYKŁAD · fikcyjne transakcje. Twoje dane są zachowane osobno.</span><button class="text-link" data-action="demo">Wróć do moich danych ×</button></div>':''}${storageError?`<div class="notice" style="margin-top:20px">${esc(storageError)}</div>`:''}${cloudBanner()}${draftBanner()}${undoBanner()}<div id="view">${({home:homeView,transactions:transactionsView,budget:budgetView,goals:goalsView,invest:investView,settings:settingsView,receipts:features.receiptsView,recurring:features.recurringView,products:features.productsView,connections:connectionsView,guide:guideView,reports:workspace.reportsView,templates:workspace.templatesView,checks:workspace.checksView}[page]||homeView)()}</div><footer class="footer"><span>Spokojnie. Twój plan, Twoje tempo.</span><span>${demo?'Tryb przykładowy':state.updatedAt?'Ostatni zapis: '+new Date(state.updatedAt).toLocaleString('pl-PL'):'Wprowadź pierwszą transakcję'} · Kwoty budżetu w PLN · ceny instrumentów w walucie notowania</span></footer></main></div>`;
+ const previous=app.querySelector('.layout');
+ if(previous)previous.replaceWith(content.content);else app.replaceChildren(content.content);
+ mobileDock.mount(app,page);
  window.SpokojnieAppearance?.sync();bindView();features.bind();investments.bind();if(page==='settings'){const account=document.createElement('section');account.className='panel';account.style.marginTop='22px';account.innerHTML='<div class="panel-body"><h2>Twoje konto i telefon</h2><p class="install-tip">W przeglądarce telefonu wybierz „Dodaj do ekranu głównego”. Na iPhonie użyj menu Udostępnij w Safari. Po zalogowaniu zobaczysz swoje dane na każdym urządzeniu.</p><form action="/auth/signout" method="post"><button type="submit" class="button small">Wyloguj się</button></form></div>';document.querySelector('#view').appendChild(account);}if(lastRenderedPage!==page){document.querySelector('#view').classList.add('view-enter');lastRenderedPage=page;}
 }
 function draftBanner(){const d=drafts().read();return d?`<div class="draft-banner"><div><strong>Masz niedokończony wpis.</strong><span>Zapamiętany na tym urządzeniu. Nie zmienia jeszcze budżetu.</span></div>${btn('Kontynuuj','draft-resume','small')}</div>`:'';}

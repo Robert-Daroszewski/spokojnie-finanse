@@ -6,6 +6,8 @@
   const opaque = matchMedia('(prefers-reduced-transparency: reduce)');
   const forced = matchMedia('(forced-colors: active)');
   const touch = matchMedia('(pointer: coarse)');
+  const maxLenses = 16;
+  const surfaceSelector = '#view :is(.panel,.account,.stats,.check-card,.template-card,.feature-summary,.report-metrics>article,.investment-metrics>div,.product-metrics>div)';
   const lensTypes = {
     balance: [38, 48, 1],
     accounts: [24, 27, 0],
@@ -13,9 +15,12 @@
     toolbar: [18, 25, 0],
     access: [29, 31, 0],
     portfolio: [29, 35, 0],
+    panel: [24, 27, 0],
+    selection: [19, 33, 0],
+    control: [22, 32, 0],
   };
-  const rects = new Float32Array(20);
-  const materials = new Float32Array(20);
+  const rects = new Float32Array(maxLenses * 4);
+  const materials = new Float32Array(maxLenses * 4);
   const pointer = [-2000, -2000];
   let frame = 0;
   let previousFrame = -Infinity;
@@ -33,7 +38,7 @@
     uniform sampler2D uDay, uNight;
     uniform vec2 uPixels, uViewport, uPointer;
     uniform float uTime, uDark;
-    uniform vec4 uRects[5], uMaterials[5];
+    uniform vec4 uRects[${maxLenses}], uMaterials[${maxLenses}];
 
     vec2 cover(vec2 p) {
       float ratio = uViewport.x / uViewport.y / 1.7768;
@@ -64,7 +69,7 @@
     void main() {
       vec2 p = vec2(gl_FragCoord.x, uPixels.y-gl_FragCoord.y) / uPixels * uViewport;
       vec3 color = scene(p);
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < ${maxLenses}; i++) {
         vec4 rect = uRects[i];
         if (rect.z < 1.0 || any(lessThan(p,rect.xy-2.0)) || any(greaterThan(p,rect.xy+rect.zw+2.0))) continue;
         vec4 material = uMaterials[i];
@@ -168,9 +173,11 @@
 
   const resize = new ResizeObserver(invalidate);
   function measure() {
+    // Match the account card material, without placing a second lens inside a card.
+    for (const surface of document.querySelectorAll(surfaceSelector)) {
+      if (!surface.dataset.lens && !surface.parentElement.closest('[data-lens]')) surface.dataset.lens = 'panel';
+    }
     const current = [...document.querySelectorAll('[data-lens]')].filter(element => Object.hasOwn(lensTypes, element.dataset.lens));
-    // The mobile dock is above the scrolling content.
-    current.sort((a, b) => Number(a.dataset.lens === 'navigation') - Number(b.dataset.lens === 'navigation'));
     if (current.length !== elements.length || current.some((element, i) => element !== elements[i])) {
       for (const element of elements) resize.unobserve(element);
       elements = current;
@@ -190,15 +197,20 @@
     gl.uniform2f(pipeline.viewport, width, height);
 
     rects.fill(0);
+    // Reserve space for the controls, then draw them above scrolling panels.
+    const floating = element => Boolean(element.closest('.mobile-dock,.topbar,.sidebar'));
+    const visible = elements.map(element => ({element, box: element.getBoundingClientRect()}))
+      .filter(({box}) => box.width && box.height && box.bottom > 0 && box.top < height);
+    visible.sort((a, b) => Number(floating(b.element)) - Number(floating(a.element)));
+    const lenses = visible.slice(0, maxLenses);
+    lenses.sort((a, b) => Number(floating(a.element)) - Number(floating(b.element)));
     let index = 0;
-    for (const element of elements) {
-      const box = element.getBoundingClientRect();
-      if (!box.width || !box.height || box.bottom <= 0 || box.top >= height) continue;
+    for (const {element, box} of lenses) {
       const [bevel, refraction, hero] = lensTypes[element.dataset.lens];
       const radius = parseFloat(getComputedStyle(element).borderTopLeftRadius);
       rects.set([box.left, box.top, box.width, box.height], index * 4);
       materials.set([Math.min(radius || 0, box.width / 2, box.height / 2), Math.min(bevel, box.height / 2), refraction, hero], index * 4);
-      if (++index === 5) break;
+      index++;
     }
     gl.uniform4fv(pipeline.rects, rects);
     gl.uniform4fv(pipeline.materials, materials);
@@ -289,8 +301,9 @@
   new MutationObserver(records => {
     if (records.some(({ target, addedNodes, removedNodes }) => target.id === 'app' || target.id === 'view' ||
       [...addedNodes, ...removedNodes].some(node => node.nodeType === 1 &&
-        (node.matches('[data-lens]') || node.querySelector('[data-lens]'))))) invalidate();
+        (node.matches('[data-lens],.panel,.mobile-dock') || node.querySelector('[data-lens],.panel,.mobile-dock'))))) invalidate();
   }).observe(document.body, { childList: true, subtree: true });
   resize.observe(document.body);
+  window.SpokojnieOptics = {invalidate};
   sync();
 })();
